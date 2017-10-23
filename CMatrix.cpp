@@ -16,6 +16,9 @@ CMatrix::~CMatrix()
 	reset();
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 void CMatrix::reset() 
 { 
@@ -29,6 +32,10 @@ nR = nC = 0;
 values = NULL;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 CMatrix::CMatrix(int nR, int nC, int initialization, double initializationValue) 
 { 
 	this->nR = nR;
@@ -41,20 +48,26 @@ values = new double*[nR];
 for (int iR = 0; iR<nR; iR++) 
 { 
 	values[iR] = new double[nC]; 
-for (int iC = 0; iC<nC; iC++) 
-{ 
+   for (int iC = 0; iC<nC; iC++) 
+    { 
 	switch (initialization) 
-{
-case MI_ZEROS: values[iR][iC] = 0; break; 
-case MI_ONES: values[iR][iC] = 1; break; 
-case MI_EYE: values[iR][iC] = (iR == iC) ? 1 : 0; break; 
-case MI_RAND: values[iR][iC] = (rand() % 1000000) / 1000000.0; break; 
-case MI_VALUE: values[iR][iC] = initializationValue;
-break; 
-} 
-} 
-} 
+      {
+        case MI_ZEROS: values[iR][iC] = 0; break; 
+        case MI_ONES: values[iR][iC] = 1; break; 
+	case MI_EYE: values[iR][iC] = (iR == iC) ? 1 : 0; break; 
+	case MI_RAND: values[iR][iC] = (rand() % 1000000) / 1000000.0; break; 
+	case MI_VALUE: values[iR][iC] = initializationValue;
+	break; 
+      } 
+    } 
+  } 
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 CMatrix::CMatrix(int nR, int nC, double first, ...)
 {
@@ -81,6 +94,14 @@ CMatrix::CMatrix(int nR, int nC, double first, ...)
 }
 
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 CMatrix::CMatrix(CMatrix& m) 
 { 
 	nR = nC = 0; 
@@ -88,22 +109,35 @@ values = NULL;
 copy(m); 
 }
 
-void CMatrix::copy(CMatrix& m) { 
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void CMatrix::copy(CMatrix& m) 
+{ 
 	reset(); 
 	this->nR = m.nR;
 	this->nC = m.nC;
-if ((nR*nC) == 0)
-{ values = NULL; 
-return; }
+ if ((nR*nC) == 0)
+  { values = NULL; 
+    return; }
 values = new double*[nR]; 
 for (int iR = 0; iR<nR; iR++) 
 { values[iR] = new double[nC]; 
-for (int iC = 0; iC<nC; iC++)
-{ 
+  for (int iC = 0; iC<nC; iC++)
+   { 
 	values[iR][iC] = m.values[iR][iC]; 
-} 
-}
+   } 
  }
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 CMatrix::CMatrix(double d) 
 {
@@ -111,6 +145,10 @@ CMatrix::CMatrix(double d)
 values = NULL;
 copy(d); 
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void CMatrix::copy(double d) 
 { 
@@ -125,7 +163,7 @@ values[0][0] = d;
 
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -136,6 +174,12 @@ CMatrix CMatrix::operator=(CMatrix& m)
 	copy(m); 
 return *this; 
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 CMatrix CMatrix::operator=(double d) 
 { 
 	copy(d); 
@@ -143,6 +187,7 @@ return *this;
 }
 
 
+//////////////////////////////////////////////////////       ADD FUNCTIONS     ////////////////////////////////////////////////
 
 
 void CMatrix::add(CMatrix& m) 
@@ -156,12 +201,16 @@ for (int iR = 0; iR<nR; iR++)
 
 
 
+
 void CMatrix::operator+=(CMatrix& m) 
 { add(m);}
 
 
+
 void CMatrix::operator+=(double d)
 { add(CMatrix(nR, nC, MI_VALUE, d)); }
+
+
 
 
 CMatrix CMatrix::operator+(CMatrix& m) 
@@ -170,12 +219,19 @@ CMatrix CMatrix::operator+(CMatrix& m)
 r += m; 
 return r; 
 }
+
+
 CMatrix CMatrix::operator+(double d) 
 { 
 	CMatrix r = *this; 
 r += d;
 return r;
 }
+
+
+
+//////////////////////////////////////////////////         SUBTRACT FUNCTIONS       ///////////////////////////////////////
+
 
 
 void CMatrix::sub(CMatrix& m)
@@ -187,10 +243,15 @@ void CMatrix::sub(CMatrix& m)
 			values[iR][iC] -= m.values[iR][iC];
 }
 
+
+
+
 void CMatrix::operator-=(CMatrix& m)
 {
 	sub(m);
 }
+
+
 
 
 void CMatrix::operator-=(double d)
@@ -199,18 +260,28 @@ void CMatrix::operator-=(double d)
 }
 
 
+
 CMatrix CMatrix::operator-(CMatrix& m)
 {
 	CMatrix r = *this;
 	r -= m;
 	return r;
 }
+
+
+
 CMatrix CMatrix::operator-(double d)
 {
 	CMatrix r = *this;
 	r -= d;
 	return r;
 }
+
+
+
+
+///////////////////////////////////////////        PRINT MATRIX          ///////////////////////////////////////////////////
+
 
 
 
@@ -226,6 +297,8 @@ void CMatrix::PrintMatrix()
 
 
 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
