@@ -362,6 +362,134 @@ CMatrix CMatrix::operator+()
 { return *this;
 }
 
+///////////////////////////////////////////        USEFUL OPERATIONS          ///////////////////////////////////////////////////
+
+CMatrix CMatrix::adjoint()
+{
+CMatrix adj(nR,nC);
+if (nR == 1)
+{
+adj.values[0][0] = 1;
+return adj;
+}
+
+// temp is used to store cofactors of A[][]
+int sign = 1;
+CMatrix temp(nR,nC);
+
+for (int i=0; i<nR; i++)
+{
+for (int j=0; j<nC; j++)
+{
+// Get cofactor of A[i][j]
+//getCofactor(A, temp, i, j, N);
+
+temp=getCofactor(i, j);
+
+// sign of adj[j][i] positive if sum of row
+// and column indexes is even.
+sign = ((i+j)%2==0)? 1: -1;
+
+// Interchanging rows and columns to get the
+// transpose of the cofactor matrix
+adj.values[j][i] = (sign)*(temp.getDeterminant());
+}
+}
+return adj;
+}
+
+CMatrix CMatrix::inverse()
+{
+	CMatrix inverse(nR, nC);
+	CMatrix current(nR, nC);
+	current=*this;
+    // Find determinant of A[][]
+    double det = current.getDeterminant();
+    if (det == 0)
+    {
+        throw("Invalid matrix dimension");
+    }
+	
+    // Find adjoint
+    CMatrix adj(nR, nC);
+		adj= current.adjoint();
+ 
+    // Find Inverse using formula "inverse(A) = adj(A)/det(A)"
+    for (int i=0; i<nR; i++)
+        for (int j=0; j<nC; j++)
+            inverse.values[i][j] = adj.values[i][j]/det;
+ 
+    return inverse;
+}
+
+
+
+
+CMatrix CMatrix::getCofactor(int r, int c) 
+{ 
+	if (nR <= 1 && nC <= 1)
+throw("Invalid matrix dimension"); 
+
+CMatrix m(nR - 1, nC - 1); 
+
+for (int iR = 0; iR<m.nR; iR++)
+	for (int iC = 0; iC<m.nC; iC++) 
+{
+
+	int sR = (iR<r) ? iR : iR + 1; 
+    int sC = (iC<c) ? iC : iC + 1; 
+    m.values[iR][iC] = values[sR][sC]; 
+	}
+return m; 
+}
+
+
+
+
+double CMatrix::getDeterminant() {
+	if (nR != nC)throw("Invalid matrix dimension"); 
+
+if (nR == 1 && nC == 1)
+
+	return values[0][0];
+
+double value = 0, m = 1;
+
+for (int iR = 0; iR<nR; iR++) 
+ {
+	value += m * values[0][iR] * getCofactor(0, iR).getDeterminant(); 
+m *= -1;
+ }
+
+return value;
+}
+
+///////////////////////////////////////////        DIVISION          ///////////////////////////////////////////////////
+
+void CMatrix::div(CMatrix& m)
+{  
+	CMatrix INV(nR, nC);
+	INV=m.inverse();
+	if(nC!=INV.nR) 
+		throw("Invalid matrix dimension");
+	CMatrix current (nR,nC);
+	current=*this;
+	CMatrix result(nR,INV.nC);
+	result= current*INV;
+	copy(result);
+	
+}
+
+void CMatrix::operator/=(CMatrix& m)
+{ div(m); } 
+
+
+CMatrix CMatrix::operator/(CMatrix& m)
+{
+	CMatrix r = *this;
+	r/=m;
+	return r;
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
