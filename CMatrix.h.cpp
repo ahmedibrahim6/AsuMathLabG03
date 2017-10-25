@@ -40,6 +40,14 @@ public:
 		   CMatrix operator--(int);
 		   CMatrix operator-();
 		   CMatrix operator+();
+	
+		   double getDeterminant();
+		   CMatrix getCofactor(int r, int c);
+		   CMatrix adjoint();
+		   CMatrix inverse();
+		   void div(CMatrix& m);
+		   CMatrix operator/(CMatrix& m);
+		   void operator/=(CMatrix& m);
 
 		   void PrintMatrix();
 
