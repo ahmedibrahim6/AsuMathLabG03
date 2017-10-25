@@ -102,7 +102,7 @@ CMatrix::CMatrix(int nR, int nC, double first, ...)
 
 
 
-CMatrix::CMatrix(CMatrix& m) 
+CMatrix::CMatrix(CMatrix const& m) 
 { 
 	nR = nC = 0; 
 values = NULL; 
@@ -115,7 +115,7 @@ copy(m);
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void CMatrix::copy(CMatrix& m) 
+void CMatrix::copy(CMatrix const& m) 
 { 
 	reset(); 
 	this->nR = m.nR;
@@ -169,7 +169,7 @@ values[0][0] = d;
 
 
 
-CMatrix CMatrix::operator=(CMatrix& m)
+CMatrix CMatrix::operator=(CMatrix const& m)
 {
 	copy(m); 
 return *this; 
@@ -190,7 +190,7 @@ return *this;
 //////////////////////////////////////////////////////       ADD FUNCTIONS     ////////////////////////////////////////////////
 
 
-void CMatrix::add(CMatrix& m) 
+void CMatrix::add(CMatrix const& m) 
 { 
 	if (nR != m.nR || nC != m.nC)
 throw("Invalid matrix dimension"); 
@@ -202,7 +202,7 @@ for (int iR = 0; iR<nR; iR++)
 
 
 
-void CMatrix::operator+=(CMatrix& m) 
+void CMatrix::operator+=(CMatrix const& m) 
 { add(m);}
 
 
@@ -213,7 +213,7 @@ void CMatrix::operator+=(double d)
 
 
 
-CMatrix CMatrix::operator+(CMatrix& m) 
+CMatrix CMatrix::operator+(CMatrix const& m) 
 { 
 	CMatrix r = *this;
 r += m; 
@@ -234,7 +234,7 @@ return r;
 
 
 
-void CMatrix::sub(CMatrix& m)
+void CMatrix::sub(CMatrix const& m)
 {
 	if (nR != m.nR || nC != m.nC)
 		throw("Invalid matrix dimension");
@@ -246,7 +246,7 @@ void CMatrix::sub(CMatrix& m)
 
 
 
-void CMatrix::operator-=(CMatrix& m)
+void CMatrix::operator-=(CMatrix const& m)
 {
 	sub(m);
 }
@@ -261,7 +261,7 @@ void CMatrix::operator-=(double d)
 
 
 
-CMatrix CMatrix::operator-(CMatrix& m)
+CMatrix CMatrix::operator-(CMatrix const& m)
 {
 	CMatrix r = *this;
 	r -= m;
@@ -298,7 +298,7 @@ void CMatrix::PrintMatrix()
 
 ///////////////////////////////////////////        MULTIPLICATION          ///////////////////////////////////////////////////
 
-void CMatrix::mul(CMatrix& m)
+void CMatrix::mul(CMatrix const& m)
 { 
 	if(nC!=m.nR) 
 		throw("Invalid matrix dimension"); 
@@ -313,7 +313,7 @@ void CMatrix::mul(CMatrix& m)
 		copy(r);
 }
 
-void CMatrix::operator*=(CMatrix& m)
+void CMatrix::operator*=(CMatrix const& m)
 { mul(m); } 
 
 void CMatrix::operator*=(double d)
@@ -324,7 +324,7 @@ void CMatrix::operator*=(double d)
 }
 
 
-CMatrix CMatrix::operator*(CMatrix& m)
+CMatrix CMatrix::operator*(CMatrix const& m)
 {
 	CMatrix r = *this;
 	r*=m;
@@ -462,7 +462,7 @@ return value;
 
 ///////////////////////////////////////////        DIVISION          ///////////////////////////////////////////////////
 
-void CMatrix::div(CMatrix& m)
+void CMatrix::div(CMatrix const& m)
 {  
 	CMatrix INV(nR, nC);
 	INV=m.inverse();
@@ -476,11 +476,11 @@ void CMatrix::div(CMatrix& m)
 	
 }
 
-void CMatrix::operator/=(CMatrix& m)
+void CMatrix::operator/=(CMatrix const& m)
 { div(m); } 
 
 
-CMatrix CMatrix::operator/(CMatrix& m)
+CMatrix CMatrix::operator/(CMatrix const& m)
 {
 	CMatrix r = *this;
 	r/=m;
