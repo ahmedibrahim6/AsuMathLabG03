@@ -366,25 +366,21 @@ CMatrix CMatrix::operator+()
 
 CMatrix CMatrix::adjoint()
 {
-CMatrix adj(nR,nC);
+CMatrix adj(nR,nC);                     //Create a matrix to store the adjoint and return it
 if (nR == 1)
 {
 adj.values[0][0] = 1;
 return adj;
 }
 
-// temp is used to store cofactors of A[][]
 int sign = 1;
-CMatrix temp(nR,nC);
+CMatrix temp(nR,nC);                    // temp is used to store the cofactors of "this"
 
 for (int i=0; i<nR; i++)
 {
 for (int j=0; j<nC; j++)
 {
-// Get cofactor of A[i][j]
-//getCofactor(A, temp, i, j, N);
-
-temp=getCofactor(i, j);
+temp=getCofactor(i, j);                  // get cofactor of element this[i][j]
 
 // sign of adj[j][i] positive if sum of row
 // and column indexes is even.
@@ -400,10 +396,10 @@ return adj;
 
 CMatrix CMatrix::inverse()
 {
-	CMatrix inverse(nR, nC);
-	CMatrix current(nR, nC);
-	current=*this;
-    // Find determinant of A[][]
+    CMatrix inverse(nR, nC);              //Create a matrix to store the inverse and return it
+    CMatrix current(nR, nC);              //this matrix will hold the values of this in the next line
+    current=*this;
+    // Find determinant of current (this)
     double det = current.getDeterminant();
     if (det == 0)
     {
@@ -412,7 +408,7 @@ CMatrix CMatrix::inverse()
 	
     // Find adjoint
     CMatrix adj(nR, nC);
-		adj= current.adjoint();
+    adj= current.adjoint();
  
     // Find Inverse using formula "inverse(A) = adj(A)/det(A)"
     for (int i=0; i<nR; i++)
