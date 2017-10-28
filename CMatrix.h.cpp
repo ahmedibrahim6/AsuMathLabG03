@@ -1,4 +1,8 @@
-#pragma once
+
+#include <cstdlib>
+#include <stdarg.h>
+#include<iostream>
+using namespace std;
 class CMatrix
 {
 	int nR, nC;
@@ -6,33 +10,34 @@ class CMatrix
 public:
 	CMatrix();
 	~CMatrix();
+	CMatrix(const CMatrix& d);
 	
 		   enum MI { MI_ZEROS, MI_ONES, MI_EYE, MI_RAND, MI_VALUE };
 		   CMatrix(int nR, int nC, int initialization = MI_ZEROS, double initializationValue = 0.0);
 		   CMatrix(int nR, int nC, double first, ...);
-		   CMatrix(CMatrix const& m);
+		  // CMatrix(CMatrix m);
 		   CMatrix(double d);
 		  // CMatrix(string s);
-		   void copy(CMatrix const& m);
+		   //void copy(CMatrix m);
 		   void copy(double d);
 		   //void copy(string s);
 		   void reset();
 		   //string getString();
-		   CMatrix operator=(CMatrix const& m);
+		   CMatrix operator=(CMatrix m);
 		   CMatrix operator=(double d);
 		   //CMatrix operator=(string s);
 
 
 
-		   void add(CMatrix const& m);
-		   void operator+=(CMatrix const& m);
+		   void add(CMatrix m);
+		   void operator+=(CMatrix m);
 		   void operator+=(double d);
-		   CMatrix operator+(CMatrix const& m);
+		   CMatrix operator+(CMatrix m);
 		   CMatrix operator+(double d);
-		   void sub(CMatrix const& m);
-		   void operator-=(CMatrix const& m);
+		   void sub(CMatrix m);
+		   void operator-=(CMatrix m);
 		   void operator-=(double d);
-		   CMatrix operator-(CMatrix const& m);
+		   CMatrix operator-(CMatrix m);
 		   CMatrix operator-(double d);
 		   CMatrix operator++();
 		   CMatrix operator++(int);
@@ -43,10 +48,10 @@ public:
 	
 	
 	
-	           void mul(CMatrix const& m);
-	           void operator*=(CMatrix const& m);
+	           void mul(CMatrix m);
+	           void operator*=(CMatrix m);
 	           void operator*=(double d);
-	           CMatrix operator*(CMatrix const& m);
+	           CMatrix operator*(CMatrix m);
 	           CMatrix operator*(double d);
 	
 		   
@@ -58,11 +63,18 @@ public:
 	
 	
 	
-		   void div(CMatrix const& m);
-		   CMatrix operator/(CMatrix const& m);
-		   void operator/=(CMatrix const& m);
+		   void div(CMatrix m);
+		   CMatrix operator/(CMatrix m);
+		   void operator/=(CMatrix m);
 	
-	
+			 void copy(string s); 
+		   string getString();
+		   void setSubMatrix(int iR, int iC, CMatrix& m);
+		   CMatrix getSubMatrix(int r, int c, int nr, int nc);
+		   void addColumn(CMatrix& m); 
+		   void addRow(CMatrix& m);
+		   CMatrix operator=(string s);
+
 
 		   void PrintMatrix();
 
@@ -70,4 +82,3 @@ public:
 		   
 	
 };
-
