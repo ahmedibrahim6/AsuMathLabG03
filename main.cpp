@@ -1,8 +1,5 @@
-#include <string>
-#include<iostream>
-using namespace std;
 
-#include"CMatrix.h"
+#include "CMatrix.h"
 int main()
 {
 	
