@@ -693,24 +693,28 @@ void CMatrix::copy(string s)
 { 
 reset();
 char* buffer = new char[s.length()+1]; 
-strcpy_s(buffer,s.length()+1, s.c_str());
-char* lineContext; 
+strncpy(buffer,s.c_str(),s.length()+1);
+//char* lineContext; 
 char* lineSeparators = ";\r\n"; 
-char* line = strtok_s(buffer, lineSeparators, &lineContext); 
+char* line = strtok(buffer, lineSeparators); 
+char* Remainlines=strtok(NULL, "");
 while(line) 
 { 
 	CMatrix row; 
-	char* context; 
-	char* separators = " []"; 
-	char* token = strtok_s(line, separators, &context); 
+	//char* context; 
+	const char* separators = " []"; 
+	char* token = strtok(line, separators); 
 	while(token) 
 	{ 
-		CMatrix item = atof(token); 
+		const double token_value=atof(token);
+		CMatrix item ;
+		item=(const double)token_value;
 		row.addColumn(item); 
-		token = strtok_s(NULL, separators, &context); 
+		token = strtok(NULL, separators); 
 	}
 if(row.nC>0 && (row.nC==nC || nR==0)) addRow(row);
-line = strtok_s(NULL, lineSeparators, &lineContext);
+line = strtok(Remainlines, lineSeparators);
+Remainlines= strtok(NULL, "");
 } 
 delete[] buffer;
 }
