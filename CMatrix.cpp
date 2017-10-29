@@ -3,6 +3,12 @@
 #include<iostream>
 #include "CMatrix.h"
 using namespace std;
+
+
+
+////////////////////////////////////////////////        CONSTRUCTOR       //////////////////////////////////////////////////////
+
+
 CMatrix::CMatrix()
 {
 	nR = nC = 0; 
@@ -10,10 +16,16 @@ CMatrix::CMatrix()
 }
 
 
+//////////////////////////////////////////////        DESTRUCTOR         //////////////////////////////////////////////////////
+
+
 CMatrix::~CMatrix()
 {
 	reset();
 }
+
+
+////////////////////////////////////////////      COPY CONSTRUCTOR      /////////////////////////////////////////////////////
 
 
 
@@ -40,9 +52,7 @@ CMatrix::CMatrix(const CMatrix &d)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
+//////////////////////////////////////////////              RESET             /////////////////////////////////////////////////
 
 
 
@@ -61,7 +71,10 @@ values = NULL;
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/////////////////////////////////////////////       FOR DEFFERENT INPUTS        ///////////////////////////////////////////////////
 
 
 CMatrix::CMatrix(int nR, int nC, int initialization, double initializationValue) 
@@ -93,8 +106,6 @@ for (int iR = 0; iR<nR; iR++)
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 CMatrix::CMatrix(int nR, int nC, double first, ...)
@@ -124,74 +135,141 @@ CMatrix::CMatrix(int nR, int nC, double first, ...)
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
-/*CMatrix::CMatrix(CMatrix m) 
-{ 
-	nR = nC = 0; 
-values = NULL; 
-copy(m); 
-}*/
+
+/////////////////////////////////////////////////      STRING INPUT         ////////////////////////////////////////////////////
 
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-/*void CMatrix::copy(CMatrix m) 
-{ 
-	reset(); 
-	this->nR = m.nR;
-	this->nC = m.nC;
- if ((nR*nC) == 0)
-  { values = NULL; 
-    return; }
-values = new double*[nR]; 
-for (int iR = 0; iR<nR; iR++) 
-{ values[iR] = new double[nC]; 
-  for (int iC = 0; iC<nC; iC++)
-   { 
-	values[iR][iC] = m.values[iR][iC]; 
-   } 
- }
-}*/
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-CMatrix::CMatrix(double d) 
+CMatrix CMatrix::operator=(string s)
 {
-	nR = nC = 0; 
-values = NULL;
-copy(d); 
+	copy(s);
+	return *this;
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void CMatrix::copy(double d) 
+
+void CMatrix::copy(string s) 
 { 
-	reset();
-this->nR = 1; 
-this->nC = 1; 
-values = new double*[1]; 
-values[0] = new double[1]; 
-values[0][0] = d; 
+reset();
+char* buffer = new char[s.length()+1]; 
+strncpy(buffer,s.c_str(),s.length()+1);
+//char* lineContext; 
+char* lineSeparators = ";\r\n"; 
+char* line = strtok(buffer, lineSeparators); 
+char* Remainlines=strtok(NULL, "");
+while(line) 
+{ 
+	CMatrix row; 
+	//char* context; 
+	const char* separators = " []"; 
+	char* token = strtok(line, separators); 
+	while(token) 
+	{ 
+		const double token_value=atof(token);
+		CMatrix item ;
+		item=(const double)token_value;
+		row.addColumn(item); 
+		token = strtok(NULL, separators); 
+	}
+if(row.nC>0 && (row.nC==nC || nR==0)) addRow(row);
+line = strtok(Remainlines, lineSeparators);
+Remainlines= strtok(NULL, "");
+} 
+delete[] buffer;
 }
 
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+string CMatrix::getString() 
+{ 
+	string s; 
+	for(int iR=0;iR<nR;iR++) 
+	{ 
+		for(int iC=0;iC<nC;iC++) 
+		{
+			
+			char buffer[50]; 
+			snprintf(buffer, 50, "%g\t", values[iR][iC]); 
+			s += buffer; 
+		} s+="\n"; 
+	} return s; 
+}
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////       USEFUL FUNCTIONS          ////////////////////////////////////////////
+
+
+
+
+
+
+void CMatrix::setSubMatrix(int r, int c, CMatrix& m) 
+{ 
+	if((r+m.nR)>nR || (c+m.nC)>nC)throw("Invalid matrix dimension"); 
+	for(int iR=0;iR<m.nR;iR++) 
+		for(int iC=0;iC<m.nC;iC++) 
+			values[r+iR][c+iC] = m.values[iR][iC]; 
+}
+
+
+
+
+
+CMatrix CMatrix::getSubMatrix(int r, int c, int nr, int nc) 
+{ if((r+nr)>nR || (c+nc)>nC)throw("Invalid matrix dimension"); 
+CMatrix m(nr, nc); 
+for(int iR=0;iR<m.nR;iR++) 
+	for(int iC=0;iC<m.nC;iC++) 
+		m.values[iR][iC] = values[r+iR][c+iC]; 
+return m; 
+}
+
+
+
+
+void CMatrix::addColumn(CMatrix& m) 
+{ 
+	CMatrix n(max(nR, m.nR), nC+m.nC); 
+	n.setSubMatrix(0, 0, *this); 
+	n.setSubMatrix(0, nC, m); 
+	*this = n; 
+}
+
+
+
+
+
+void CMatrix::addRow(CMatrix& m) 
+{ 
+	CMatrix n(nR+m.nR, max(nC, m.nC)); 
+	n.setSubMatrix(0, 0, *this); 
+	n.setSubMatrix(nR, 0, m); 
+	*this = n; 
+}
+
+
+
+
+
+//////////////////////////////////////////////    COPY MATRIX OPERATOR         ///////////////////////////////////////////////
 
 
 
@@ -199,7 +277,7 @@ values[0][0] = d;
 
 CMatrix CMatrix::operator=(CMatrix d)
 {
-	//copy(m);
+	
 	reset();
 	if(d.nR==0 && d.nC==0)
 	{
@@ -224,7 +302,34 @@ return *this;
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////        DOUBLE  INPUT       //////////////////////////////////////////////////////
+
+
+
+
+CMatrix::CMatrix(double d) 
+{
+	nR = nC = 0; 
+values = NULL;
+copy(d); 
+}
+
+
+
+
+
+void CMatrix::copy(double d) 
+{ 
+	reset();
+this->nR = 1; 
+this->nC = 1; 
+values = new double*[1]; 
+values[0] = new double[1]; 
+values[0][0] = d; 
+}
+
+
+
 
 
 CMatrix CMatrix::operator=(double d) 
@@ -232,6 +337,8 @@ CMatrix CMatrix::operator=(double d)
 	copy(d); 
 return *this; 
 }
+
+
 
 
 //////////////////////////////////////////////////////       ADD FUNCTIONS     ////////////////////////////////////////////////
@@ -327,20 +434,6 @@ CMatrix CMatrix::operator-(double d)
 
 
 
-///////////////////////////////////////////        PRINT MATRIX          ///////////////////////////////////////////////////
-
-
-
-
-void CMatrix::PrintMatrix()
-{
-	for (int i = 0; i < nR; i++)
-	{
-		for (int j = 0; j < nC; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-}
 
 
 ///////////////////////////////////////////        MULTIPLICATION          ///////////////////////////////////////////////////
@@ -360,6 +453,7 @@ void CMatrix::mul(CMatrix m)
 			for(int k=0;k<m.nR;k++)
 			d.values[iR][iC] += values[iR][k]*m.values[k][iC]; 
 		}
+	
 
 		reset();
 	
@@ -569,160 +663,31 @@ CMatrix CMatrix::operator/(CMatrix m)
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
-/*
-CMatrix::CMatrix(string s)
+///////////////////////////////////////////        PRINT MATRIX          ///////////////////////////////////////////////////
+
+
+
+
+void CMatrix::PrintMatrix()
 {
-	nR = nC = 0;
-	values = NULL;
-	copy(s);
-}
-
-CMatrix CMatrix::operator=(string s)
-{
-	copy(s);
-	return *this;
-}
-string CMatrix::getString()
-
-{
-
-	string s;
-	for (int iR = 0; iR<nR; iR++)
+	for (int i = 0; i < nR; i++)
 	{
-		for (int iC = 0; iC<nC; iC++)
-		{
-			char buffer[50];
-			sprintf_s(buffer, 50, "%g\t", values[iR][iC]);
-			s += buffer;
-		}
-		s += "\n";
+		for (int j = 0; j < nC; j++)
+			cout << values[i][j] << "   ";
+		cout <<endl;
 	}
-	return s;
-}
-void CMatrix::copy(string s)
-{
-	reset();
-
-	char* buffer = new char[s.length() + 1];
-
-	strcpy(buffer, s.c_str());
-
-	char* lineContext;
-	char* lineSeparators = ";\r\n";
-	char* line = strtok_s(buffer, lineSeparators, &lineContext);
-	while (line)
-	{
-		CMatrix row;
-		char* context;
-		char* separators = " []";
-		char* token = strtok_s(line, separators, &context);
-		while (token)
-		{
-			CMatrix item = atof(token);
-			row.addColumn(item);
-			token = strtok_s(NULL, separators, &context);
-		}
-		if (row.nC>0 && (row.nC == nC || nR == 0))
-			addRow(row);
-		line = strtok_s(NULL, lineSeparators, &lineContext);
-	}
-	delete[] buffer;
-}
-*/
-void CMatrix::setSubMatrix(int r, int c, CMatrix& m) 
-{ 
-	if((r+m.nR)>nR || (c+m.nC)>nC)throw("Invalid matrix dimension"); 
-	for(int iR=0;iR<m.nR;iR++) 
-		for(int iC=0;iC<m.nC;iC++) 
-			values[r+iR][c+iC] = m.values[iR][iC]; 
-}
-
-
-CMatrix CMatrix::getSubMatrix(int r, int c, int nr, int nc) 
-{ if((r+nr)>nR || (c+nc)>nC)throw("Invalid matrix dimension"); 
-CMatrix m(nr, nc); 
-for(int iR=0;iR<m.nR;iR++) 
-	for(int iC=0;iC<m.nC;iC++) 
-		m.values[iR][iC] = values[r+iR][c+iC]; 
-return m; 
-}
-
-
-void CMatrix::addColumn(CMatrix& m) 
-{ 
-	CMatrix n(max(nR, m.nR), nC+m.nC); 
-	n.setSubMatrix(0, 0, *this); 
-	n.setSubMatrix(0, nC, m); 
-	*this = n; 
-}
-
-
-void CMatrix::addRow(CMatrix& m) 
-{ 
-	CMatrix n(nR+m.nR, max(nC, m.nC)); 
-	n.setSubMatrix(0, 0, *this); 
-	n.setSubMatrix(nR, 0, m); 
-	*this = n; 
-}
-
-
-string CMatrix::getString() 
-{ 
-	string s; 
-	for(int iR=0;iR<nR;iR++) 
-	{ 
-		for(int iC=0;iC<nC;iC++) 
-		{
-			
-			char buffer[50]; 
-			sprintf_s(buffer, 50, "%g\t", values[iR][iC]); 
-			s += buffer; 
-		} s+="\n"; 
-	} return s; 
 }
 
 
 
 
-void CMatrix::copy(string s) 
-{ 
-reset();
-char* buffer = new char[s.length()+1]; 
-strncpy(buffer,s.c_str(),s.length()+1);
-//char* lineContext; 
-char* lineSeparators = ";\r\n"; 
-char* line = strtok(buffer, lineSeparators); 
-char* Remainlines=strtok(NULL, "");
-while(line) 
-{ 
-	CMatrix row; 
-	//char* context; 
-	const char* separators = " []"; 
-	char* token = strtok(line, separators); 
-	while(token) 
-	{ 
-		const double token_value=atof(token);
-		CMatrix item ;
-		item=(const double)token_value;
-		row.addColumn(item); 
-		token = strtok(NULL, separators); 
-	}
-if(row.nC>0 && (row.nC==nC || nR==0)) addRow(row);
-line = strtok(Remainlines, lineSeparators);
-Remainlines= strtok(NULL, "");
-} 
-delete[] buffer;
-}
 
 
-CMatrix CMatrix::operator=(string s)
-{
-	copy(s);
-	return *this;
-}
+
+
+
 
