@@ -1,7 +1,10 @@
 
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <cstring>
 #include <cstdlib>
 #include <stdarg.h>
-#include<iostream>
 using namespace std;
 class CMatrix
 {
@@ -11,23 +14,31 @@ public:
 	CMatrix();
 	~CMatrix();
 	CMatrix(const CMatrix& d);
+	void reset();
 	
 		   enum MI { MI_ZEROS, MI_ONES, MI_EYE, MI_RAND, MI_VALUE };
 		   CMatrix(int nR, int nC, int initialization = MI_ZEROS, double initializationValue = 0.0);
 		   CMatrix(int nR, int nC, double first, ...);
-		  // CMatrix(CMatrix m);
-		   CMatrix(double d);
-		  // CMatrix(string s);
-		   //void copy(CMatrix m);
-		   void copy(double d);
-		   //void copy(string s);
-		   void reset();
-		   //string getString();
+		   void copy(string s); 
+		   string getString();
+		   CMatrix operator=(string s);
 		   CMatrix operator=(CMatrix m);
+		   CMatrix(double d);
+		   void copy(double d);
 		   CMatrix operator=(double d);
-		   //CMatrix operator=(string s);
 
-
+	
+	
+	
+		   void setSubMatrix(int iR, int iC, CMatrix& m);
+		   CMatrix getSubMatrix(int r, int c, int nr, int nc);
+		   void addColumn(CMatrix& m); 
+		   void addRow(CMatrix& m);
+	
+	
+	
+	
+	
 
 		   void add(CMatrix m);
 		   void operator+=(CMatrix m);
@@ -66,14 +77,8 @@ public:
 		   void div(CMatrix m);
 		   CMatrix operator/(CMatrix m);
 		   void operator/=(CMatrix m);
-	
-			 void copy(string s); 
-		   string getString();
-		   void setSubMatrix(int iR, int iC, CMatrix& m);
-		   CMatrix getSubMatrix(int r, int c, int nr, int nc);
-		   void addColumn(CMatrix& m); 
-		   void addRow(CMatrix& m);
-		   CMatrix operator=(string s);
+
+		   
 
 
 		   void PrintMatrix();
