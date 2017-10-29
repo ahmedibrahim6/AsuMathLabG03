@@ -1,8 +1,6 @@
-#include <cstdlib>
-#include <stdarg.h>
-#include<iostream>
+
 #include "CMatrix.h"
-using namespace std;
+
 
 
 
