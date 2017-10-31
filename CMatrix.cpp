@@ -161,7 +161,7 @@ reset();
 char* buffer = new char[s.length()+1]; 
 strncpy(buffer,s.c_str(),s.length()+1);
 //char* lineContext; 
-char* lineSeparators = ";\r\n"; 
+const char* lineSeparators = ";\r\n"; 
 char* line = strtok(buffer, lineSeparators); 
 char* Remainlines=strtok(NULL, "");
 while(line) 
