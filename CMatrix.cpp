@@ -161,7 +161,7 @@ reset();
 char* buffer = new char[s.length()+1]; 
 strncpy(buffer,s.c_str(),s.length()+1);
 //char* lineContext; 
-const char* lineSeparators = ";\r\n"; 
+const char* lineSeparators = ";\r";   ////we removed \n from separators
 char* line = strtok(buffer, lineSeparators); 
 char* Remainlines=strtok(NULL, "");
 while(line) 
@@ -681,8 +681,37 @@ void CMatrix::PrintMatrix()
 }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+CMatrix CMatrix::transpose ()
+{
+CMatrix that= *this;
+CMatrix result(that.nR,that.nC);
+for (int i=0 ; i< that.nR ;i++)
+{
+   for (int j =0 ; j<that.nC; j++) 
+   {
+      result.values[i][j]= that.values[j][i];
+   }
+}
+return result;
+}
+
+CMatrix CMatrix::elediv ()
+{
+	CMatrix that=*this;
+	CMatrix result(that.nR,that.nC);
+	 for(int iR=0;iR<that.nR;iR++)
+	{
+		for(int iC=0;iC<that.nC;iC++)
+		{
+			result.values[iR][iC]=1/that.values[iR][iC];
+		}
+	}
+	 return result;
+
+}
 
 
 
