@@ -144,7 +144,7 @@ int main()
 									if (operations[i][0]==names[z])      // get the element before =   z
 									{
 										Mnames[z]=Mnames[x]+Mnames[y];       // add x and y then store result in z
-										cout<<operations[i][0]<<'=';
+										cout<<operations[i][0]<<"=\t";
 										cout<<Mnames[z].getString();
 									}
 
@@ -161,7 +161,7 @@ int main()
 									if (operations[i][0]==names[z])
 									{
 										Mnames[z]=Mnames[x]-Mnames[y];
-										cout<<operations[i][0]<<'=';
+										cout<<operations[i][0]<<"=\t";
 										cout<<Mnames[z].getString();
 									}
 			}
@@ -175,7 +175,7 @@ int main()
 									if (operations[i][0]==names[z])
 									{
 										Mnames[z]=Mnames[x]*Mnames[y];
-										cout<<operations[i][0]<<'=';
+										cout<<operations[i][0]<<"=\t";
 										cout<<Mnames[z].getString();
 									}
 			}
@@ -189,7 +189,7 @@ int main()
 									if (operations[i][0]==names[z])
 									{
 										Mnames[z]=Mnames[x]/Mnames[y];     // doesn't work in big example and code stops here,why? (Dimensions are correct)
-										cout<<operations[i][0]<<'=';           
+										cout<<operations[i][0]<<"=\t";           
 										Mnames[z].PrintMatrix();
 									}
 			}
@@ -202,7 +202,7 @@ int main()
 									if (operations[i][0]==names[z])
 									{
 										Mnames[z]=Mnames[y].elediv();
-										cout<<operations[i][0]<<'=';
+										cout<<operations[i][0]<<"=\t";
 										cout<<Mnames[z].getString();
 									}
 			}
@@ -215,7 +215,7 @@ int main()
 									if (operations[i][0]==names[z])
 									{
 										Mnames[z]=Mnames[x].transpose();
-										cout<<operations[i][0]<<'=';
+										cout<<operations[i][0]<<"=\t";
 										cout<<Mnames[z].getString();
 									}
 			}
