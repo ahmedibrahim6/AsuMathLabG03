@@ -198,9 +198,9 @@ string CMatrix::getString()
 		{
 			
 			char buffer[50]; 
-			snprintf(buffer, 50, "%g\t", values[iR][iC]); 
+			snprintf(buffer, 50, "%f   \t", values[iR][iC]); 
 			s += buffer; 
-		} s+="\n"; 
+		} s+="\n\t"; 
 	} return s; 
 }
 
