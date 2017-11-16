@@ -83,7 +83,8 @@ public:
 
 		   void PrintMatrix();
 
-
+		    CMatrix transpose ();
+		   CMatrix elediv ();
 		   
 	
 };
