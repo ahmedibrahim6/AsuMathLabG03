@@ -687,12 +687,12 @@ void CMatrix::PrintMatrix()
 CMatrix CMatrix::transpose ()
 {
 CMatrix that= *this;
-CMatrix result(that.nR,that.nC);
+CMatrix result(that.nC,that.nR);
 for (int i=0 ; i< that.nR ;i++)
 {
    for (int j =0 ; j<that.nC; j++) 
    {
-      result.values[i][j]= that.values[j][i];
+      result.values[j][i]= that.values[i][j];
    }
 }
 return result;
