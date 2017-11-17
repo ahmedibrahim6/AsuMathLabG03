@@ -189,7 +189,7 @@ delete[] buffer;
 
 
 
-string CMatrix::getString() 
+/*string CMatrix::getString() 
 { 
 	string s; 
 	for(int iR=0;iR<nR;iR++) 
@@ -201,6 +201,22 @@ string CMatrix::getString()
 			snprintf(buffer, 50, "%f   \t", values[iR][iC]); 
 			s += buffer; 
 		} s+="\n\t"; 
+	} return s; 
+}*/
+
+
+string CMatrix::getString() 
+{ 
+	string s; 
+	for(int iR=0;iR<nR;iR++) 
+	{ 
+		for(int iC=0;iC<nC;iC++) 
+		{
+			
+			char buffer[50]; 
+			sprintf_s(buffer, 50, "%g\t", values[iR][iC]); 
+			s += buffer; 
+		} s+="\n"; 
 	} return s; 
 }
 
