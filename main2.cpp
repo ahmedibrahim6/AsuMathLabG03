@@ -98,7 +98,7 @@ int main()
 	}
 
 	int counter=0;                                   // counter is to get number of operations entered
-	char operations[8][6];                           // 2d array to store operations as char
+	char operations[12][6];                           // 2d array to store operations as char
 	int row=0;
 	while ( getline(infile,s))                         
 	{
@@ -130,7 +130,7 @@ int main()
 	for (int i=0;i<count;i++)           //  to print the array of names 
 		cout<<names[i];
 
-	for (int i=0; i<8;i++)                    // for loop to pass on array of operations
+	for (int i=0; i<12;i++)                    // for loop to pass on array of operations
 	{
 		for (int j=0;j<6; j++)
 		{
