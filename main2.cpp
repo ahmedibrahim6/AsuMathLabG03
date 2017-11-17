@@ -76,7 +76,7 @@ int main()
 		getline(infile,s,']');
 		s+=']';
 		Matrix_String=stringtrim(s);              // get matrix string as [....;....;...]
-		cout<<Matrix_String<<endl;
+		//cout<<Matrix_String<<endl;
 		Mnames[count]=Matrix_String;               //store matrix in the array
 
 		for(int i=0;i<s.length(); i++)                    // to store the names
@@ -126,6 +126,14 @@ int main()
 	}
 
 
+	/////////////////////////////////////////////
+	
+	cout<<names[0]<<'=';
+	Mnames[0].PrintMatrix(); 
+	cout<<names[1]<<'=';
+	Mnames[1].PrintMatrix();
+	
+	////////////////////////////////////////
 
 	for (int i=0;i<count;i++)           //  to print the array of names 
 		cout<<names[i];
