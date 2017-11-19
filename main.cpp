@@ -6,53 +6,52 @@
 
 
 
-int main(int argv,char* argc[])
+int main(int argv,char* argc[])			// argv : number of parameter in the command .....argc : the parameters as strings
 {
-	map < char , CMatrix >  mymap;
-	int count=0;                                     // count is to store the number of matrices entered ....
-	string s1,s2, Matrix_String;
-	char name;
-	int counter=0;                                
-	int row=0;    
+	map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
+	string s1,s2, Matrix_String;		 
+	
+	
 	 	
-if(argv>1)
+if(argv>1)			// ensure that the file path added
 	{
 	
-		ifstream infile(argc[1]);						// the path of file to read from test is example and test2 is bigexample
+		ifstream infile(argc[1]);		// open the file whose path included in argc[1]
 	
 	
 
 	
-		while (getline(infile,s1))                       //  here it is less than 2 to read A & B
+		while (getline(infile,s1))                       //  read every line in string s1
 		{
-			if(s1.find('[')!=-1 )
+			if(s1.find('[')!=-1 )                   // if this line contains matrix declaration 
 			{
-				if(s1.find(']')!=-1)
+				if(s1.find(']')!=-1)            // if the declaration in one line only we work on s1
 				{
 
-					Matrix_String=s1.substr(s1.find('['),s1.length()-s1.find('['));
+					Matrix_String=s1.substr(s1.find('['),s1.length()-s1.find('['));   // have the string from '[' to ']'
 
-					for(int i=0;i<s1.length(); i++)                    // to store the names
+					for(int i=0;i<s1.length(); i++)                    // to store the names of matrix
 		     		{
-						if(s1[i]==' ')//||s[i]=='\n'||s[i]=='\r')                  // we skip spaces and newlines
+						if(s1[i]==' ')//||s[i]=='\n'||s[i]=='\r')                  // we skip spaces 
 
 							continue;
 
 			 			else
 			 			{
-							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(Matrix_String)));
-							cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;                   // and store the first char ie. A or B
-							break;
+							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(Matrix_String)));           // insert new matrix 
+							cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;                   // print this matrix with its data
+							break;          
 			 			}
 					}
 				}
-				else
+				else                      //  if the declaration in more than one line 
 				{
 			
-					getline(infile,s2,']');
-					s2=s1+s2+']';
+					getline(infile,s2,']');          // we get the second line until ']'. store it in s2 
+					s2=s1+s2+']';			//and add it to the first line (s1)
 					Matrix_String=s2.substr(s2.find('['),s2.length()-s2.find('['));
-					for(int i=0;i<s2.length(); i++)                    // to store the names
+					
+					for(int i=0;i<s2.length(); i++)                   
 		    		{
 						if(s2[i]==' '||s2[i]=='\n'||s2[i]=='\r')                  // we skip spaces and newlines
 
@@ -60,9 +59,9 @@ if(argv>1)
 
 						else
 						{
-							mymap.insert( pair < char , CMatrix > (s2[i],CMatrix(Matrix_String)));// and store the first char ie. A or B
-							cout<<s2[i]<<" ="<<endl<<mymap[s2[i]].getString()<<endl<<endl;
-							getline(infile,s1);
+							mymap.insert( pair < char , CMatrix > (s2[i],CMatrix(Matrix_String)));   //insert new matrix
+							cout<<s2[i]<<" ="<<endl<<mymap[s2[i]].getString()<<endl<<endl;		 //print this matrix
+							getline(infile,s1);                              // skip the rest of the last line of the matrix declaration
 							//if(s1.find(';')!=-1)                  
 							break;
 						}
@@ -76,16 +75,16 @@ if(argv>1)
 			}
 			
 		
-			else if(s1.find('=')!=-1)
+			else if(s1.find('=')!=-1)                      // if this line contains an operation
 			{
 
 			
-				vector<char> operations; 
+				vector<char> operations;       // this variable will hold the chars in one operation  like : C=A+B
 				//char operations[6];
-				map<char,CMatrix>::iterator it1;
-				map<char,CMatrix>::iterator it2;
+				map<char,CMatrix>::iterator it1;           // iterator that iterates over the map to find the desired value(CMatrix) of a certain key(char)
+				map<char,CMatrix>::iterator it2;           // iterator to find the CMatrix of the second operand
 
-				int column=0;
+				
 				for(int i=0; i<s1.length(); i++)
 				{ 
 					if(s1[i]==' '||s1[i]=='\n'||s1[i]=='\r')              //removing spaces and newlines
@@ -93,25 +92,24 @@ if(argv>1)
 						continue;
 					else
 					{
-						operations.push_back(s1[i]);               //storing chars in the array
-						column++;
+						operations.push_back(s1[i]);               //storing chars in the vector operations
 					}
 				}
 
 
-				for(int i=0;i<operations.size();i++)
+				for(int i=0;i<operations.size();i++)        // loop over the chars in one operation to find the operator (+or-..)
 				{
 
 					//switch(operations[i])
 					if (operations[i]=='+')
 					{
 						//case '+' :
-						try
+						try                   
 						{
-							it1 =mymap.find(operations[i-1]);
-			 				it2 =mymap.find(operations[i+1]);
-							mymap[operations[0]]= (it1->second) + (it2->second) ;
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							it1 =mymap.find(operations[i-1]);      //find the CMatrix of the first operand 
+			 				it2 =mymap.find(operations[i+1]);      //find the CMatrix of the second operand
+							mymap[operations[0]]= (it1->second) + (it2->second) ;       // store the result in new matrix or override on existed matrix
+							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;    // print the name of matrix and result 
 						}
 						catch(const char* error) {cout<<" Error : "<<error<<endl;}
 				
@@ -197,17 +195,37 @@ if(argv>1)
 		
 		}
 
-	 infile.close();
+	 infile.close();             // close the file 
 
     }
 
-else
+else			// if the file path not added as a parameter close the program
 
-	{cout<<"The file path not added"<<endl;}
+	{cout<<"The file path not added . The program closed "<<endl;}
 
 return 0;
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
