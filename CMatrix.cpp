@@ -145,6 +145,21 @@ CMatrix::CMatrix(int nR, int nC, double first, ...)
 
 
 
+CMatrix::CMatrix(string s)                    // constructor takes string 
+{
+	nR = nC = 0; 
+	values = NULL;
+	copy(s);
+}
+
+
+
+
+
+
+
+
+
 CMatrix CMatrix::operator=(string s)
 {
 	copy(s);
@@ -189,7 +204,7 @@ delete[] buffer;
 
 
 
-/*string CMatrix::getString() 
+string CMatrix::getString() 
 { 
 	string s; 
 	for(int iR=0;iR<nR;iR++) 
@@ -198,13 +213,13 @@ delete[] buffer;
 		{
 			
 			char buffer[50]; 
-			snprintf(buffer, 50, "%f   \t", values[iR][iC]); 
+			snprintf(buffer, 50, " %f \t", values[iR][iC]); 
 			s += buffer; 
-		} s+="\n\t"; 
+		} s+="\n"; 
 	} return s; 
-}*/
+}
 
-
+/*
 string CMatrix::getString() 
 { 
 	string s; 
@@ -219,7 +234,7 @@ string CMatrix::getString()
 		} s+="\n"; 
 	} return s; 
 }
-
+*/
 
 
 
@@ -627,6 +642,10 @@ for (int iR = 0; iR<nR; iR++)
 	value += m * values[0][iR] * getCofactor(0, iR).getDeterminant(); 
 m *= -1;
  }
+	if(value==0)                                           // to prevent the program to return 0 so the program stops
+		throw("can't devide , determinant = zero ");
+	
+	
 
 return value;
 }
@@ -697,38 +716,78 @@ void CMatrix::PrintMatrix()
 }
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+/*   
+void CMatrix::PrintMatrix()			// works only with 32*32 matrix
+{
+for (int i = 0; i < nR; i++)
+	{
+		for (int j = 0; j < 12; j++)
+			cout << values[i][j] << "   ";
+		cout <<endl;
+	}
+	cout<< endl<<endl;
+	for (int i = 0; i < nR; i++)
+	{
+		for (int j = 12; j < 24; j++)
+			cout << values[i][j] << "   ";
+		cout <<endl;
+	}
+	cout<< endl<<endl;
+	for (int i = 0; i < nR; i++)
+	{
+		for (int j = 24; j < nC; j++)
+			cout << values[i][j] << "   ";
+		cout <<endl;
+	}
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 CMatrix CMatrix::transpose ()
-{
-CMatrix that= *this;
-CMatrix result(that.nC,that.nR);
-for (int i=0 ; i< that.nR ;i++)
-{
-   for (int j =0 ; j<that.nC; j++) 
-   {
-      result.values[j][i]= that.values[i][j];
-   }
-}
+{	//CMatrix that =*this					// there's no need for this line we already have this matrix that the function calls
+	CMatrix result(nC,nR);
+	for (int i=0 ; i< nR ;i++)
+	{
+   		for (int j =0 ; j<nC; j++) 
+   		{
+      			result.values[j][i]= values[i][j];
+   		}
+	}
 return result;
 }
 
+
+
+
+
 CMatrix CMatrix::elediv ()
 {
-	CMatrix that=*this;
-	CMatrix result(that.nR,that.nC);
-	 for(int iR=0;iR<that.nR;iR++)
+	CMatrix result(nR,nC);
+ 	for(int iR=0;iR<nR;iR++)
 	{
-		for(int iC=0;iC<that.nC;iC++)
+		for(int iC=0;iC<nC;iC++)
 		{
-			result.values[iR][iC]=1/that.values[iR][iC];
+			result.values[iR][iC]=1.0/values[iR][iC];
 		}
 	}
-	 return result;
+	return result;
 
 }
-
 
 
 
