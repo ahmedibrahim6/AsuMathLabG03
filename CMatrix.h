@@ -5,6 +5,9 @@
 #include <cstring>
 #include <cstdlib>
 #include <stdarg.h>
+#include <vector>
+#include <fstream>
+#include <map>
 using namespace std;
 class CMatrix
 {
