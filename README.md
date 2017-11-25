@@ -1,26 +1,31 @@
 # MathLab
 
-C++ project describes MATLAB software 
+C++ project for calculating some mathematical operations similar to Matlab, Octave and similar tools
 
 
-description link : https://sites.google.com/view/asusoftwareengineering/projects
+# Environment
+
+Development under linux , coded with C++ and compiled with g++ using Makefile
+
+# Setup
+
+
+# Project phases
+
+- Phase 1 : Build a Matrix class , support basic mathematical operations and process input file ,show each step result on terminal 
+- Phase 2 : support advanced operations and tuning 
+  - support mathematical functions ( trigonometric - logarithmic - roots - power )
+    ex : A = (12 * sin(0.4))^3 + log(sqrt(32))
+  - support mathematical expressions like element addition , subtration .. 
+    ex : A = (A./3).+(A.^4)
+  - support flexible matrix parser ( accept matrix in matrix , expressions and variables )
+    ex : A = [[A [ 5.6 ; 6.8 ; 8.9 ]] ;[ 5 5 7 9]]
+  - support error handling 
 
 
 
 
-Share your ideas or links here with details if you want and your name written first :
 
-
-Arwa : links that helped to code the file read part
-
-https://stackoverflow.com/questions/11226680/difference-between-char-and-new-char-when-using-constant-lengths
-difference btn. char & new char
-
-https://www.youtube.com/watch?v=lzxWNtjii8U
-
-https://www.youtube.com/watch?v=13TrhiKLZg8
-
-https://stackoverflow.com/questions/21659210/c-how-to-ask-for-a-file-name-and-open-it
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------
