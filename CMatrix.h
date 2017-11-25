@@ -71,9 +71,9 @@ public:
 	
 		   
 	
-		   double getDeterminant();
-		   CMatrix getCofactor(int r, int c);
-		   CMatrix adjoint();
+		  // double getDeterminant();
+		   //CMatrix getCofactor(int r, int c);
+		   //CMatrix adjoint();
 		   CMatrix inverse();
 	
 	
