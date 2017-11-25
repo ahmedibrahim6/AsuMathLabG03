@@ -8,6 +8,11 @@ C++ project for calculating some mathematical operations similar to Matlab, Octa
 Development under linux , coded with C++ and compiled with g++ using Makefile
 
 ##   Setup
+      git clone git@github.com:ahmedibrahim6/AsuMathLabG03.git
+      cd AsuMathLabG03/
+      make
+      ./matrix example.m
+      ./matrix bigexample.m
 
 
 ##   Project phases
