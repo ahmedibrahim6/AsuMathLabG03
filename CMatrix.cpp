@@ -548,7 +548,118 @@ CMatrix CMatrix::operator+()
 { return *this;
 }
 
-///////////////////////////////////////////        USEFUL OPERATIONS          ///////////////////////////////////////////////////
+///////////////////////////////////////////        INVERSE       ///////////////////////////////////////////////////
+
+
+
+
+
+CMatrix CMatrix::inverse()
+{
+    int nr=nR;
+    int nc=nC;
+    CMatrix d(nR,nC*2,MI_ZEROS,0); //new matrix to carry augmented values
+    CMatrix outt(nR,nC);
+    CMatrix temp(1,2*nC,MI_ZEROS,0); //inverse matrix
+    for(int i=0;i<nC;i++)
+    {
+        for(int j=0;j<nR;j++)
+        {
+            d.values[i][j]=values[i][j];  //putting values of matrix in the augm. matrix
+
+        }
+    }
+
+    for(int i=0;i<nR;i++)   //ones diagonal
+    {
+        for(int j=nC;j<2*nC;j++)
+        {
+            if(j==i+nR)
+            {
+                d.values[i][j]=1;   // adding the identity matrix to augm. matrix
+            }
+        }
+    }
+
+    int j=0;
+    double diag=d.values[0][0];
+    for(int i2=1;i2<nR;i2++)
+    {
+        if(d.values[i2][0]>diag)
+        {
+            for(int k1=0;k1<2*nC;k1++)
+            {
+                temp.values[0][k1]=d.values[0][k1];
+                d.values[0][k1]=d.values[i2][k1];
+                d.values[i2][k1]=temp.values[0][k1];
+            }
+            }
+            diag=d.values[0][0];
+    }
+    double num=0;
+    for(int i=0;i<nR;i++)
+    {
+           for(int x=0;x<2*nC;x++)
+           {
+               if(diag==0){throw ("matrix has no inverse");}
+
+               d.values[i][x]=d.values[i][x]/diag;
+           }
+           //cout<<endl;
+           for(int k=0;k<nR;k++)
+           {
+               num=d.values[k][j];
+               for(int l=0;l<2*nC;l++)
+               {
+                   if(k!=i)
+                   {
+                      d.values[k][l]=d.values[k][l]-(num*d.values[i][l]);
+                   }
+               }
+           }
+           if(i==nr-1){goto ending;}
+           diag=d.values[i+1][j+1];
+        for(int i2=i+1;i2<nR;i2++)
+        {
+            if(i2==nR-1){break;}
+        if(d.values[i2+1][j+1]>diag)
+        {
+            for(int k1=0;k1<2*nC;k1++)
+            {
+                temp.values[0][k1]=d.values[i+1][k1];
+                d.values[i+1][k1]=d.values[i2+1][k1];
+                d.values[i2+1][k1]=temp.values[0][k1];
+            }
+            diag=d.values[i+1][j+1];
+        }
+    }
+         j++;
+       }
+
+    ending :
+        for(int p=0;p<nr;p++)
+    {
+        for(int h=0;h<nc;h++)
+        {
+            outt.values[p][h]=d.values[p][h+nc];
+        }
+    }
+    //cout<<outt.getString();
+    //cout<<endl;
+    return outt;
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 CMatrix CMatrix::adjoint()
 {
@@ -649,7 +760,7 @@ m *= -1;
 
 return value;
 }
-
+*/
 ///////////////////////////////////////////        DIVISION          ///////////////////////////////////////////////////
 
 void CMatrix::div(CMatrix m)
