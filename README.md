@@ -17,8 +17,8 @@ Development under linux , coded with C++ and compiled with g++ using Makefile
 
 ##   Project phases
 
-1. Phase 1 : Build a Matrix class , support basic mathematical operations and process input file ,show each step result on terminal 
-2. Phase 2 : support advanced operations and tuning 
+- [x] Phase 1 : Build a Matrix class , support basic mathematical operations and process input file ,show each step result on terminal 
+* Phase 2 : support advanced operations and tuning 
     * support mathematical functions ( trigonometric - logarithmic - roots - power )
         * ex : A = (12 * sin(0.4))^3 + log(sqrt(32))
     * support mathematical expressions like element addition , subtration .. 
@@ -26,9 +26,7 @@ Development under linux , coded with C++ and compiled with g++ using Makefile
     * support flexible matrix parser ( accept matrix in matrix , expressions and variables )
         * ex : A = [[A [ 5.6 ; 6.8 ; 8.9 ]] ;[ 5 5 7 9]]
     * support error handling 
-
-
-
+   
 
 
 
