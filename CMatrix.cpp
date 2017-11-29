@@ -572,14 +572,9 @@ CMatrix CMatrix::inverse()
 
     for(int i=0;i<nR;i++)   //ones diagonal
     {
-        for(int j=nC;j<2*nC;j++)
-        {
-            if(j==i+nR)
-            {
-                d.values[i][j]=1;   // adding the identity matrix to augm. matrix
-            }
-        }
+         d.values[i][nR+i]=1;   // adding the identity matrix to augm. matrix
     }
+
 
     int j=0;
     double diag=d.values[0][0];
