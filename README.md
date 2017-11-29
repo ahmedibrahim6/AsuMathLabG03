@@ -1,6 +1,7 @@
 # MathLab
 
-C++ project for calculating some mathematical operations similar to Matlab, Octave and similar tools
+C++ project for calculating some mathematical operations similar to Matlab or Octave .
+
 
 
 ## Environment
