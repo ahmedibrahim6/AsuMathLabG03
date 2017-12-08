@@ -1,0 +1,3 @@
+D = zeros(3,2)
+D = rand(32,32)
+F = zeros(32, 32)
