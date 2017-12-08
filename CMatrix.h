@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <map>
+#include <math.h>
 using namespace std;
 class CMatrix
 {
@@ -87,8 +88,17 @@ public:
 
 		   void PrintMatrix();
 
-		    CMatrix transpose ();
-		   CMatrix elediv ();
+		   CMatrix transpose ();
+		  // CMatrix elediv ();
+	
+		     CMatrix elediv (double Number);
+ 		     CMatrix elesub (double Number);
+ 		     CMatrix elepow (double Number);	   
+ 		     CMatrix eleadd (double Number);	   
+ 		     CMatrix elemul (double Number);
+	
+		     CMatrix random (int r, int c);	   
+ 		     CMatrix zeros (int r, int c);
 		   
 	
 };
