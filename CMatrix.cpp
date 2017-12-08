@@ -879,7 +879,7 @@ return result;
 
 
 
-
+/*
 
 CMatrix CMatrix::elediv ()
 {
@@ -894,6 +894,127 @@ CMatrix CMatrix::elediv ()
 	return result;
 
 }
+*/
+
+
+
+/////////////////////////////////////    dividing the elements of a matrix with a certain value    //////////////////////////////////////
+
+CMatrix CMatrix::elediv (double element)
+{
+	CMatrix result(nR,nC);
+	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=values[iR][iC]/element;
+		}
+	}
+ 	
+	return result;
+
+}
+
+/////////////////////////////////////    powering the elements of a matrix with a certain value    //////////////////////////////////////
+
+CMatrix CMatrix::elepow (double element)
+{
+	CMatrix result(nR,nC);
+ 	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=pow((values[iR][iC]),element);
+		}
+	}
+	return result;
+
+}
+
+/////////////////////////////////////    subtracting the elements of a matrix with a certain value    //////////////////////////////////////
+
+CMatrix CMatrix::elesub (double element)
+{
+	CMatrix result(nR,nC);
+ 	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=values[iR][iC]-element;
+		}
+	}
+	return result;
+
+}
+
+/////////////////////////////////////    adding the elements of a matrix with a certain value    //////////////////////////////////////
+
+CMatrix CMatrix::eleadd (double t)
+{
+	CMatrix result(nR,nC);
+ 	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=t+values[iR][iC];
+		}
+	}
+	return result;
+
+}
+
+/////////////////////////////////////    multiplying the elements of a matrix with a certain value    //////////////////////////////////////
+
+
+CMatrix CMatrix::elemul (double t)
+{
+	CMatrix result(nR,nC);
+ 	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=t*values[iR][iC];
+		}
+	}
+	return result;
+
+}
+
+
+
+
+
+/////////////////////////////////////    declaring a matrix with random numbers    //////////////////////////////////////
+
+CMatrix CMatrix::random(int nR, int nC)
+{
+	CMatrix result(nR,nC);
+	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=(rand() % 1000000) / 1000000.0;
+		}
+	}
+	return result;
+}
+
+/////////////////////////////////////    declaring a matrix with zeros    //////////////////////////////////////
+
+
+CMatrix CMatrix::zeros(int nR, int nC)
+{
+	CMatrix result(nR,nC);
+	for(int iR=0;iR<nR;iR++)
+	{
+		for(int iC=0;iC<nC;iC++)
+		{
+			result.values[iR][iC]=0;
+		}
+	}
+	return result;
+}
+
 
 
 
