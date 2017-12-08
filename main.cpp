@@ -99,6 +99,50 @@ if(argv>1)			// ensure that the file path added
 
 				for(int i=0;i<operations.size();i++)        // loop over the chars in one operation to find the operator (+or-..)
 				{
+					if(int x=s1.find("zeros")!=-1)
+					{	
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+						if (first==0 || last ==0)
+						{
+							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
+							break;
+						}
+						else
+						{
+							mymap[operations[0]]=mymap[operations[0]].zeros(first,last);
+							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							break;
+						}
+					}
+
+					if(int x=s1.find("rand")!=-1)
+					{
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+						if (first==0 || last ==0)
+						{
+							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
+							break;
+						}
+						else
+						{
+							mymap[operations[0]]=mymap[operations[0]].random(first,last);
+							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							break;
+						}
+					}	
+
 
 					//switch(operations[i])
 					if (operations[i]=='+')
@@ -162,19 +206,75 @@ if(argv>1)			// ensure that the file path added
 					}
 		
 
-					else if(operations[i]=='.')
+						else if(operations[i]=='.')
 					{
 						//case '.' :
 						//try{
-						it1 =mymap.find(operations[i+2]);
-						mymap[operations[0]]= (it1->second).elediv() ;
-						cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+						
+						char o=operations[i+1];
+						int first=s1.find(operations[i+1],0);
+						int start=s1.find("(",first+1);
+						string number;
+						if (start==-1)
+						{
+							number=s1.substr(first+1,s1.size()-first-1);
+						}			
+						else 
+						{
+							int end=s1.find(")",first+1);
+							number=s1.substr(start+1,end-start-1);
+						}
+						double Num=atof(number.c_str());
+						int find= number.find("0");
+						int y =((Num==0) &&(find==-1))? 1 :0;
+						
+						switch (o)
+						{
+							case '-': it1 =mymap.find(operations[i-1]);
+						   		  mymap[operations[0]]= (it1->second).elesub(Num) ;
+						     		  cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+								  break;
+
+							case '^': it1 =mymap.find(operations[i-1]);
+								  mymap[operations[0]]= (it1->second).elepow(Num) ;
+								  cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+								  break;
+
+							case '/':  
+								   if (y==1)
+								   	{
+								   	it1 =mymap.find(operations[i+2]);
+								   	mymap[operations[0]]= (it1->second).eledive() ;
+								   	cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+								   	}
+								   else 
+									{
+									it1 =mymap.find(operations[i-1]);
+									mymap[operations[0]]= (it1->second).elediv(Num) ;
+								   	cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+									}
+								   
+								   break;
+
+							case '+':  it1 =mymap.find(operations[i-1]);
+								   mymap[operations[0]]= (it1->second).eleadd(Num) ;
+								   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+								   break;
+
+							case '*':  it1 =mymap.find(operations[i-1]);
+								   mymap[operations[0]]= (it1->second).elemul(Num) ;
+								   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+								   break;
+						}
+						
 						//}
 						//catch(const char* error)
 						//{cout<<" Error : "<<error<<endl;}
 						break;
 					}
 			
+
+					
 			
 					else if(operations[i]=='\'')
 					{
