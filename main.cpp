@@ -143,6 +143,50 @@ if(argv>1)			// ensure that the file path added
 						}
 					}	
 
+					if(int x=s1.find("ones")!=-1)
+					{	
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+						if (first==0 || last ==0)
+						{
+							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
+							break;
+						}
+						else
+						{
+							mymap[operations[0]]=mymap[operations[0]].ones(first,last);
+							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							break;
+						}
+					}
+
+
+                                        if(int x=s1.find("eye")!=-1)
+					{	
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+						if (first==0 || last ==0)
+						{
+							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
+							break;
+						}
+						else
+						{
+							mymap[operations[0]]=mymap[operations[0]].eye(first,last);
+							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							break;
+						}
+					}
 
 					//switch(operations[i])
 					if (operations[i]=='+')
