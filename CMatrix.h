@@ -99,6 +99,9 @@ public:
 	
 		     CMatrix random (int r, int c);	   
  		     CMatrix zeros (int r, int c);
+	
+		   CMatrix ones (int Number1 , int Number2);
+		   CMatrix eye (int Number1 , int Number2);
 		   
 	
 };
