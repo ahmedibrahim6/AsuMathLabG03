@@ -879,7 +879,6 @@ return result;
 
 
 
-/*
 
 CMatrix CMatrix::elediv ()
 {
@@ -894,7 +893,7 @@ CMatrix CMatrix::elediv ()
 	return result;
 
 }
-*/
+
 
 
 
