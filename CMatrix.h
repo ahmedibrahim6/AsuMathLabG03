@@ -89,7 +89,7 @@ public:
 		   void PrintMatrix();
 
 		   CMatrix transpose ();
-		   CMatrix elediv ();
+		   //CMatrix elediv ();
 	
 		     CMatrix elediv (double Number);
  		     CMatrix elesub (double Number);
