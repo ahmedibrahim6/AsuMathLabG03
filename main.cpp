@@ -244,7 +244,7 @@ if(argv>1)			// ensure that the file path added
 								   if (y==1)
 								   	{
 								   	it1 =mymap.find(operations[i+2]);
-								   	mymap[operations[0]]= (it1->second).eledive() ;
+								   	mymap[operations[0]]= (it1->second).elediv() ;
 								   	cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
 								   	}
 								   else 
