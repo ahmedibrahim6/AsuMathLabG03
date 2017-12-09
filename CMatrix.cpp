@@ -580,7 +580,7 @@ CMatrix CMatrix::inverse()
     double diag=d.values[0][0];
     for(int i2=1;i2<nR;i2++)
     {
-        if(d.values[i2][0]>diag)
+        if(d.values[i2][0]>diag || diag==0)
         {
             for(int k1=0;k1<2*nC;k1++)
             {
@@ -617,7 +617,7 @@ CMatrix CMatrix::inverse()
         for(int i2=i+1;i2<nR;i2++)
         {
             if(i2==nR-1){break;}
-        if(d.values[i2+1][j+1]>diag)
+        if(d.values[i2+1][j+1]>diag || diag==0)
         {
             for(int k1=0;k1<2*nC;k1++)
             {
