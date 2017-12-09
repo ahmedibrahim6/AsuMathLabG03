@@ -879,7 +879,6 @@ return result;
 
 
 /*
-
 CMatrix CMatrix::elediv ()
 {
 	CMatrix result(nR,nC);
@@ -1012,7 +1011,36 @@ CMatrix CMatrix::zeros(int nR, int nC)
 }
 
 
+///////////////////////////////////////////////////// ONES Matrix ////////////////////////////////////////////////////////////////
 
+CMatrix CMatrix::ones (int Number1 , int Number2)
+{
+	CMatrix result(Number1,Number2);
+ 	for(int iR=0;iR<Number1;iR++)
+	{
+		for(int iC=0;iC<Number2;iC++)
+		{
+			result.values[iR][iC]=1;
+		}
+	}
+	return result;
 
+}
+
+///////////////////////////////////////////////////// I Matrix ////////////////////////////////////////////////////////////////
+
+CMatrix CMatrix::eye (int Number1 , int Number2)
+{
+
+	CMatrix result(Number1,Number2);
+ 	for(int iR=0;iR<Number1;iR++)
+	{
+		for(int iC=0;iC<Number2;iC++)
+		{
+			result.values[iR][iC]=(iR == iC) ? 1 :  0;
+		}
+	}
+	return result;
+}
 
 
