@@ -878,7 +878,7 @@ return result;
 }
 
 
-
+/*
 
 CMatrix CMatrix::elediv ()
 {
@@ -893,7 +893,7 @@ CMatrix CMatrix::elediv ()
 	return result;
 
 }
-
+*/
 /////////////////////////////////////    dividing the elements of a matrix with a certain value    //////////////////////////////////////
 
 CMatrix CMatrix::elediv (double element)
