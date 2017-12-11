@@ -1027,6 +1027,20 @@ CMatrix CMatrix::ones (int Number1 , int Number2)
 
 }
 
+CMatrix CMatrix::ones (int Number1)
+{
+	CMatrix result(Number1,Number1);
+ 	for(int iR=0;iR<Number1;iR++)
+	{
+		for(int iC=0;iC<Number1;iC++)
+		{
+			result.values[iR][iC]=1;
+		}
+	}
+	return result;
+
+}
+
 ///////////////////////////////////////////////////// I Matrix ////////////////////////////////////////////////////////////////
 
 CMatrix CMatrix::eye (int Number1 , int Number2)
@@ -1043,4 +1057,16 @@ CMatrix CMatrix::eye (int Number1 , int Number2)
 	return result;
 }
 
+CMatrix CMatrix::eye (int Number1)
+{
 
+	CMatrix result(Number1,Number1);
+ 	for(int iR=0;iR<Number1;iR++)
+	{
+		for(int iC=0;iC<Number1;iC++)
+		{
+			result.values[iR][iC]=(iR == iC) ? 1 :  0;
+		}
+	}
+	return result;
+}
