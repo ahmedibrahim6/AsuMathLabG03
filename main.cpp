@@ -143,49 +143,89 @@ if(argv>1)			// ensure that the file path added
 						}
 					}	
 
-					if(int x=s1.find("ones")!=-1)
+					                                        if(int x=s1.find("ones")!=-1)
 					{	
 						int first=s1.find("(",x+1);
-						int mid=s1.find(",",first+1);
-						int last=s1.find(")",mid+1);
-						string First=s1.substr(first+1,mid-first-1);
-						string Second=s1.substr(mid+1,last-mid-1);
-						first=atoi(First.c_str());
-						last=atoi(Second.c_str());
-						if (first==0 || last ==0)
-						{
-							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
-							break;
-						}
-						else
-						{
-							mymap[operations[0]]=mymap[operations[0]].ones(first,last);
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							break;
-						}
+                                                int mid =s1.find(",",first+1) ;
+						if(mid!=-1 )
+                                                {
+						   int last=s1.find(")",mid+1);
+						   string First=s1.substr(first+1,mid-first-1);
+						   string Second=s1.substr(mid+1,last-mid-1);
+						   int N1=atoi(First.c_str());
+						   int N2=atoi(Second.c_str());
+						   if (N1==0 || N2==0)
+						   {
+						 	   cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<N1<<"*"<<N2<<")"<<endl;
+							   break;
+						   }
+						   else
+						   {
+							   mymap[operations[0]]=mymap[operations[0]].ones(N1,N2);
+							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							   break;
+						   }
+                                                }
+                                                else 
+                                                {
+                                                   int last=s1.find(")",first+1);
+                                                   string Number=s1.substr(first+1,last-first-1);
+						   int number=atoi(Number.c_str());
+						   if (number==0 || (first+1 == last))
+						   {
+							   cout<<operations[0]<<" ="<<endl<<"[] "<<"(0*0)"<<endl;
+							   break;
+						   }
+						   else
+						   {
+						       	   mymap[operations[0]]=mymap[operations[0]].ones(number);
+							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							   break;
+						   }
+                                                }
 					}
 
 
                                         if(int x=s1.find("eye")!=-1)
 					{	
 						int first=s1.find("(",x+1);
-						int mid=s1.find(",",first+1);
-						int last=s1.find(")",mid+1);
-						string First=s1.substr(first+1,mid-first-1);
-						string Second=s1.substr(mid+1,last-mid-1);
-						first=atoi(First.c_str());
-						last=atoi(Second.c_str());
-						if (first==0 || last ==0)
-						{
-							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
-							break;
-						}
-						else
-						{
-							mymap[operations[0]]=mymap[operations[0]].eye(first,last);
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							break;
-						}
+                                                int mid=s1.find(",",first+1);
+						if(mid !=-1 )
+                                                {
+						   int last=s1.find(")",mid+1);
+						   string First=s1.substr(first+1,mid-first-1);
+						   string Second=s1.substr(mid+1,last-mid-1);
+						   int N1=atoi(First.c_str());
+						   int N2=atoi(Second.c_str());
+						   if (N1==0 || N2 ==0)
+						   {
+						 	   cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<N1<<"*"<<N2<<")"<<endl;
+							   break;
+						   }
+						   else
+						   {
+							   mymap[operations[0]]=mymap[operations[0]].eye(N1,N2);
+							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							   break;
+						   }
+                                                }
+                                                else 
+                                                {
+                                                   int last=s1.find(")",first+1);
+                                                   string Number=s1.substr(first+1,last-first-1);
+						   int number=atoi(Number.c_str());
+						   if (number==0 || (first+1 == last))
+						   {
+							   cout<<operations[0]<<" ="<<endl<<"[] "<<"(0*0)"<<endl;
+							   break;
+						   }
+						   else
+						   {
+						       	   mymap[operations[0]]=mymap[operations[0]].eye(number);
+							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
+							   break;
+						   }
+                                                }
 					}
 
 					//switch(operations[i])
