@@ -103,7 +103,13 @@ public:
 		   CMatrix ones (int Number1);
 		   CMatrix eye (int Number1);
 		   CMatrix ones (int Number1 , int Number2);
-		   CMatrix eye (int Number1 , int Number2);
+	CMatrix eye (int Number1 , int Number2);
+
+	
+		   CMatrix  logg();
+	CMatrix  logg10();
+	CMatrix  expp();
+	CMatrix sqrtt();
 
 		   
 	
