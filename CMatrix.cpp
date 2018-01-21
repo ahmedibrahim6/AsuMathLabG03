@@ -1070,3 +1070,131 @@ CMatrix CMatrix::eye (int Number1)
 	}
 	return result;
 }
+
+
+
+
+///////////////////////////////////////////////////// Log   Log10   sqrt   exp ////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+CMatrix   CMatrix :: logg()
+{
+	//double inf=1.0/0.0;
+	CMatrix n(nR,nC);
+
+for (int i=0 ;i<nR;i++)
+{
+for (int j=0 ;j<nC;j++)
+{
+
+double t = values[i][j];
+    if (t==0)
+	n.values[i][j]=-std::numeric_limits<double>::infinity() ;
+	//else if (t<0)complex
+	else if (t==std::numeric_limits<double>::infinity())
+		n.values[i][j]=std::numeric_limits<double>::infinity();
+//	else if (t==-inf)
+		//n.values[i][j]=inf;   complex -inf
+
+
+	else
+		n.values[i][j]=log(t);
+}}
+ return n;
+ }
+
+
+
+
+
+
+  CMatrix   CMatrix :: logg10()
+{
+	
+
+	CMatrix n(nR,nC);
+
+for (int i=0 ;i<nR;i++)
+{
+for (int j=0 ;j<nC;j++)
+{
+	
+double t = values[i][j];
+if (t==0)
+	n.values[i][j]=- std::numeric_limits<double>::infinity();
+// else if (t<0)//complec
+
+//else if(t==-inf)n.values[i][j]= complex-inf
+else if (t==std::numeric_limits<double>::infinity())
+n.values[i][j]=std::numeric_limits<double>::infinity();
+
+else 
+	n.values[i][j]=log10(t);
+}}
+ return n;
+ }
+  
+
+
+
+
+
+  CMatrix   CMatrix :: expp()
+{
+	
+	CMatrix n(nR,nC);
+
+for (int i=0 ;i<nR;i++)
+{
+for (int j=0 ;j<nC;j++)
+{
+
+double t = values[i][j];
+if (t==std::numeric_limits<double>::infinity())
+ n.values[i][j]=std::numeric_limits<double>::infinity();
+
+else if (t==-std::numeric_limits<double>::infinity())
+ n.values[i][j]=0;
+
+ else n.values[i][j]=exp(t);
+}}
+ return n;
+ }
+
+
+
+
+
+   CMatrix   CMatrix :: sqrtt()
+{
+	CMatrix n(nR,nC);
+
+for (int i=0 ;i<nR;i++)
+{
+for (int j=0 ;j<nC;j++)
+{
+	
+double t = values[i][j];
+if (t==std::numeric_limits<double>::infinity())
+ n.values[i][j] =std::numeric_limits<double>::infinity();
+//else if (t<0) complex no.
+//else if (t==-inf)  n.values[i][j]=-infi
+else  n.values[i][j]=sqrt(t);
+}}
+ return n;
+ }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
