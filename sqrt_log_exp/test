@@ -1,0 +1,5 @@
+  CMatrix c("[1 100;0 10]");
+           cout<<c.logg()<<endl; 
+           cout<<c.logg10()<<endl;
+ 			cout<<c.expp()<<endl;
+ 			cout<<c.sqrtt()<<endl;
