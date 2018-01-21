@@ -1,0 +1,5 @@
+CMatrix x("[3.5 -pi;0.0 pi]") ;
+		
+	cout<<x.sinn()<<endl<<endl;
+	cout<<x.coss()<<endl<<endl;
+    cout<<x.tann()<<endl<<endl;
