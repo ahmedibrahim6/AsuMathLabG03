@@ -110,6 +110,7 @@ public:
 	CMatrix  logg10();
 	CMatrix  expp();
 	CMatrix sqrtt();
+	friend ostream& operator <<(ostream &os,CMatrix m);
 
 		   
 	
