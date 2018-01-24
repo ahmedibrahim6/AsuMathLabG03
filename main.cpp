@@ -27,7 +27,7 @@ bool is_one_line(string s)
 			close_bracket_count++;
 
 	}	
-	cout<<open_bracket_count<<close_bracket_count<<endl;
+	//cout<<open_bracket_count<<close_bracket_count<<endl;
 	if(close_bracket_count==open_bracket_count)
 		return true;
 	else
@@ -40,8 +40,8 @@ bool is_one_line(string s)
 int main(int argv,char* argc[])			// argv : number of parameter in the command .....argc : the parameters as strings
 {
 	map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
-	string s1,s2, Matrix_String;		 
-	
+	string  Matrix_String;		 
+	string s1,s2;
 	
 	 	
 if(argv>1)			// ensure that the file path added
@@ -85,30 +85,46 @@ if(argv>1)			// ensure that the file path added
 							break;          
 			 			}
 					}
+					cout<<s1<<endl;
 				}
 				else                     //  if the declaration in more than one line 
 				{
-			
-					getline(infile,s2,']');
-					//cout<<s1<<endl<<s2<<endl;          // we get the second line until ']'. store it in s2 
-					s2=s1+s2+']';			//and add it to the first line (s1)
-					cout<<s2<<endl;
+					do{
+					getline(infile,s2);
+					string s3='\n'+s2;
+					s1.replace(s1.length()-1,1,s3);
+					}while (!is_one_line(s1));
+					for (int i=0;i<s1.length();i++)
+					cout<<s1[i];
+				
+/*
+					 
+					        cout<<s1<<endl;
+					         cout<<s2<<endl;// we get the second line until ']'. store it in s2 
+							string s3;
+					for (int i=0;i<s1.length()-1;i++)
+						s3[i]=s1[i];
+					//and add it to the first line (s1)
+					string s4=s3+s2;
+					cout<<s4<<endl;
+					//char d[s1.length()+s2.length()+2];
+					//cout<<s3<<endl;
 					//string_parsing(s2);
+*/
 
-
-
-					Matrix_String=s2.substr(s2.find('['),s2.length()-s2.find('['));
 					
-					for(int i=0;i<s2.length(); i++)                   
+					Matrix_String=s1.substr(s1.find('['),s1.length()-s1.find('['));
+					
+					for(int i=0;i<s1.length(); i++)                   
 		    		{
-						if(s2[i]==' '||s2[i]=='\n'||s2[i]=='\r')                  // we skip spaces and newlines
+						if(s1[i]==' '||s1[i]=='\n'||s1[i]=='\r')                  // we skip spaces and newlines
 
 							continue;
 
 						else
 						{
-							mymap.insert( pair < char , CMatrix > (s2[i],CMatrix(Matrix_String)));   //insert new matrix
-							cout<<s2[i]<<" ="<<endl<<mymap[s2[i]].getString()<<endl<<endl;		 //print this matrix
+							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(Matrix_String)));   //insert new matrix
+							cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;		 //print this matrix
 							getline(infile,s1);                              // skip the rest of the last line of the matrix declaration
 							//if(s1.find(';')!=-1)                  
 							break;
@@ -116,7 +132,7 @@ if(argv>1)			// ensure that the file path added
 
 				
 					}	
-		
+					
 
 				}
 				
