@@ -8,7 +8,7 @@ matrix: matrix.o cmatrix.o
 matrix.o : main.cpp
 	g++ -c main.cpp
 cmatrix.o : CMatrix.cpp
-	g++ -c CMatrix.cpp
+	g++ -std=c++0x -c CMatrix.cpp
 clean :
 	rm matrix CMatrix.o main.o
 
