@@ -1,14 +1,29 @@
 
 #include "CMatrix.h"
 
-void string_parsing(string s)
+map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
 
+string Char_to_Matrix (string mat)
 {
-	char* buffer = new char[s.length()+1]; 
-strncpy(buffer,s.c_str(),s.length()+1);
-	//cout<<buffer<<endl;
-	delete[] buffer;
+	for(int x1=0;x1<mat.length();x1++) //mat is the main matrix string
+                    {
 
+                        map<char,CMatrix>::iterator it3;
+                        it3=mymap.find(mat[x1]);  //
+                        if(it3!=mymap.end())
+                        {
+                            CMatrix inner;
+                            inner = it3->second;
+                            string matrixstring=inner.getString1();
+                            int innerpos = x1;
+                            string firstpart=mat.substr(0,innerpos);
+                            string secondpart=mat.substr(innerpos+1);
+                            string resultstring=firstpart+matrixstring+secondpart;
+                            mat=resultstring;
+                            //cout<<matrixstring<<endl;
+                        }
+                    }
+     return mat;
 }
 
 bool is_one_line(string s)
@@ -28,18 +43,19 @@ bool is_one_line(string s)
 
 	}	
 	//cout<<open_bracket_count<<close_bracket_count<<endl;
-	if(close_bracket_count==open_bracket_count)
+	if(close_bracket_count==open_bracket_count){
 		return true;
-	else
+	}
+	else{//cout<<"yes"<<endl;
 		return false;
+	}
 
 }
 
 
-
+	
 int main(int argv,char* argc[])			// argv : number of parameter in the command .....argc : the parameters as strings
 {
-	map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
 	string  Matrix_String;		 
 	string s1,s2;
 	
@@ -61,17 +77,28 @@ if(argv>1)			// ensure that the file path added
 			{
 				//int brackets[2];
 				bool one_line = is_one_line(s1);
-
-
+				string s4,s5;
+				//cout<<"a"<<endl;
 				if(one_line)            // if the declaration in one line only we work on s1
 				{
-					//string_parsing(s1);
+				
+					//cout<<s1<<endl;
+					for (int i=0;i<s1.length();i++)
+					{
+						if (s1[i]=='[')
+						{
+							s4=s1.substr(i,s1.length()-i);
+							break;
+							
+						}	
+					}
+
+					s5=Char_to_Matrix(cleanexp(s4));
+					cout<<s5<<endl;
 
 
-
-
-					Matrix_String=s1.substr(s1.find('['),s1.length()-s1.find('['));   // have the string from '[' to ']'
-
+					//Matrix_String=s1.substr(s1.find('['),s1.length()-s1.find('['));   // have the string from '[' to ']'
+					
 					for(int i=0;i<s1.length(); i++)                    // to store the names of matrix
 		     		{
 						if(s1[i]==' ')//||s[i]=='\n'||s[i]=='\r')                  // we skip spaces 
@@ -80,62 +107,68 @@ if(argv>1)			// ensure that the file path added
 
 			 			else
 			 			{
-							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(Matrix_String)));           // insert new matrix 
+							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(s5)));           // insert new matrix 
 							cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;                   // print this matrix with its data
 							break;          
 			 			}
 					}
-					cout<<s1<<endl;
+					
 				}
 				else                     //  if the declaration in more than one line 
 				{
-					do{
-					getline(infile,s2);
-					string s3='\n'+s2;
-					s1.replace(s1.length()-1,1,s3);
-					}while (!is_one_line(s1));
-					for (int i=0;i<s1.length();i++)
-					cout<<s1[i];
-				
-/*
-					 
-					        cout<<s1<<endl;
-					         cout<<s2<<endl;// we get the second line until ']'. store it in s2 
-							string s3;
-					for (int i=0;i<s1.length()-1;i++)
-						s3[i]=s1[i];
-					//and add it to the first line (s1)
-					string s4=s3+s2;
-					cout<<s4<<endl;
-					//char d[s1.length()+s2.length()+2];
-					//cout<<s3<<endl;
-					//string_parsing(s2);
-*/
+					do
+					{
+						//cout<<s1<<endl;
+						getline(infile,s2);
+						string s3='\n'+s2;
+						s1.replace(s1.length()-1,1,s3);
+					}
+					while(!is_one_line(s1));
+					//cout<<s1<<endl;
 
+					for (int i=0;i<s1.length();i++)
+					{
+						if (s1[i]=='[')
+						{
+							s4=s1.substr(i,s1.length()-i);
+							break;
+							
+						}	
+					}
+					//cout<<s4<<endl;
+
+					s5=Char_to_Matrix(cleanexp(s4));
+					cout<<s5<<endl;
+
+					////////////////////////////////////////////////////
 					
-					Matrix_String=s1.substr(s1.find('['),s1.length()-s1.find('['));
-					
+
+
+
+					//Matrix_String=s2.substr(s2.find('['),s2.length()-s2.find('['));
+					/*
 					for(int i=0;i<s1.length(); i++)                   
 		    		{
-						if(s1[i]==' '||s1[i]=='\n'||s1[i]=='\r')                  // we skip spaces and newlines
+						if(s1[i]==' ')                  // we skip spaces and newlines
 
 							continue;
 
 						else
 						{
-							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(Matrix_String)));   //insert new matrix
-							cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;		 //print this matrix
-							getline(infile,s1);                              // skip the rest of the last line of the matrix declaration
+							mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(s5)));   //insert new matrix
+							cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString1()<<endl<<endl;		 //print this matrix
+							//getline(infile,s1);                              // skip the rest of the last line of the matrix declaration
 							//if(s1.find(';')!=-1)                  
 							break;
 						}
 
 				
-					}	
-					
+					}
+					*/	
+		
 
 				}
-				
+		
 
 			}
 			
@@ -437,7 +470,6 @@ if(argv>1)			// ensure that the file path added
 						//{cout<<" Error : "<<error<<endl;}
 						break;
 					}
-		  
 				}
 			
 
@@ -445,17 +477,28 @@ if(argv>1)			// ensure that the file path added
 
 
 
-			else if ((s1.length()==2))//||(s1.length()==1))
+			else//if((s1.length()==2))//||(s1.length()==1))
 			{
-				map<char,CMatrix>::iterator it1;
-				it1 =mymap.find(s1[0]);
-				cout<<(it1->second)<<endl;
-				
+				for(int i=0;i<s1.length(); i++)
+				{ 
+				map<char,CMatrix>::iterator it;
+				it =mymap.find(s1[i]);
+
+				if(it!=mymap.end())
+					{
+						cout<<(it->first)<<" =\n"<<(it->second)<<endl;
+						break;
+					} 
+				}
 				/*map<char,CMatrix>::iterator it1;
+				it1 =mymap.find(s1[0]);
+				cout<<(it1->second)<<endl;*/
+				/*
+				map<char,CMatrix>::iterator it1;
 				int flag =0;
 				for(int i=0;i<s1.length(); i++)                   
 		    		{
-						if(s1[i]==' '||s2[i]=='\n'||s2[i]=='\r')             // we skip spaces and newlines
+						if(s1[i]==' '||s2[i]=='\n')             // we skip spaces and newlines
 		    				
 							continue;
 
@@ -465,8 +508,7 @@ if(argv>1)			// ensure that the file path added
 							cout<<(it1->second)<<endl;
 							break;
 						}
-					}
-*/
+					}*/
 			}
 		
 		}
@@ -476,15 +518,42 @@ if(argv>1)			// ensure that the file path added
 
     }
 
-else			// if the file path not added as a parameter close the program
+	else			// if the file path not added as a parameter close the program
 
-	{cout<<"The file path not added . The program closed "<<endl;}
+	{cout<<"The file path not added . The program closed "<<endl;
+		/*
+		CMatrix q(1,1,4.0);
+		CMatrix a("[ 3 2.7 3 ; 11.3 76 22.9]");
+		mymap.insert( pair < char , CMatrix > ('a',a));
 
-return 0;
+		mymap.insert( pair < char , CMatrix > ('q',q));
+
+
+		string mat1 = "[[1.2 (2*6); q a; a], [3.2+3 ;-7.8;-3.2; 1.2-2 ]3/2]";
+		string mat=Char_to_Matrix(cleanexp(mat1));
+
+		//string mat=d.substr(d.find('['),d.length()-d.find('['));   // have the string from '[' to ']'
+	
+	
+
+		cout << mat << endl;
+		*/
+
+	}
+
+	return 0;
 
 }
 
+/*
+CMatrix x("[3.5 -1.570796325;0.0 pi]") ;
+		
+	cout<<x.sinn()<<endl<<endl;
+	cout<<x.coss()<<endl<<endl;
+    cout<<x.tann()<<endl<<endl;
 
+
+*/
 
 
 
