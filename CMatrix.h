@@ -2,6 +2,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <string.h>
+#include <cstring>
 #include <cstring>
 #include <cstdlib>
 #include <stdarg.h>
@@ -9,6 +11,9 @@
 #include <fstream>
 #include <map>
 #include <math.h>
+#define pi 3.14159265
+//#include <cmath>
+#include<limits>
 using namespace std;
 class CMatrix
 {
@@ -17,8 +22,13 @@ class CMatrix
 public:
 	CMatrix();
 	~CMatrix();
+	int GetnR(){return nR;};
+	int GetnC(){return nC;};
 	CMatrix(const CMatrix& d);
 	void reset();
+
+	   CMatrix power(int N);
+                   CMatrix operator^(int d);
 	
 		   enum MI { MI_ZEROS, MI_ONES, MI_EYE, MI_RAND, MI_VALUE };
 		   CMatrix(int nR, int nC, int initialization = MI_ZEROS, double initializationValue = 0.0);
@@ -26,6 +36,7 @@ public:
 		   CMatrix(string s);   // constructor take a string
 		   void copy(string s); 
 		   string getString();
+		   string getString1();
 		   CMatrix operator=(string s);
 		   CMatrix operator=(CMatrix m);
 		   CMatrix(double d);
@@ -61,6 +72,8 @@ public:
 		   CMatrix operator--(int);
 		   CMatrix operator-();
 		   CMatrix operator+();
+
+		   friend ostream& operator <<(ostream &os,CMatrix m);
 	
 	
 	
@@ -110,7 +123,23 @@ public:
 	CMatrix  logg10();
 	CMatrix  expp();
 	CMatrix sqrtt();
+	CMatrix sinn();
+	           CMatrix coss();
+                   CMatrix tann();
 
 		   
 	
 };
+
+	
+
+void arrayModification(int y,int x,double*p);
+
+void arrayModification(int y,int x,char *p);
+void arrayModification(int y,int x,int *p);
+string Get_Result(string s1);
+
+string spacetrim(string x) ;
+string hesab (string t);
+
+string cleanexp(string b);
