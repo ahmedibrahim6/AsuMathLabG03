@@ -1,0 +1,79 @@
+int OBC=1;
+    int CBC=0;
+for(int x1=1;x1<matstring.length();x1++)     //mat is the main matrix string
+                    {
+                        //cout<<matstring[x1];
+                        map<char,CMatrix>::iterator it3;
+                        it3=map2.find(matstring[x1]);
+
+                        if(matstring[x1]=='[')
+                        {
+                            OBC++;
+                            int closepos=matstring.find(']',x1);
+                            x1=closepos;
+                        }
+                        else if(matstring[x1]==']')
+                        {
+                            CBC--;
+                        }
+
+                        else if(it3!=map2.end())
+                        {
+                            CMatrix inner;
+                            inner = it3->second;
+                            string matrixstring=inner.getString1();
+                            int innerpos = x1;
+                            string firstpart=matstring.substr(0,innerpos);
+                            string secondpart=matstring.substr(innerpos+1);
+                            resultstring=firstpart+matrixstring+secondpart;
+                            matstring=resultstring;
+                            cout<<matrixstring<<endl;
+                        }
+                        else if(it3==map2.end())
+                        {
+                            //cout<<matstring[x1]<<endl;
+                            if(matstring[x1]!='[' && matstring[x1]!=' ' && matstring[x1]!=';' && matstring[x1]!=']' && matstring[x1]!=',')
+                        {
+                            int spacesemibrac=0;
+                            for(int i=x1;i<matstring.length();i++)
+                            {
+                               // cout<<"i : "<<i<<endl;
+                                //cout<<matstring[8]<<endl;
+                                if(matstring[i]==' ' || matstring[i]==';' || matstring[i]=='[')
+                                {
+                                    spacesemibrac=i;
+                                    break;
+                                }
+                            }
+                            cout<<"semi "<<spacesemibrac<<endl;
+                            string part1=matstring.substr(0,x1);
+                            //cout<<part1<<endl;
+                            string middle=matstring.substr(x1,spacesemibrac-x1);
+                            string part2=matstring.substr(spacesemibrac);
+                            matstring=part1+"["+middle+"]"+part2;
+                            x1=spacesemibrac+1;
+                            cout<<"x1:"<<x1<<endl;
+                            cout<<matstring<<endl;
+
+                        }
+                        }
+                    }
+
+   for(int x1=0;x1<matstring.length();x1++) //mat is the main matrix string
+                    {
+
+                        map<char,CMatrix>::iterator it3;
+                        it3=map2.find(matstring[x1]);  //
+                        if(it3!=map2.end())
+                        {
+                            CMatrix inner;
+                            inner = it3->second;
+                            string matrixstring=inner.getString1();
+                            int innerpos = x1;
+                            string firstpart=matstring.substr(0,innerpos);
+                            string secondpart=matstring.substr(innerpos+1);
+                            resultstring=firstpart+matrixstring+secondpart;
+                            matstring=resultstring;
+                            //cout<<matrixstring<<endl;
+                        }
+                    }
