@@ -112,6 +112,10 @@ public:
 	CMatrix sqrtt();
 	friend ostream& operator <<(ostream &os,CMatrix m);
 
-		   
+	           CMatrix power(int N);
+                   CMatrix operator^(int d);
+		   CMatrix InverseforPower();
+		   double operator^(double d);
+	   
 	
 };
