@@ -111,6 +111,9 @@ public:
 	CMatrix  expp();
 	CMatrix sqrtt();
 	friend ostream& operator <<(ostream &os,CMatrix m);
+	
+	void getrow();
+        void getcolumn();
 
 		   
 	
