@@ -1200,6 +1200,131 @@ ostream& operator <<(ostream &os,CMatrix m)
 	return os;
 }
 
+///////////////////////////////////////////////////////power////////////////////////////////////////////////////////////
+
+CMatrix CMatrix::operator^(int d)
+{
+
+	return power(d);
+}
+
+double CMatrix::operator^(double d)
+{
+	CMatrix result(nR,nC);
+
+	if(nC!=result.nR) 
+		throw("Invalid matrix dimension"); 
+
+	if( d == 0 )
+	{
+		result = eye (nR , nC);
+	}
+
+	else 
+	{
+		result.values[0][0]=pow(values[0][0],d);
+	}
+	return result.values[0][0];	
+}
+
+CMatrix CMatrix::power(int N)
+{ 
+	CMatrix result(nR,nC);
+
+	if(nC!=result.nR) 
+		throw("Invalid matrix dimension"); 
+
+	if( N == 0 )
+	{
+		result = eye (nR , nC);
+	}
+
+	else if(N>0)
+	{
+ 		for(int iR=0;iR<nR;iR++)
+		{
+			for(int iC=0;iC<nC;iC++)
+			{
+				result.values[iR][iC]=(values[iR][iC]);
+			}
+		}
+
+		for(int i=1 ; i<N ; i++)
+			result*=*this;
+	}
+
+	else if(N<0)
+	{
+ 		for(int iR=0;iR<nR;iR++)
+		{
+			for(int iC=0;iC<nC;iC++)
+			{
+				result.values[iR][iC]=(values[iR][iC]);
+			}
+		}
+
+	
+		result = (result.InverseforPower()).power(abs(N));
+	}
+	
+	return result;
+}
+
+CMatrix CMatrix :: InverseforPower()
+{	
+    //int nr=nR;
+    //int nc=nC;
+    CMatrix current(nR,nC*2,MI_ZEROS,0); //new matrix to carry augmented values
+    CMatrix result(nR,nC);
+   // CMatrix temp(1,2*nC,MI_ZEROS,0); //inverse matrix
+    for(int i=0;i<nC;i++)
+    {
+        for(int j=0;j<nR;j++)
+        {
+            current.values[i][j]=values[i][j];  //putting values of matrix in the augm. matrix
+
+        }
+    }
+
+    for(int i=0;i<nR;i++)   //ones diagonal
+    {
+         current.values[i][nR+i]=1;   // adding the identity matrix to augm. matrix
+    }
+
+    for(int ir=0 ; ir<nR ;ir++)
+    {
+        double c = current.values[ir][ir] ;
+        for(int ic=0 ; ic<2*nC ; ic++)
+        {
+            current.values[ir][ic]=current.values[ir][ic]/c;
+        }
+
+        for(int k=0 ; k<nR ; k++)
+        {
+            double v = current.values[k][ir] ;
+            for(int i=0 ; i<2*nC ; i++)
+            {
+                if(ir == k)  { continue; }
+                else
+                    current.values[k][i]=current.values[k][i]-(v*current.values[ir][i]);
+            }
+        }
+    }
+
+	for(int ir=0 ; ir<nR ; ir++)
+	{
+		for(int k=nC ; k<2*nC ; k++)
+			result.values[ir][k-nC]=current.values[ir][k];
+	}
+
+    return result;
+}
+
+
+
+
+
+
 
 
 
