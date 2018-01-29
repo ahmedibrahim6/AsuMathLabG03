@@ -1,0 +1,18 @@
+	try{	CMatrix x("[1 -1 -200;0 inf 200]") ;
+	cout<<x.sinnh()<<endl<<endl;
+    cout<<x.cossh()<<endl<<endl;
+    cout<<x.tannh()<<endl<<endl;
+	cout<<x.sinn()<<endl<<endl;
+	cout<<x.asinn()<<endl<<endl;
+    cout<<x.coss()<<endl<<endl;
+    cout<<x.acoss()<<endl<<endl;
+    cout<<x.atann()<<endl<<endl;
+    cout<<x.tann()<<endl<<endl;
+
+
+
+
+
+
+		}
+		catch(const char* s){cout<<s<<endl;}
