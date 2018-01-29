@@ -1198,66 +1198,277 @@ else  n.values[i][j]=sqrt(t);
 
 
 
- //////////trig fn //////////////////////////
+ ///////////////////////////////////////////////////trig fn //////////////////////////
 
 CMatrix CMatrix::sinn()
 {
-CMatrix n(nR,nC),that= *this;
-for (int i=0 ; i<that.nR; i++)
-{
-  for(int z=0 ;z<that.nC ;z++)
-{
-if(that.values[i][z]==std::numeric_limits<double>::infinity())
-{n.values[i][z]=std::numeric_limits<double>::quiet_NaN(); continue;}
-else{
-while (that.values[i][z]>2*pi)
-{that.values[i][z]-=2*pi;continue;}
+CMatrix n(nR,nC);
 
-double t=that.values[i][z];
-    n.values[i][z] = sin(t);
+	for (int i=0 ; i<nR; i++)
+	{
 
-}}}
-return n;
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = sin(values[i][z]);
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			//cout<<x<<endl;
+			}
+
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
 }
+
+
+
 
 CMatrix CMatrix::coss()
 {
-CMatrix n(nR,nC),that= *this;
-for (int i=0 ; i<that.nR; i++)
-{
-  for(int z=0 ;z<that.nC ;z++)
-  {
-if(that.values[i][z]==std::numeric_limits<double>::infinity())
-{n.values[i][z]=std::numeric_limits<double>::quiet_NaN(); continue;}
-else{
-while (that.values[i][z]>2*pi)
-{that.values[i][z]-=2*pi;continue;}
+CMatrix n(nR,nC);
 
-    n.values[i][z] = cos(that.values[i][z]);
+	for (int i=0 ; i<nR; i++)
+	{
 
-}}}
-return n;
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = cos(values[i][z]);
+    		//cout<<x<<endl;
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
 }
 
 CMatrix CMatrix::tann()
 {
-CMatrix n(nR,nC),that = *this;
-for (int i=0 ; i<that.nR; i++)
-{
-  for(int z=0 ;z<that.nC ;z++)
-  {
-if(that.values[i][z]==std::numeric_limits<double>::infinity())
-{n.values[i][z]=std::numeric_limits<double>::quiet_NaN(); continue;}
-else{
-while (that.values[i][z]>2*pi)
-{that.values[i][z]-=2*pi;continue;}
-if(that.values[i][z]=pi/(double)2)
-{n.values[i][z]=std::numeric_limits<double>::infinity();continue;}
-else
- n.values[i][z] = tan(that.values[i][z]);
+CMatrix n(nR,nC);
 
-}}}
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = tan(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+CMatrix CMatrix::asinn()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+if(values[i][z]>=-1.0 && values[i][z]<=1.0)   
+ 	{
+ 		double x = asin(values[i][z]);
+
+			if (x>exp(10))   {x=std::numeric_limits<double>::infinity();}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )  {x=0.0;}
+
+			n.values[i][z]= x;
+	}
+	else 
+    {
+    	n.values[i][z] = std::numeric_limits<double>::quiet_NaN();
+	}
+  }
+}
 return n;
+}
+
+CMatrix CMatrix::acoss()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+	if(values[i][z]>=-1.0 && values[i][z]<=1.0)   
+ 	{
+ 		double x = acos(values[i][z]);
+
+			if (x>exp(10))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+	}
+	else 
+    {
+    	n.values[i][z] = std::numeric_limits<double>::quiet_NaN();
+	}
+  }
+}
+
+return n;
+}
+
+CMatrix CMatrix::atann()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+	if(values[i][z]==std::numeric_limits<double>::infinity() || values[i][z]>exp(12))
+	{n.values[i][z]=pi/(double)2; continue;}
+	else
+	{
+    		double x = atan(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+	}
+  }
+}
+
+return n;
+}
+
+
+CMatrix CMatrix::sinnh()                 
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = sinh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+CMatrix CMatrix::cossh()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = cosh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+CMatrix CMatrix::tannh()
+{
+	CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = tanh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
 }
 
 
@@ -1318,34 +1529,6 @@ void CMatrix::PrintMatrix()
 
 
 
-/*   
-void CMatrix::PrintMatrix()			// works only with 32*32 matrix
-{
-for (int i = 0; i < nR; i++)
-	{
-		for (int j = 0; j < 12; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-	cout<< endl<<endl;
-	for (int i = 0; i < nR; i++)
-	{
-		for (int j = 12; j < 24; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-	cout<< endl<<endl;
-	for (int i = 0; i < nR; i++)
-	{
-		for (int j = 24; j < nC; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-}
-*/
-
-
-
 ostream& operator <<(ostream &os,CMatrix m)
 {
 	os << m.getString();
@@ -1356,7 +1539,7 @@ ostream& operator <<(ostream &os,CMatrix m)
 
 /////////////////////////////////////////////////main functions ///////////////////////////////////////////
 
-
+/*
 
 void arrayModification(int y,int x,double*p)
 {
@@ -1574,6 +1757,7 @@ string hesab (string t)
 
 string cleanexp(string b)
 {
+	//cout<<b<<endl;
 
 	//string b="A = [[2.0[3.4;2.4 ;(3.5+9.1)] 2^3 -3+1.2 15/3]]";
 	char x[1000000];
@@ -1582,9 +1766,9 @@ string cleanexp(string b)
 	string s=x;
 	char* spearators = "[] ;,";
 	char* token = strtok(x, spearators);
-	string array[1000];
-	string array2[1000];
-	int indeces[1000];
+	string array[100000];
+	string array2[100000];
+	int indeces[100000];
 	int g=0;
 	while(token)
 	{	
@@ -1610,10 +1794,15 @@ string cleanexp(string b)
 	{
 		s.replace(indeces[i],array[i].length(),array2[i]);
 	}
+	//cout<<s<<endl;
 	return s;
 }
 
 
 
+
+
+
+*/
 
 
