@@ -23,6 +23,8 @@ CMatrix::~CMatrix()
 }
 
 
+
+
 ////////////////////////////////////////////      COPY CONSTRUCTOR      /////////////////////////////////////////////////////
 
 
@@ -176,7 +178,7 @@ reset();
 char* buffer = new char[s.length()+1]; 
 strncpy(buffer,s.c_str(),s.length()+1);
 //char* lineContext; 
-const char* lineSeparators = ";\r";   ///we removed \n from separators
+const char* lineSeparators = ";\r\n";   ///we removed \n from separators
 char* line = strtok(buffer, lineSeparators); 
 char* Remainlines=strtok(NULL, "");
 while(line) 
@@ -198,6 +200,53 @@ line = strtok(Remainlines, lineSeparators);
 Remainlines= strtok(NULL, "");
 } 
 delete[] buffer;
+}
+
+
+
+string CMatrix::getString1()
+{
+	string s;
+	if (nR==1&&nC==1)
+	{
+		char buffer[50]; 
+		snprintf(buffer, 50, "[ %f ]", values[0][0]); 
+		s = buffer; 
+		return s;
+	}
+
+	for(int iR=0;iR<nR;iR++) 
+	{ 
+		for(int iC=0;iC<nC;iC++) 
+		{
+			if (iR==0&&iC==0)
+
+			{
+				char buffer[50]; 
+				snprintf(buffer, 50, "[ %f", values[iR][iC]); 
+				s += buffer; 
+			}
+			else if(iR==nR-1&&iC==nC-1)
+			{
+				char buffer[50]; 
+				snprintf(buffer, 50, " %f ]", values[iR][iC]); 
+				s += buffer; 	
+			}	
+			else
+			{
+				char buffer[50]; 
+				snprintf(buffer, 50, " %f", values[iR][iC]); 
+				s += buffer;
+			} 
+		}
+
+		if(iR!=nR-1)
+		 s+=" ;"; 
+	}
+
+	return s;
+
+
 }
 
 
@@ -806,54 +855,6 @@ CMatrix CMatrix::operator/(CMatrix m)
 
 
 
-///////////////////////////////////////////        PRINT MATRIX          ///////////////////////////////////////////////////
-
-
-
-
-void CMatrix::PrintMatrix()
-{
-	for (int i = 0; i < nR; i++)
-	{
-		for (int j = 0; j < nC; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-}
-
-
-
-
-
-/*   
-void CMatrix::PrintMatrix()			// works only with 32*32 matrix
-{
-for (int i = 0; i < nR; i++)
-	{
-		for (int j = 0; j < 12; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-	cout<< endl<<endl;
-	for (int i = 0; i < nR; i++)
-	{
-		for (int j = 12; j < 24; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-	cout<< endl<<endl;
-	for (int i = 0; i < nR; i++)
-	{
-		for (int j = 24; j < nC; j++)
-			cout << values[i][j] << "   ";
-		cout <<endl;
-	}
-}
-*/
-
-
-
-
 
 
 
@@ -1193,7 +1194,314 @@ else  n.values[i][j]=sqrt(t);
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+ ///////////////////////////////////////////////////trig fn //////////////////////////
+
+CMatrix CMatrix::sinn()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = sin(values[i][z]);
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			//cout<<x<<endl;
+			}
+
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+
+
+CMatrix CMatrix::coss()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = cos(values[i][z]);
+    		//cout<<x<<endl;
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+CMatrix CMatrix::tann()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = tan(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+CMatrix CMatrix::asinn()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+if(values[i][z]>=-1.0 && values[i][z]<=1.0)   
+ 	{
+ 		double x = asin(values[i][z]);
+
+			if (x>exp(10))   {x=std::numeric_limits<double>::infinity();}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )  {x=0.0;}
+
+			n.values[i][z]= x;
+	}
+	else 
+    {
+    	n.values[i][z] = std::numeric_limits<double>::quiet_NaN();
+	}
+  }
+}
+return n;
+}
+
+CMatrix CMatrix::acoss()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+	if(values[i][z]>=-1.0 && values[i][z]<=1.0)   
+ 	{
+ 		double x = acos(values[i][z]);
+
+			if (x>exp(10))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+	}
+	else 
+    {
+    	n.values[i][z] = std::numeric_limits<double>::quiet_NaN();
+	}
+  }
+}
+
+return n;
+}
+
+CMatrix CMatrix::atann()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+	if(values[i][z]==std::numeric_limits<double>::infinity() || values[i][z]>exp(12))
+	{n.values[i][z]=pi/(double)2; continue;}
+	else
+	{
+    		double x = atan(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+	}
+  }
+}
+
+return n;
+}
+
+
+CMatrix CMatrix::sinnh()                 
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = sinh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+CMatrix CMatrix::cossh()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = cosh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+CMatrix CMatrix::tannh()
+{
+	CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = tanh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////        PRINT MATRIX          ///////////////////////////////////////////////////
+
+
+
+
+void CMatrix::PrintMatrix()
+{
+	for (int i = 0; i < nR; i++)
+	{
+		for (int j = 0; j < nC; j++)
+			cout << values[i][j] << "   ";
+		cout <<endl;
+	}
+}
+
+
+
+
+
 ostream& operator <<(ostream &os,CMatrix m)
 {
 	os << m.getString();
@@ -1202,5 +1510,414 @@ ostream& operator <<(ostream &os,CMatrix m)
 
 
 
+
+////////////////////////////////////////power///////////////////////////////////////////////////////
+
+
+
+
+CMatrix CMatrix::operator^(int d)
+{
+
+	return power(d);
+}
+
+double CMatrix::operator^(double d)
+{
+	CMatrix result(nR,nC);
+
+	if(nC!=result.nR) 
+		throw("Invalid matrix dimension"); 
+
+	if( d == 0 )
+	{
+		result = eye (nR , nC);
+	}
+
+	else 
+	{
+		result.values[0][0]=pow(values[0][0],d);
+	}
+	return result.values[0][0];	
+}
+
+CMatrix CMatrix::power(int N)
+{ 
+	CMatrix result(nR,nC);
+
+	if(nC!=result.nR) 
+		throw("Invalid matrix dimension"); 
+
+	if( N == 0 )
+	{
+		result = eye (nR , nC);
+	}
+
+	else if(N>0)
+	{
+ 		for(int iR=0;iR<nR;iR++)
+		{
+			for(int iC=0;iC<nC;iC++)
+			{
+				result.values[iR][iC]=(values[iR][iC]);
+			}
+		}
+
+		for(int i=1 ; i<N ; i++)
+			result*=*this;
+	}
+
+	else if(N<0)
+	{
+ 		for(int iR=0;iR<nR;iR++)
+		{
+			for(int iC=0;iC<nC;iC++)
+			{
+				result.values[iR][iC]=(values[iR][iC]);
+			}
+		}
+
+	
+		result = (result.InverseforPower()).power(abs(N));
+	}
+	
+	return result;
+}
+
+CMatrix CMatrix :: InverseforPower()
+{	
+    //int nr=nR;
+    //int nc=nC;
+    CMatrix current(nR,nC*2,MI_ZEROS,0); //new matrix to carry augmented values
+    CMatrix result(nR,nC);
+   // CMatrix temp(1,2*nC,MI_ZEROS,0); //inverse matrix
+    for(int i=0;i<nC;i++)
+    {
+        for(int j=0;j<nR;j++)
+        {
+            current.values[i][j]=values[i][j];  //putting values of matrix in the augm. matrix
+
+        }
+    }
+
+    for(int i=0;i<nR;i++)   //ones diagonal
+    {
+         current.values[i][nR+i]=1;   // adding the identity matrix to augm. matrix
+    }
+
+    for(int ir=0 ; ir<nR ;ir++)
+    {
+        double c = current.values[ir][ir] ;
+        for(int ic=0 ; ic<2*nC ; ic++)
+        {
+            current.values[ir][ic]=current.values[ir][ic]/c;
+        }
+
+        for(int k=0 ; k<nR ; k++)
+        {
+            double v = current.values[k][ir] ;
+            for(int i=0 ; i<2*nC ; i++)
+            {
+                if(ir == k)  { continue; }
+                else
+                    current.values[k][i]=current.values[k][i]-(v*current.values[ir][i]);
+            }
+        }
+    }
+
+	for(int ir=0 ; ir<nR ; ir++)
+	{
+		for(int k=nC ; k<2*nC ; k++)
+			result.values[ir][k-nC]=current.values[ir][k];
+	}
+
+    return result;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////main functions ///////////////////////////////////////////
+
+/*
+
+void arrayModification(int y,int x,double*p)
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		*(p+(i))=*(p+i+1);
+	}
+}
+void arrayModification(int y,int x,char *p)
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		*(p+(i))=*(p+i+1);
+	}
+}
+void arrayModification(int y,int x,int *p)
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		*(p+(i))=*(p+i+1);
+	}
+}
+string Get_Result(string s1)
+{
+	int flag=0;                                //to count the number of the operations between two brackets ()
+	char elements [100]={};                    //contains the operands of the input string * , - , + , / , ^
+	int places[100]={};                        //contains the index of each operand 
+	string values[100]={};                     //contains all the numbers in the input string in order in string form
+	double Values[100]={};					   //contains all the numbers in the input string in order in double form
+	double Result;                             //contains the final result of the input string as a double form
+	string result;                             //contains the final result of the input string as a string form 
+	int j=0;
+	for (int i = 0; i < s1.length(); i++)
+	{
+		
+		if (s1[i]=='+'||s1[i]=='-'||s1[i]=='*'||s1[i]=='/'||s1[i]=='^')
+		{
+			flag++;
+			elements[j]=s1[i];
+			places[j]=i;
+			if (j==0)
+			{
+				values[j]=s1.substr(0,i);
+				Values[j]=atof(values[j].c_str());
+			}
+			else
+			{
+				values[j]=s1.substr(places[j-1]+1,places[j]-places[j-1]-1);
+				Values[j]=atof(values[j].c_str());
+			}
+			j++;
+		}
+	}
+	values[j]=s1.substr(places[j-1]+1,s1.size()-places[j-1]-1);
+	Values[j]=atof(values[j].c_str());
+	for (int i = 0; i < j; i++)
+	{
+		if (elements[i]=='^')
+		{
+			
+			if (i==0)
+			{
+				Values[i+1]=pow(Values[i],Values[i+1]);
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i]+values[i+1].length()+1);
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=pow(Values[i],Values[i+1]);
+				result=to_string(Values[i+1]);
+				s1.erase(places[i-1]+1,places[i+1]-1);
+				s1.insert(places[i-1]+1,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		}
+	}
+	for (int i = 0; i < j; i++)
+	{
+		if (elements[i]=='*')
+		{
+			
+			if (i==0)
+			{
+				Values[i+1]=Values[i]*Values[i+1];
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i]+values[i+1].length()+1);
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]*Values[i+1];
+				result=to_string(Values[i+1]);
+				//arrayModification(i,j,Values);
+				s1.erase(places[i-1]+1,places[i+1]-1);
+				s1.insert(places[i-1]+1,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		}
+		if (elements[i]=='/')
+		{
+			
+			if (i==0)
+			{
+				Values[i+1]=Values[i]/Values[i+1];
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i]+values[i+1].length());              
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]/Values[i+1];
+				result=to_string(Values[i+1]);
+				//arrayModification(i,j,Values);
+				s1.erase(places[i-1]+1,places[i+1]-1);
+				s1.insert(places[i-1]+1,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		}
+		
+	}
+	for (int i = 0; i < j; i++)
+	{
+		if (elements[i]=='+')
+		{
+			if (i==0)
+			{
+				Values[i+1]=Values[i]+Values[i+1];
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i]+values[i+1].length()+1);
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]+Values[i+1];
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i+1]-1);
+				s1.insert(0,result);
+			}
+		}
+		if (elements[i]=='-')
+		{
+			if (i==0)
+			{
+				Values[i+1]=Values[i]-Values[i+1];
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i]+values[i+1].length()+1);
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]-Values[i+1];
+				result=to_string(Values[i+1]);
+				s1.erase(0,places[i+1]-1);       
+				s1.insert(0,result);
+			}
+		}
+		
+	}
+	return s1;
+}
+
+string spacetrim(string x)            //remove any unused spaces from the input string
+{
+	for(int i=0;i<x.length();i++)
+	{
+		if(x[i]==' '||x[i]==NULL)
+		{x.erase(i,1);}
+	}
+	return x;
+}
+
+
+
+
+string hesab (string t)
+{
+	//string t="100/(50*2+50-50)";
+	t=spacetrim(t);
+	string s1=t.substr(t.find('=',0)+1,t.length()-t.find('=',0));      //gets the string that should be calculated
+	string op;
+	string R;
+	string operand=t.substr(0,t.find('=',0)+1);   //the name of the variable that we will store the result in
+	for(int i=0;i<s1.length();i++)
+	{
+		if(s1[i]==')')
+		{int k=i;
+			do
+			{
+				k--;
+			}
+			while(s1[k] !='(');        
+		 	op=s1.substr(k+1,(i)-(k+1));     //gets the string that between the brackets () 
+			//cout<<op<<endl;
+			R=Get_Result(op);      //gets the result of the string that between the brackets and stores it in R
+		//	cout<<R<<endl;
+			s1.erase(k,i-k+1);    //removes the brackets and the string that has been calculated
+			s1.insert(k,R);       //inserts R at the old opening of the bracket (
+			i=0;
+		}
+	}
+	//cout<<t<<endl;  
+	R=Get_Result(s1);
+	//cout<<operand<<R<<endl;
+	
+	return R;
+}
+
+
+string cleanexp(string b)
+{
+	//cout<<b<<endl;
+
+	//string b="A = [[2.0[3.4;2.4 ;(3.5+9.1)] 2^3 -3+1.2 15/3]]";
+	char x[1000000];
+	strcpy (x,b.c_str());
+	//char x[]="[[2.0[3.4;2.4 ;(3.5+9.1)] 2^3 -3+ 1.2 15 / 3]]";
+	string s=x;
+	char* spearators = "[] ;,";
+	char* token = strtok(x, spearators);
+	string array[100000];
+	string array2[100000];
+	int indeces[100000];
+	int g=0;
+	while(token)
+	{	
+		
+		array[g]= token;
+		g++;
+		token = strtok(NULL, spearators);
+	}
+	for (int i=0;i<=g;i++)
+	{
+		if(i!=0)
+		indeces[i]=s.find(array[i],indeces[i-1]);
+		else
+		indeces[i]=s.find(array[i]);
+	}
+	for (int i=0;i<g;i++)
+	{
+		//cout<<array[i];
+		array2[i]=hesab(array[i]);
+		//cout<<array2[i]<<endl;
+	}
+	for(int i=g;i>=0;i--)
+	{
+		s.replace(indeces[i],array[i].length(),array2[i]);
+	}
+	//cout<<s<<endl;
+	return s;
+}
+
+
+
+
+
+
+*/
 
 
