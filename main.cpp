@@ -1,14 +1,409 @@
 
 #include "CMatrix.h"
+map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
+
+int  type (string s1,string s2, string A[],int y)
+{    int type;
+     int t;
+	for (int i=0;i<y;i++)
+    	{ 
+		if (s1==A[i])
+		{
+    			t=1;	
+			for (int j=0;j<y;j++)
+			{
+				if(s2==A[j])
+				{
+					t=2;
+					break;
+				}
+			}
+			break;
+		}
+    	}
+	if(t!=1||t!=2)
+	{
+		t=0;
+	}
+	return t;
+ };
 
 
 
+//////////////////////////////////////////////////////////GET RESULT////////////////////////////
+string Get_Result(string s1)
+{
+	int flag=0,FirstOperation=0;                                //to count the number of the operations between two brackets ()
+	char elements [100]={};                    //contains the operands of the input string * , - , + , / , ^
+	int places[100]={};                        //contains the index of each operand 
+	string values[100]={};                     //contains all the numbers in the input string in order in string form
+	double Values[100]={};					   //contains all the numbers in the input string in order in double form
+	double Result;                             //contains the final result of the input string as a double form
+	string result;                             //contains the final result of the input string as a string form 
+	int j=0;
+	int negelement;
+	for (int i = 0; i < s1.length(); i++)
+	{
+		if (s1[i]=='+'||s1[i]=='-'||s1[i]=='*'||s1[i]=='/'||s1[i]=='^')
+		{
+			flag++;
+			elements[j]=s1[i];
+			places[j]=i;
+			if (j==0)
+			{
+				values[j]=s1.substr(0,i);
+				Values[j]=atof(values[j].c_str());
+			}
+			else
+			{
+				values[j]=s1.substr(places[j-1]+1,places[j]-places[j-1]-1);
+				Values[j]=atof(values[j].c_str());
+			}
+			j++;
+		}
+	}
+	if (flag==0)
+	{
+		return s1;
+	}
+	values[j]=s1.substr(places[j-1]+1,s1.size()-places[j-1]-1);
+	Values[j]=atof(values[j].c_str());
+	if (s1[0]=='-')
+	{
+		arrayModification(0,j,Values);
+		arrayModification(0,j,elements);
+		arrayModification(0,j,places);
+		Values[0]*=(-1);
+	}
+	for (int i = 0; i < j; i++)
+	{
+		if (elements[i]=='^')
+		{
+			if (FirstOperation==0)
+			{
+				FirstOperation=1;
+			}
+			if (elements[i+1]=='-'&&places[i+1]==places[i]+1)
+			{
+				if (FirstOperation==1)
+				{
+					s1.erase(places[i+1],1);
+				}
+				else
+				{
+					s1.erase(places[i+1]+4,1);
+				}
+				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,elements);
+				arrayModification(i+1,j,places);
+				j-=1;
+				for (int k = i+1; k < j; k++)
+				{
+					places[k]-=1;
+				}
+				if (Values[i+1]>0)
+				{
+					Values[i+1]*=(-1);
+				}
+				negelement=1;
+			}
+			if (i==0)
+			{
+				Values[i+1]=pow(Values[i],Values[i+1]);
+				result=to_string(Values[i+1]);
+				if (negelement==1)
+				{
+					s1.erase(0,places[i]+values[i+1].length()+2);
+					negelement=0;
+				}
+				else
+				{
+					s1.erase(0,places[i]+values[i+1].length()+1);
+				}			
+				s1.insert(0,result);
+				FirstOperation=1;
+			}
+			else
+			{
+				Values[i+1]=pow(Values[i],Values[i+1]);
+				result=to_string(Values[i+1]);
+				if (i+1==j)
+				{
+					s1.erase(places[i-1]+1,places[i+1]-1);
+				}
+				else
+				{
+					s1.erase(places[i-1]+1,places[i+1]+4);
+				}
+				s1.insert(places[i-1]+1,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		}
+	}
+	for (int i = 0; i < j; i++)
+	{
+		if (elements[i]=='*')
+		{
+			if (FirstOperation==0)
+			{
+
+
+				FirstOperation=1;
+			}		
+			if (elements[i+1]=='-'&&places[i+1]==places[i]+1)
+			{
+				if (FirstOperation==1)
+				{
+					s1.erase(places[i+1],1);
+				}
+				else
+				{
+					s1.erase(places[i+1]+4,1);
+				}
+				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,elements);
+				arrayModification(i+1,j,places);
+				j-=1;
+				for (int k = i+1; k < j; k++)
+				{
+					places[k]-=1;
+				}
+				if (Values[i+1]>0)
+				{
+					Values[i+1]*=(-1);
+				}
+				negelement=1;
+			}
+			if (i==0)
+			{
+				Values[i+1]=Values[i]*Values[i+1];
+				result=to_string(Values[i+1]);
+			    if (negelement==1)
+				{
+					s1.erase(0,places[i]+values[i+1].length()+2);
+					negelement=0;
+				}
+				else
+				{
+
+					s1.erase(0,places[i]+values[i+1].length()+1);
+				}
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]*Values[i+1];
+				result=to_string(Values[i+1]);
+				if (i+1==j)
+				{
+					s1.erase(places[i-1]+1,places[i+1]+places[i]);
+				}
+				else
+				{
+					s1.erase(places[i-1]+1,places[i+1]+places[i]+4);
+				}
+				s1.insert(places[i-1]+1,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		}
+		if (elements[i]=='/')
+		{
+			if (FirstOperation==0)
+			{
+				FirstOperation=1;
+			}
+			if (elements[i+1]=='-'&&places[i+1]==places[i]+1)
+			{
+				if (FirstOperation==1)
+				{
+					s1.erase(places[i+1],1);
+				}
+				else
+				{
+					s1.erase(places[i+1]+4,1);
+				}
+				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,elements);
+				arrayModification(i+1,j,places);
+				j-=1;
+				for (int k = i+1; k < j; k++)
+				{
+					places[k]-=1;
+				}
+				if (Values[i+1]>0)
+				{
+					Values[i+1]*=(-1);
+				}
+				negelement=1;
+			}
+			if (i==0)
+			{
+				Values[i+1]=Values[i]/Values[i+1];
+				result=to_string(Values[i+1]);
+				if (negelement==1)
+				{
+					s1.erase(0,places[i]+values[i+1].length()+2);
+					negelement=0;
+				}
+				else
+				{
+					s1.erase(0,places[i]+values[i+1].length()+1);
+				}            
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]/Values[i+1];
+				result=to_string(Values[i+1]);
+				if (i+1==j)
+				{
+					s1.erase(places[i-1]+1,places[i+1]);
+				}
+				else
+				{
+					s1.erase(places[i-1]+1,places[i+1]+4);
+				}
+				s1.insert(places[i-1]+1,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		}
+	}
+	for (int i = 0; i < j; i++)
+	{
+		if (elements[i]=='+')
+		{
+			if (FirstOperation==0)
+			{
+				FirstOperation=1;
+			}
+			if ((elements[i+1]=='-'&&places[i+1]==places[i]+1)||Values[i+1]<0)
+			{
+				if (FirstOperation==1)
+				{
+					s1.erase(places[i]+1,1);
+				}
+				else
+				{
+					s1.erase(places[i]+4,1);
+				}
+			//	arrayModification(i+1,j,Values);
+			//	arrayModification(i+1,j,elements);
+			//	arrayModification(i+1,j,places);
+				j-=1;
+				for (int k = i+1; k < j; k++)
+				{
+					places[k]-=1;
+				}
+				if (Values[i+1]>0)
+				{
+					Values[i+1]*=(-1);
+				}
+				negelement=1;
+			}
+			if (i==0)
+			{
+				Values[i+1]=Values[i]+Values[i+1];
+				result=to_string(Values[i+1]);
+				if (negelement==1)
+				{
+					s1.erase(0,places[i]+values[i+1].length()+2);
+					negelement=0;
+				}
+				else
+				{
+					s1.erase(0,places[i]+values[i+1].length()+1);
+				}
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]+Values[i+1];
+				result=to_string(Values[i+1]);
+				if (i+1==j)
+				{
+					s1.erase(0,places[i+1]-places[i]);
+				}
+				else
+				{
+					s1.erase(0,places[i+1]-places[i]+4);
+				}
+				s1.insert(0,result);
+			}
+		}
+		if (elements[i]=='-')
+		{
+			if (FirstOperation==0)
+			{
+				FirstOperation=1;
+			}
+			if (elements[i+1]=='-'&&places[i+1]==places[i]+1)
+			{
+				if (FirstOperation==1)
+				{
+					s1.erase(places[i+1],1);
+				}
+				else
+				{
+					s1.erase(places[i+1]+4,1);
+				}
+				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,elements);
+				arrayModification(i+1,j,places);
+				j-=1;
+				for (int k = i+1; k < j; k++)
+				{
+					places[k]-=1;
+				}
+				if (Values[i+1]>0)
+				{
+					Values[i+1]*=(-1);
+				}
+				negelement=1;
+			}
+			if (i==0)
+			{
+				Values[i+1]=Values[i]-Values[i+1];
+				result=to_string(Values[i+1]);
+				if (negelement==1)
+				{
+					s1.erase(0,places[i]+values[i+1].length()+2);
+					negelement=0;
+				}
+				else
+				{
+					s1.erase(0,places[i]+values[i+1].length()+1);
+				}
+				s1.insert(0,result);
+			}
+			else
+			{
+				Values[i+1]=Values[i]-Values[i+1];
+				result=to_string(Values[i+1]);
+				if (i+1==j)
+				{
+					s1.erase(0,places[i+1]-places[i]);
+				}
+				else
+				{
+					s1.erase(0,places[i+1]-places[i]+4);
+				}
+				s1.insert(0,result);
+			}
+		}
+	}
+	return result;
+}
 
 
 
 int main(int argv,char* argc[])			// argv : number of parameter in the command .....argc : the parameters as strings
 {
-	map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
 	string s1,s2, Matrix_String;		 
 	
 	
@@ -17,10 +412,6 @@ if(argv>1)			// ensure that the file path added
 	{
 	
 		ifstream infile(argc[1]);		// open the file whose path included in argc[1]
-	
-	
-
-	
 		while (getline(infile,s1))                       //  read every line in string s1
 		{
 			if(s1.find('[')!=-1 )                   // if this line contains matrix declaration 
@@ -73,8 +464,7 @@ if(argv>1)			// ensure that the file path added
 				}
 
 			}
-			
-		
+		        
 			else if(s1.find('=')!=-1)                      // if this line contains an operation
 			{
 
@@ -387,6 +777,45 @@ else			// if the file path not added as a parameter close the program
 
 	{cout<<"The file path not added . The program closed "<<endl;}
 
+string t="L=(-4^3)+(2-2)sin(1.34))";
+	brackets_no(t);
+	t=spacetrim(t);
+	BracketsHandling(t);
+	trigsearch(t);
+	BracketsHandling(t);
+	/*if (ErrorFlag==1)
+	{
+		 std:: cout<<"parse error:"<<endl<<"syntax error"<<endl;
+		 ErrorFlag=0;
+	}
+	else
+	{*/
+	string ss1=t.substr(t.find('=',0)+1,t.length()-t.find('=',0));      //gets the string that should be calculated
+	string op;
+	string R;
+	string operand=t.substr(0,t.find('=',0)+1);   //the name of the variable that we will store the result in
+	for(int i=0;i<s1.length();i++)
+	{
+		if(ss1[i]==')')
+		{int k=i;
+			do
+			{
+				k--;
+			}
+			while(ss1[k] !='(');        
+		 	op=ss1.substr(k+1,(i)-(k+1));     //gets the string that between the brackets () 
+			//cout<<op<<endl;
+			R=Get_Result(op);      //gets the result of the string that between the brackets and stores it in R
+		//	cout<<R<<endl;
+			ss1.erase(k,i-k+1);    //removes the brackets and the string that has been calculated
+			ss1.insert(k,R);       //inserts R at the old opening of the bracket (
+			i=0;
+		}
+	} 
+	R=Get_Result(ss1);
+	//}
+
+
 return 0;
 
 }
@@ -417,296 +846,5 @@ return 0;
 
 
 
-/*
-		getline(infile,s,'[');
-		s+=']';
-		//Matrix_String=stringtrim(s);
-		Matrix_String=s.substr(s.find('['),s.length()-s.find('['));              // get matrix string as [....;....;...]
-		//cout<<Matrix_String<<endl;
-		Mnames[count]=Matrix_String;               //store matrix in the array
 
-		for(int i=0;i<s.length(); i++)                    // to store the names
-		{
-			if(s[i]==' '||s[i]=='\n'||s[i]=='\r')                  // we skip spaces and newlines
-				continue;
-			else
-			{
-				names[count]=s[i];                   // and store the first char ie. A or B
-				break;
-			}
 
-				
-		}
-		count++;                                      // increment count to signal a matrix is read
-		getline(infile,s);                           // extra getline to remove trailing newlines
-	
-
-	}
-
-	while ( getline(infile,s))                         
-	{
-		
-
-	}
-	
-*/
-/*
-	for (int i=0; i<counter; i++)
-	{
-		names[count]=operations[i][0];                    //store the first elements in operation in the names array ie. CDEFGH
-		count++;
-	}
-
-
-	/////////////////////////////////////////////
-	
-	cout<<endl<<names[0]<<'='<<endl;
-	cout<<Mnames[0].getString()<<endl<<endl; 
-	
-	cout<<names[1]<<'='<<endl;
-	
-	cout<<Mnames[1].getString()<<endl<<endl;
-	
-	
-	
-	////////////////////////////////////////
-
-	/*for (int i=0;i<count;i++)           //  to print the array of names 
-		cout<<names[i];
-	*/	
-//try{
-/*
-	for (int i=0; i<12;i++)                    // for loop to pass on array of operations
-	{
-		for (int j=0;j<6; j++)
-		{
-			if (operations[i][j]=='+')
-			{
-				for(int x=0;x<count;x++)
-					if (operations[i][j-1]==names[x])           // get the element before the +    x
-						for(int y=0;y<count;y++)
-							if (operations[i][j+1]==names[y])    // get the element after the +    y
-								for (int z=0; z<count;z++)
-								try{
-									if (operations[i][0]==names[z])      // get the element before =   z
-									{
-										Mnames[z]=Mnames[x]+Mnames[y];       // add x and y then store result in z
-										cout<<operations[i][0]<<"="<<endl;
-										//Mnames[z].PrintMatrix();
-										cout<<Mnames[z].getString();
-									}
-								}
-								catch(const char* error){cout<<endl<<"Error : "<<error<<endl;}
-
-
-			}
-			else if (operations[i][j]=='-')                     ///// same for all operations
-			{
-				for(int x=0;x<count;x++)
-					if (operations[i][j-1]==names[x])
-						for(int y=0;y<count;y++)
-							if (operations[i][j+1]==names[y])
-								for (int z=0; z<count;z++)
-								try{
-									if (operations[i][0]==names[z])
-									{
-										Mnames[z]=Mnames[x]-Mnames[y];
-										cout<<operations[i][0]<<"="<<endl;
-										//Mnames[z].PrintMatrix();
-										cout<<Mnames[z].getString();
-									}
-								}
-								catch(const char* error){cout<<endl<<"Error : "<<error<<endl;}
-			}
-			else if (operations[i][j]=='*')
-			{
-				for(int x=0;x<count;x++)
-					if (operations[i][j-1]==names[x])
-						for(int y=0;y<count;y++)
-							if (operations[i][j+1]==names[y])
-								for (int z=0; z<count;z++)
-								try{
-									if (operations[i][0]==names[z])
-									{
-										Mnames[z]=Mnames[x]*Mnames[y];
-										cout<<operations[i][0]<<"="<<endl;
-										cout<<Mnames[z].getString();
-										//Mnames[z].PrintMatrix();
-									}
-								}
-								catch(const char* error){cout<<endl<<"Error : "<<error<<endl;}
-			}
-			else if (operations[i][j]=='/')                                //put this else and the code inside it in a comment and the rest of the code runs correctly
-			{
-				for(int x=0;x<count;x++)
-					if (operations[i][j-1]==names[x])
-						for(int y=0;y<count;y++)
-							if (operations[i][j+1]==names[y])
-								for (int z=0; z<count;z++)
-								try{
-									if (operations[i][0]==names[z])
-									{
-										//cout<<Mnames[y].getDeterminant()<<endl;
-										//if(Mnames[y].getDeterminant()==0)
-										//{
-										//	cout<<"can't devide . Determinant is zero"<<endl;
-										//break;}
-										//else{
-										Mnames[z]=Mnames[x]/Mnames[y];     // doesn't work in big example and code stops here,why? (Dimensions are correct)
-										cout<<operations[i][0]<<"="<<endl;           
-										cout<<Mnames[z].getString();
-										//Mnames[z].PrintMatrix();
-										//}
-									}
-								}
-								catch(const char* w){cout<<endl<<"Error : "<<w<<endl;}
-
-							
-			}
-			else if (operations[i][j]=='.')
-			{
-				
-						for(int y=0;y<count;y++)
-							if (operations[i][j+2]==names[y])
-								for (int z=0; z<count;z++)
-								//try{
-									if (operations[i][0]==names[z])
-									{
-										Mnames[z]=Mnames[y].elediv();
-										cout<<operations[i][0]<<"="<<endl;
-										//Mnames[z].PrintMatrix();
-										cout<<Mnames[z].getString();
-									}
-								//}
-								//catch(const char* error){cout<<endl<<"Error : "<<error<<endl;}
-			}
-			else if (operations[i][j]=='\'')
-			{
-				for(int x=0;x<count;x++)
-					if (operations[i][j-1]==names[x])
-						
-								for (int z=0; z<count;z++)
-								//try{
-									if (operations[i][0]==names[z])
-									{
-										Mnames[z]=Mnames[x].transpose();
-										cout<<operations[i][0]<<"="<<endl;
-										cout<<Mnames[z].getString();
-										//Mnames[z].PrintMatrix();
-									}
-								//}
-								//catch(const char* error){cout<<endl<<"Error : "<<error<<endl;}
-			}
-
-		}
-
-		cout<<endl;
-	}
-
-//}
-//catch(const char* w)
-//{	cout<<endl<<endl<<s<<endl;}
-
-	infile.close();
-}
-else
-{cout<<"The file path not added"<<endl;}
-
-        return 0;
-	}
-	
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int main(){
-	map < char , CMatrix >  my_map;
-
-
-	my_map.insert( pair < char , CMatrix > ('A',CMatrix("[2.3 2.7;7.6 4.5]")));
-	my_map.insert( pair < char , CMatrix > ('B',CMatrix("[2.3 2.7;7.6 4.5;1.3 22.4]")));
-	my_map.insert( pair < char , CMatrix > ('C',CMatrix("[2.53 2.37;73.6 5.5]")));
-
-
-	//cout<<my_map.size()<<endl;
-try{
-	cout<<(my_map['A']+my_map['B']).getString()<<endl;
-}
-catch(const char* error)
-{cout<<"error : "<<error<<endl;}
-	//map<char,CMatrix>::iterator it =my_map.begin();
-	//cout<<(it->first)<<endl<<((it->second).getString())<<endl;
-
-
-	//string s="[2.0 4.0;6.0 1.0]";
-	//CMatrix x=CMatrix(s);
-	//cout<<x.getString()<<endl;
-	
-
-
-
-	return 0;
-}
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*int x,v=0,index=0;string y;
-			string newinstructions;
-			while(input.find(']',index)!=-1)
-			{v++;
-
-			 x = input.find(']',index);
-		   y=input.substr(index,x+1-index);
-			somefunction(y);
-				index+=(x+1);
-				if(v==2)
-				newinstructions=input.substr(index,input.length()-1-index);
-
-			}
-			
-			
-			
-			cout<<newinstructions<<endl;
-
-
-
-
-
-		*/
