@@ -1204,3 +1204,290 @@ ostream& operator <<(ostream &os,CMatrix m)
 
 
 
+////////////////////////////////////////////////  TRIG  FUNCTIONS ////////////////////////////////
+
+
+
+CMatrix CMatrix::sinn()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = sin(values[i][z]);
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			//cout<<x<<endl;
+			}
+
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+
+
+CMatrix CMatrix::coss()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = cos(values[i][z]);
+    		//cout<<x<<endl;
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+CMatrix CMatrix::tann()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = tan(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+CMatrix CMatrix::asinn()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+if(values[i][z]>=-1.0 && values[i][z]<=1.0)   
+ 	{
+ 		double x = asin(values[i][z]);
+
+			if (x>exp(10))   {x=std::numeric_limits<double>::infinity();}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )  {x=0.0;}
+
+			n.values[i][z]= x;
+	}
+	else 
+    {
+    	n.values[i][z] = std::numeric_limits<double>::quiet_NaN();
+	}
+  }
+}
+return n;
+}
+
+CMatrix CMatrix::acoss()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+	if(values[i][z]>=-1.0 && values[i][z]<=1.0)   
+ 	{
+ 		double x = acos(values[i][z]);
+
+			if (x>exp(10))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+	}
+	else 
+    {
+    	n.values[i][z] = std::numeric_limits<double>::quiet_NaN();
+	}
+  }
+}
+
+return n;
+}
+
+CMatrix CMatrix::atann()
+{
+CMatrix n(nR,nC);
+for (int i=0 ; i<nR; i++)
+{
+  for(int z=0 ;z<nC ;z++)
+  {
+	if(values[i][z]==std::numeric_limits<double>::infinity() || values[i][z]>exp(12))
+	{n.values[i][z]=pi/(double)2; continue;}
+	else
+	{
+    		double x = atan(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+	}
+  }
+}
+
+return n;
+}
+
+
+CMatrix CMatrix::sinnh()                 
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = sinh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+CMatrix CMatrix::cossh()
+{
+CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = cosh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+CMatrix CMatrix::tannh()
+{
+	CMatrix n(nR,nC);
+
+	for (int i=0 ; i<nR; i++)
+	{
+
+  		for(int z=0 ;z<nC ;z++)
+  		{
+    		double x = tanh(values[i][z]);
+
+			if (x>exp(10) || x<(-exp(10)))
+			{
+			x=std::numeric_limits<double>::infinity();
+			}
+
+			if ( (x<exp(-10) && x>0 ) || ( x<0 && x>(-exp(-10)) ) )
+			{
+			x=0.0;
+			}
+
+			n.values[i][z]= x;
+		}
+
+	}
+
+	return n;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
