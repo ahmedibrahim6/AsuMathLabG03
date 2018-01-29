@@ -111,6 +111,18 @@ public:
 	CMatrix  expp();
 	CMatrix sqrtt();
 	friend ostream& operator <<(ostream &os,CMatrix m);
+	
+	
+	
+	CMatrix sinn();
+	CMatrix coss();
+	CMatrix tann();
+	CMatrix asinn();
+	CMatrix acoss();
+	CMatrix atann();
+	CMatrix sinnh();
+	CMatrix cossh();
+	CMatrix tannh();
 
 		   
 	
