@@ -31,6 +31,37 @@ int  type (string s1,string s2, string A[],int y)
 
 
 //////////////////////////////////////////////////////////GET RESULT////////////////////////////
+void arrayModification(int y,int x,double*p)
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		*(p+(i))=*(p+i+1);
+	}
+}
+void arrayModification(int y,int x,char *p)
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		*(p+(i))=*(p+i+1);
+	}
+}
+void arrayModification(int y,int x,int *p)
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		*(p+(i))=*(p+i+1);
+	}
+}
+
+string spacetrim(string x)            //remove any unused spaces from the input string
+{
+	for(int i=0;i<x.length();i++)
+	{
+		if(x[i]==' '/*||x[i]==NULL*/)
+		{x.erase(i,1);}
+	}
+	return x;
+}
 string Get_Result(string s1)
 {
 	int flag=0,FirstOperation=0;                                //to count the number of the operations between two brackets ()
@@ -148,8 +179,6 @@ string Get_Result(string s1)
 		{
 			if (FirstOperation==0)
 			{
-
-
 				FirstOperation=1;
 			}		
 			if (elements[i+1]=='-'&&places[i+1]==places[i]+1)
@@ -187,7 +216,6 @@ string Get_Result(string s1)
 				}
 				else
 				{
-
 					s1.erase(0,places[i]+values[i+1].length()+1);
 				}
 				s1.insert(0,result);
@@ -397,8 +425,521 @@ string Get_Result(string s1)
 			}
 		}
 	}
-	return result;
+	return s1;
 }
+
+
+////////////////////////////////////////handling the case: ex:5(10*20)//////////////////////////////////////
+void BracketsHandling(string& x)                        
+{
+	int b;
+	for (int i = 1; i <x.length(); i++)
+	{
+		b=i-1;
+		if (x[i]=='(' )
+		{
+			if ( (int)x[b]>=48 && (int)x[b]<=57)
+			{
+				x.insert(i,"*");
+				i=1;
+			}
+			else if(x[b]=='(')
+			{
+				x.erase(x.begin()+b);i=1;
+			}
+			else if (x[b]==')')
+			{
+				x.insert(i,"*");
+				i=1;
+			}
+		}
+		else if (x[i]==')' && x[b]==')')
+			{
+				x.erase(x.begin()+b);i=1;
+			}
+		if (x[i]==')' )
+		{
+			if ( (int)x[i+1]>=48 && (int)x[i+1]<=57)
+			{
+				x.insert(i+1,"*");
+				i=1;
+			}}
+	}
+};
+////////////////////////////////////////////////////////////replacing sin in the string//////////////////////////
+void SinSearch(string& x)
+{
+	string v,sub,result;
+	double temp=0;
+	char z=x.find("sin(");//*p=x.find("sin(");
+	if ((int)z != (-1))
+	{
+		/*if (x.find(')',x.find("sin("))==-1)
+		{
+			ErrorFlag=1;
+		}*/
+		 sub=x.substr(x.find("sin(")+4,x.find(")",x.find("sin("))-x.find("sin(")-4);
+		 //CMatrix Mresult=Get_Result(sub);
+		 //temp=atof(result.c_str());
+		 //CMatrix c;
+	     //Mresult.sinn();
+		// temp=sin(temp);
+		 string temp2=Get_Result(sub);
+		 double temp3=sin(atof(temp2.c_str()));
+		 v=std::to_string(temp3);
+		 
+		 x.replace(x.find("sin("),x.find(")",x.find("sin("))-x.find("sin(")+1,'('+v+/*Mresult*/')');
+	}
+};
+
+////////////////////////////////////////////////////////// replacing cos////////////////////////////////////////////////////
+
+void CosSearch(string& x)
+{
+	string v,sub,result;
+	double temp=0;
+	char z=x.find("cos(");//*p=x.find("sin(");
+	if ((int)z != (-1))
+	{
+		/*if (x.find(')',x.find("cos("))==-1)
+		{
+			ErrorFlag=1;
+		}*/
+		 sub=x.substr(x.find("cos(")+4,x.find(")",x.find("cos("))-x.find("cos(")-4);
+		 //CMatrix Mresult=Get_Result(sub);
+		 //temp=atof(result.c_str());
+		 //CMatrix c;
+	     //Mresult.coss();
+		 
+		 //temp=cos(temp);
+		 //v=std::to_string(temp);
+		 string temp2=Get_Result(sub);
+		 double temp3=cos(atof(temp2.c_str()));
+		 v=std::to_string(temp3);
+
+		 x.replace(x.find("cos("),x.find(")",x.find("cos("))-x.find("cos(")+1,'('+v+/*Mresult*/')');
+	}
+};
+
+/////////////////////////////////////////////////tan replacement/////////////////////////////////////////////////
+
+void TanSearch(string& x)
+{
+	string v,sub,result;
+	double temp=0;
+	char z=x.find("tan(");//*p=x.find("sin(");
+	if ((int)z != (-1))
+	{
+		/*if (x.find(')',x.find("tan("))==-1)
+		{
+			ErrorFlag=1;
+		}*/
+		 sub=x.substr(x.find("tan(")+4,x.find(")",x.find("tan("))-x.find("tan(")-4);
+		 //CMatrix Mresult=Get_Result(sub);
+		 //temp=atof(result.c_str());
+		 //CMatrix c;
+	     //Mresult.tann();
+		 //temp=tan(temp);
+		 //v=std::to_string(temp);
+		 string temp2=Get_Result(sub);
+		 double temp3=tan(atof(temp2.c_str()));
+		 v=std::to_string(temp3);
+
+		 x.replace(x.find("tan("),x.find(")",x.find("tan("))-x.find("tan(")+1,'('+v+/*Mresult*/')');
+	}
+};
+
+///////////////////////////////////////////////////trig with no brackets//////////////////////////////
+
+void logtrighandle(string &x)
+{
+	string temp;
+	double result;
+	for (int i = 0; i < x.length(); i++)
+	{
+		if (x[i]=='s' && x[i+1]=='i' && x[i+2]=='n')
+		{
+			while (x[i+3]>=48 && x[i+3]<=57 || x[i+3]=='.')
+			{
+				temp+=x[i+3];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=sin(result);
+			x.replace(x.find("sin"),temp.length()+3,'('+to_string(result)+')');
+		}
+		else if (x[i]=='t' && x[i+1]=='a' && x[i+2]=='n')
+		{
+			while (x[i+3]>=48 && x[i+3]<=57 || x[i+3]=='.')
+			{
+				temp+=x[i+3];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=tan(result);
+			x.replace(x.find("tan"),temp.length()+3,'('+to_string(result)+')');
+		}
+		else if (x[i]=='c' && x[i+1]=='o' && x[i+2]=='s')
+		{
+			while (x[i+3]>=48 && x[i+3]<=57 || x[i+3]=='.')
+			{
+				temp+=x[i+3];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=cos(result);
+			x.replace(x.find("cos"),temp.length()+3,'('+to_string(result)+')');
+		}
+		else if (x[i]=='l' && x[i+1]=='o' && x[i+2]=='g' && x[i+3]=='1' && x[i+4]=='0')
+		{
+			if (x[i+5]=='(')
+			{
+			string sub=x.substr(x.find("log10(")+6,x.find(")",x.find("log10("))-x.find("log10(")-6),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.logg10();
+			double temp1=0;
+			string temp2=Get_Result(sub);
+			//temp1=atof(sub.c_str());
+			temp1=atof(temp2.c_str());
+			temp1=log10(temp1);
+			v=std::to_string(temp1);
+			 x.replace(x.find("log10("),x.find(")",x.find("log10("))-x.find("log10(")+1,'('+v+/*Mresult*/')');
+			}
+			else{
+			while (x[i+5]>=48 && x[i+5]<=57 || x[i+5]=='.')
+			{
+				temp+=x[i+5];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=log10(result);
+			x.replace(x.find("log10"),temp.length()+5,'('+to_string(result)+')');
+			}}
+		else if (x[i]=='l' && x[i+1]=='o' && x[i+2]=='g' && x[i+3]!='1')
+		{
+			if (x[i+3]=='(')
+			{
+				string sub=x.substr(x.find("log(")+4,x.find(")",x.find("log("))-x.find("log(")-4),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.logg();
+			//double temp1=0;
+			//temp1=atof(sub.c_str());
+			//temp1=log(temp1);
+			//v=std::to_string(temp1);
+			 string temp2=Get_Result(sub);
+			double temp3=log(atof(temp2.c_str()));
+			v=std::to_string(temp3);
+				x.replace(x.find("log("),x.find(")",x.find("log("))-x.find("log(")+1,'('+v+/*Mresult*/')');
+			}
+			else if(x[i+3]!='1'){
+			while (x[i+3]>=48 && x[i+3]<=57 || x[i+3]=='.')
+			{
+				temp+=x[i+3];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=log(result);
+			x.replace(x.find("log"),temp.length()+3,'('+to_string(result)+')');
+			}}
+
+	}
+};
+
+///////////////////////////////////////////////////////////invsearch/////////////////////////////////////////////////
+void invsearch(string &x,int y)
+{
+	string temp;
+	double result;
+	for (int i = 0; i < x.length(); i++)
+	{
+		if (x[i]=='a' && x[i+1]=='s' && x[i+2]=='i' && x[i+3]=='n')
+		{
+			if (x[i+4]=='(')
+			{
+			string sub=x.substr(x.find("asin(")+5,x.find(")",x.find("asin("))-x.find("asin(")-5),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.asinn();
+			//double temp1=0;
+			//temp1=asin(temp1);
+			//v=std::to_string(temp1);
+			string temp2=Get_Result(sub);
+			 double temp3=asin(atof(temp2.c_str()));
+			 v=std::to_string(temp3);
+ 
+			x.replace(x.find("asin("),x.find(")",x.find("asin("))-x.find("asin(")+1,'('+v+/*Mresult*/')');
+			}
+		
+			else{
+			while (x[i+4]>=48 && x[i+4]<=57 || x[i+4]=='.')
+			{
+				temp+=x[i+4];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=asin(result);
+			x.replace(x.find("asin"),temp.length()+4,'('+to_string(result)+')');
+			}}
+		
+		
+		else if (x[i]=='a' && x[i+1]=='t' && x[i+2]=='a' && x[i+3]=='n')
+		{
+			if (x[i+4]=='(')
+			{
+			string sub=x.substr(x.find("atan(")+5,x.find(")",x.find("atan("))-x.find("atan(")-5);
+			//CMatrix Mresult=Get_Result(sub);
+			 //	temp=atof(result.c_str());
+		 //		CMatrix c;
+	     //		Mresult.atann();
+			 //double temp1=0;
+			 //temp1=atan(temp1);
+			 //string v=std::to_string(temp1);
+			string temp2=Get_Result(sub);
+			 double temp3=sin(atof(temp2.c_str()));
+			 string v=std::to_string(temp3);
+ 
+			x.replace(x.find("atan("),x.find(")",x.find("atan("))-x.find("atan(")+1,'('+v+/*Mresult*/')');
+			}
+			else 
+			
+			{while (x[i+4]>=48 && x[i+4]<=57 || x[i+4]=='.')
+				{
+				temp+=x[i+4];
+				i++;
+				}
+				result=atof(temp.c_str());
+				result=atan(result);
+				x.replace(x.find("atan"),temp.length()+4,'('+to_string(result)+')');
+			}}
+
+		else if (x[i]=='a' && x[i+1]=='c' && x[i+2]=='o' && x[i+3]=='s')
+		{
+			if (x[i+4]=='(')
+			{
+			string	sub=x.substr(x.find("acos(")+5,x.find(")",x.find("acos("))-x.find("acos(")-5);
+			 //CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.acoss();
+			//double temp1=0;
+			//temp1=acos(temp1);
+			//string v=std::to_string(temp1);
+			string temp2=Get_Result(sub);
+			 double temp3=acos(atof(temp2.c_str()));
+			 string v=std::to_string(temp3);
+
+		 x.replace(x.find("acos("),x.find(")",x.find("acos("))-x.find("acos(")+1,'('+v+/*Mresult*/')');
+	
+			}
+			else{
+			while (x[i+4]>=48 && x[i+4]<=57 || x[i+4]=='.')
+			{
+				temp+=x[i+4];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=acos(result);
+			x.replace(x.find("acos"),temp.length()+4,'('+to_string(result)+')');
+			}}}
+};
+
+///////////////////////////////////////////////////hsearch////////////////////////////////////////////////////////////////
+
+void hsearch(string& x,int y)
+{
+	if (y==0)
+	{
+		string sub=x.substr(x.find("sinh(")+5,x.find(")",x.find("sinh("))-x.find("sinh(")-5),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.sinnh();
+			//double temp1=0;
+			//temp1=sinh(temp1);
+			 //v=std::to_string(temp1);
+			string temp2=Get_Result(sub);
+			double temp3=sinh(atof(temp2.c_str()));
+			v=std::to_string(temp3);
+	 
+		x.replace(x.find("sinh("),x.find(")",x.find("sinh("))-x.find("sinh(")+1,'('+v+/*Mresult*/')');
+	}
+	else if (y==1)
+	{
+		string sub=x.substr(x.find("cosh(")+5,x.find(")",x.find("cosh("))-x.find("cosh(")-5),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.cossh();
+			//double temp1=0;
+			//temp1=cosh(temp1);
+			//v=std::to_string(temp1);
+		string temp2=Get_Result(sub);
+		 double temp3=cosh(atof(temp2.c_str()));
+		 v=std::to_string(temp3);
+	 
+		x.replace(x.find("cosh("),x.find(")",x.find("cosh("))-x.find("cosh(")+1,'('+v+/*Mresult*/')');
+	}
+	else if (y==2)
+	{
+		string sub=x.substr(x.find("tanh(")+5,x.find(")",x.find("tanh("))-x.find("tanh")-5),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.tannh();
+			/*double temp1=0;
+			temp1=tanh(temp1);
+			v=std::to_string(temp1);*/
+			string temp2=Get_Result(sub);
+			 double temp3=tanh(atof(temp2.c_str()));
+			v=std::to_string(temp3);
+	
+		x.replace(x.find("tanh("),x.find(")",x.find("tanh("))-x.find("tanh(")+1,'('+v+/*Mresult*/')');
+	}
+};
+/////////////////////////////////////////////////////exponential & sqrt calculations/////////////////////////////////////////////
+
+void expsqrt(string &x)
+{
+	string temp;
+	double result,temp1=0;
+	for (int i = 0; i < x.length(); i++)
+	{
+		if (x[i]=='s' && x[i+1]=='q' && x[i+2]=='r' && x[i+3]=='t')
+		{
+			if (x[i+4]=='(')
+			{
+			string sub=x.substr(x.find("sqrt(")+5,x.find(")",x.find("sqrt("))-x.find("sqrt(")-5),v;
+			//CMatrix Mresult=Get_Result(sub);
+			//temp=atof(result.c_str());
+			//CMatrix c;
+			//Mresult.sqrtt();
+			// temp1=sqrt(temp1);
+			//v=std::to_string(temp1);
+			string temp2=Get_Result(sub);
+		 double temp3=sqrt(atof(temp2.c_str()));
+		 v=std::to_string(temp3);
+
+			 x.replace(x.find("sqrt("),x.find(")",x.find("sqrt("))-x.find("sqrt(")+1,'('+v+/*Mresult*/')');
+			}
+		
+			else{
+			while (x[i+4]>=48 && x[i+4]<=57 || x[i+4]=='.')
+			{
+				temp+=x[i+4];
+				i++;
+			}
+			result=atof(temp.c_str());
+			result=sqrt(result);
+			x.replace(x.find("sqrt"),temp.length()+4,'('+to_string(result)+')');
+			}}
+		
+		
+		else if (x[i]=='e' && x[i+1]=='x' && x[i+2]=='p')      ////////////////////////warning
+		{
+			if (x[i+3]=='(')
+			{
+			string sub=x.substr(x.find("exp(")+4,x.find(")",x.find("exp("))-x.find("exp(")-4);
+			//CMatrix Mresult=Get_Result(sub);
+			 //	temp=atof(result.c_str());
+				temp1=atof(sub.c_str());
+		 //		CMatrix c;
+	     //		Mresult.expp();
+			 // temp1=exp(temp1);
+			 //string v=std::to_string(temp1);
+				string temp2=Get_Result(sub);
+		 double temp3=exp(atof(temp2.c_str()));
+		string v=std::to_string(temp3);
+
+			 x.replace(x.find("exp("),x.find(")",x.find("exp("))-x.find("exp(")+1,'('+v+/*Mresult*/')');
+			}
+			else 
+			
+			{while (x[i+3]>=48 && x[i+3]<=57 || x[i+3]=='.')
+				{
+				temp+=x[i+3];
+				i++;
+				}
+				result=atof(temp.c_str());
+				result=exp(result);
+				x.replace(x.find("exp"),temp.length()+3,'('+to_string(result)+')');
+			}}}
+};
+/////////////////////////////////////////////////////summing fn///////////////////////////////////////////////////////
+void trigsearch(string& x)
+{
+	char z=x.find("sin("),z1=x.find("cos("),z2=x.find("tan("),z3=x.find("acos"),z4=x.find("asin"),z5=x.find("atan");
+	string sub="0",temp;
+	char z6=x.find("sinh"),z7=x.find("cosh"),z8=x.find("tanh");
+	while ((int)z4 !=-1)
+	{
+		z4=x.find("asin");
+		invsearch(x,0);
+	}
+	while ((int)z3 !=-1)
+	{
+		z3=x.find("acos");
+		invsearch(x,1);
+	}
+		while ((int)z5 !=-1)
+	{
+		z5=x.find("atan");
+		invsearch(x,2);
+	}
+		while ((int)z6 !=-1)
+	{
+		z6=x.find("sinh");
+		hsearch(x,0);
+	}
+		while ((int)z7 !=-1)
+	{
+		z7=x.find("cosh");
+		hsearch(x,1);
+	}
+		while ((int)z8 !=-1)
+	{
+		z8=x.find("tanh");
+		hsearch(x,2);
+	}
+		
+	while((int)z != -1)
+	{
+		z=x.find("sin(");
+		SinSearch(x);
+	}
+	while ((int)z1 != (-1))
+	{
+		z1=x.find("cos(");
+		CosSearch(x);
+	}
+	while ((int)z2 != (-1))
+	{
+		z2=x.find("tan(");
+		TanSearch(x);
+	}
+	int i=0;
+	while ((x.find("sin",i)==1 || x.find("cos",i)==1 || x.find("tan",i)==1 ||x.find("log",i))&& i<x.length())
+	{
+		i++;
+		logtrighandle(x);
+	}
+	i=0;
+	while((x.find("exp")!=-1 || x.find("sqrt")!=-1)&& i<x.length())
+	{
+		i++;
+		expsqrt(x);
+	}
+	
+//return sub;
+};
+
+
+
+
 
 
 
@@ -777,24 +1318,16 @@ else			// if the file path not added as a parameter close the program
 
 	{cout<<"The file path not added . The program closed "<<endl;}
 
-string t="L=(-4^3)+(2-2)sin(1.34))";
-	brackets_no(t);
+	string t="L=(-4^3)+(2-2)sin(1.34))";
 	t=spacetrim(t);
 	BracketsHandling(t);
 	trigsearch(t);
 	BracketsHandling(t);
-	/*if (ErrorFlag==1)
-	{
-		 std:: cout<<"parse error:"<<endl<<"syntax error"<<endl;
-		 ErrorFlag=0;
-	}
-	else
-	{*/
 	string ss1=t.substr(t.find('=',0)+1,t.length()-t.find('=',0));      //gets the string that should be calculated
 	string op;
 	string R;
 	string operand=t.substr(0,t.find('=',0)+1);   //the name of the variable that we will store the result in
-	for(int i=0;i<s1.length();i++)
+	for(int i=0;i<ss1.length();i++)
 	{
 		if(ss1[i]==')')
 		{int k=i;
@@ -811,10 +1344,10 @@ string t="L=(-4^3)+(2-2)sin(1.34))";
 			ss1.insert(k,R);       //inserts R at the old opening of the bracket (
 			i=0;
 		}
-	} 
+	}
+	cout<<t<<endl;  
 	R=Get_Result(ss1);
-	//}
-
+	cout<<operand<<R<<endl;
 
 return 0;
 
