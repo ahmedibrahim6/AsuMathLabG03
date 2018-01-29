@@ -123,23 +123,32 @@ public:
 	CMatrix  logg10();
 	CMatrix  expp();
 	CMatrix sqrtt();
+
+
 	CMatrix sinn();
-	           CMatrix coss();
-                   CMatrix tann();
+	CMatrix coss();
+	CMatrix tann();
+	CMatrix asinn();
+	CMatrix acoss();
+	CMatrix atann();
+	CMatrix sinnh();
+	CMatrix cossh();
+	CMatrix tannh();
 
 		   
 	
 };
 
-	
 
-void arrayModification(int y,int x,double*p);
 
-void arrayModification(int y,int x,char *p);
-void arrayModification(int y,int x,int *p);
-string Get_Result(string s1);
 
-string spacetrim(string x) ;
-string hesab (string t);
+//void arrayModification(int y,int x,double*p);
 
-string cleanexp(string b);
+//void arrayModification(int y,int x,char *p);
+//void arrayModification(int y,int x,int *p);
+//string Get_Result(string s1);
+
+//string spacetrim(string x) ;
+//string hesab (string t);
+
+//string cleanexp(string b);
