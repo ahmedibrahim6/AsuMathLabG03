@@ -1,36 +1,58 @@
-
 #include "CMatrix.h"
 map < char , CMatrix >  mymap;          // a map relates every defined character as matrix with its data as CMatrix data type
 
-int  type (string s1,string s2, string A[],int y)
-{    int type;
-     int t;
-	for (int i=0;i<y;i++)
-    	{ 
-		if (s1==A[i])
-		{
-    			t=1;	
-			for (int j=0;j<y;j++)
-			{
-				if(s2==A[j])
-				{
-					t=2;
-					break;
-				}
-			}
-			break;
-		}
-    	}
-	if(t!=1||t!=2)
+
+int ErrorFlag=0;
+
+
+bool Re7em (string x)
+{ 
+	char r=x[0];
+	std::map<char, CMatrix> ::iterator it;
+	it=mymap.find(r);
+	if (it!=mymap.end())
 	{
-		t=0;
+		return 1;
 	}
-	return t;
- };
+	else
+	{
+		return 0;
+	}
+
+};
+
+int stringop (string y,string x)
+{
+	int x1=0,x2=0,x3=0;
+	x1=Re7em(x);
+	x2=Re7em(y);
+	x3=x2+x1;
+	return x3;
+};
 
 
 
-//////////////////////////////////////////////////////////GET RESULT////////////////////////////
+char Matrixdeclare (string x)
+{
+	char c;
+	if (x.find("[")!=-1)
+	{
+		 c=x[0];
+	}
+return c;
+};
+
+
+void  brackets_no ( string operations)
+{
+	int bracket1 = count( operations.begin(), operations.end(), '(') ; 					
+	int bracket2 = count ( operations.begin(),  operations.end(), ')') ;                                 					
+	//int bracket = bracket1 + bracket2; 					
+	if (bracket1!=bracket2) 
+	{
+		ErrorFlag=1;
+	}
+}
 void arrayModification(int y,int x,double*p)
 {
 	for(int i=y;i<=x+1;i++)
@@ -45,6 +67,13 @@ void arrayModification(int y,int x,char *p)
 		*(p+(i))=*(p+i+1);
 	}
 }
+void arrayModification(int y,int x,string p[])
+{
+	for(int i=y;i<=x+1;i++)
+	{
+		(p[y])=(p[y+1]);
+	}
+}
 void arrayModification(int y,int x,int *p)
 {
 	for(int i=y;i<=x+1;i++)
@@ -57,22 +86,107 @@ string spacetrim(string x)            //remove any unused spaces from the input 
 {
 	for(int i=0;i<x.length();i++)
 	{
-		if(x[i]==' '/*||x[i]==NULL*/)
+		if(x[i]==' ')
 		{x.erase(i,1);}
 	}
 	return x;
 }
+
+char eleresult(char element,double x,string y)
+{
+	char d=y[0];
+	CMatrix f;
+	std::map<char, CMatrix> ::iterator it;
+	it=mymap.find(d);
+	if (it!=mymap.end())
+	{
+		f=it->second;
+
+	}
+	else
+	{
+		throw("error");
+	}
+	switch(element)
+	{
+		case '+':{f=f.eleadd(x);break;}
+		case '-':{f=f.elesub(x);break;}
+		case '*':{f=f.elemul(x);break;}
+		case '/':{f=f.elediv(x);break;}
+		case '^':{f=f.elepow(x);break;}
+		case '&':{f=f.power(x);break;}
+	}
+	
+	mymap.insert( pair < char , CMatrix > ('f',f));
+	std::map<char, CMatrix> ::iterator it2;
+	it2=mymap.find('f');
+	cout<<it2->first<<" = "<<it2->second<<endl;
+	return it2->first; 
+}
+
+char matrixresult(char element,string x,string y)
+{
+	char d=y[0];
+	char c=x[0];
+	CMatrix f,m;
+	std::map<char, CMatrix> ::iterator it;
+	std::map<char, CMatrix> ::iterator it1;
+	it=mymap.find(d);
+	it1=mymap.find(c);
+	if (it!=mymap.end()&&it1!=mymap.end())
+	{
+		f=it->second;
+		m=it1->second;
+	}
+	else
+	{
+		throw("error");
+	}
+	switch(element)
+	{
+		case '+':{f=m+f;break;}
+		case '-':{f=m-f;break;}
+		case '*':{f=m*f;break;}
+		case '/':{f=m/f;break;}
+	}
+	
+	mymap.insert( pair < char , CMatrix > ('f',f));
+	std::map<char, CMatrix> ::iterator it2;
+	it2=mymap.find('f');
+	cout<<it2->first<<" = "<<it2->second<<endl;
+	return it2->first; 
+}
+
+
 string Get_Result(string s1)
 {
-	int flag=0,FirstOperation=0;                                //to count the number of the operations between two brackets ()
+	int flag=0,FirstOperation=0;               //to count the number of the operations between two brackets ()
 	char elements [100]={};                    //contains the operands of the input string * , - , + , / , ^
 	int places[100]={};                        //contains the index of each operand 
 	string values[100]={};                     //contains all the numbers in the input string in order in string form
 	double Values[100]={};					   //contains all the numbers in the input string in order in double form
 	double Result;                             //contains the final result of the input string as a double form
 	string result;                             //contains the final result of the input string as a string form 
-	int j=0;
+	int j=0,powerflag=0,z;
 	int negelement;
+	int type=0;
+	string c,original=s1;
+
+	if (s1.find(".^")!=-1)
+	{
+		powerflag=1;//z=s1.find(".^")+1;
+	}
+
+	for (int i = 0; i < s1.length(); ++i)
+	{
+		if (s1[i]=='.'&&(s1[i+1]=='+'||s1[i+1]=='-'||s1[i+1]=='*'||s1[i+1]=='/'||s1[i+1]=='^'))
+		{
+			s1.erase(i,1);
+			s1=spacetrim(s1);
+		}
+	}
+
+
 	for (int i = 0; i < s1.length(); i++)
 	{
 		if (s1[i]=='+'||s1[i]=='-'||s1[i]=='*'||s1[i]=='/'||s1[i]=='^')
@@ -99,9 +213,17 @@ string Get_Result(string s1)
 	}
 	values[j]=s1.substr(places[j-1]+1,s1.size()-places[j-1]-1);
 	Values[j]=atof(values[j].c_str());
+	
+	for (int i = 0; i <= j; ++i)
+	{
+		cout<<values[i]<<endl<<Values[i]<<endl;
+	}
+
+
 	if (s1[0]=='-')
 	{
 		arrayModification(0,j,Values);
+		arrayModification(0,j,values);
 		arrayModification(0,j,elements);
 		arrayModification(0,j,places);
 		Values[0]*=(-1);
@@ -110,6 +232,7 @@ string Get_Result(string s1)
 	{
 		if (elements[i]=='^')
 		{
+			type=stringop(values[i],values[i+1]);
 			if (FirstOperation==0)
 			{
 				FirstOperation=1;
@@ -125,6 +248,7 @@ string Get_Result(string s1)
 					s1.erase(places[i+1]+4,1);
 				}
 				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,values);
 				arrayModification(i+1,j,elements);
 				arrayModification(i+1,j,places);
 				j-=1;
@@ -140,43 +264,108 @@ string Get_Result(string s1)
 			}
 			if (i==0)
 			{
-				Values[i+1]=pow(Values[i],Values[i+1]);
-				result=to_string(Values[i+1]);
+				if (type==0)
+				{
+					Values[i+1]=pow(Values[i],Values[i+1]);
+					result=to_string(Values[i+1]);					
+				}
+				else if (type==1 && powerflag==1)
+				{
+					c[0]=eleresult('^',Values[i+1],values[i]);
+				}
+				else if (type==1 && powerflag==0)
+				{
+					c[0]=eleresult('&',Values[i+1],values[i]);
+				}
+
 				if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					////////////////////////////////////////////s1.erase(0,places[i]+values[i].length()+2);
+					if (places[i+1]==0)
+					{
+						s1.erase(0,s1.length());
+
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i].length()+2);
+					}
 					negelement=0;
 				}
 				else
 				{
-					s1.erase(0,places[i]+values[i+1].length()+1);
-				}			
-				s1.insert(0,result);
+				/////////////////////////////////	//s1.erase(0,places[i]+values[i+1].length()+1);
+					if (places[i+1]==0)
+					{
+						s1.erase(0,s1.length());
+
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i].length()+1);
+					}
+				}
+				if (type==0)
+				{
+					//Values[i+1]=pow(Values[i],Values[i+1]);
+					//result=to_string(Values[i+1]);
+					s1.insert(0,result);					
+				}
+				else if (type==1)
+				{
+					s1=c[0]+s1;
+					//c=eleresult(elements[i],values[i],values[i+1]);
+				}
+							
+				//s1.insert(0,result);
 				FirstOperation=1;
 			}
 			else
 			{
-				Values[i+1]=pow(Values[i],Values[i+1]);
-				result=to_string(Values[i+1]);
+				if (type==0)
+				{
+					Values[i+1]=pow(Values[i],Values[i+1]);
+					result=to_string(Values[i+1]);					
+				}
+				else if (type==1 && powerflag==1)
+				{
+					c[0]=eleresult('^',Values[i+1],values[i]);
+				}
+				else if (type==1 && powerflag==0)
+				{
+					c[0]=eleresult('&',Values[i],values[i+1]);
+				}
 				if (i+1==j)
 				{
-					s1.erase(places[i-1]+1,places[i+1]-1);
+					s1.erase(places[i-1]+1,s1.length()-places[i-1]-1);
 				}
 				else
 				{
-					s1.erase(places[i-1]+1,places[i+1]+4);
+					s1.erase(places[i-1]+1,places[i+1]-places[i-1]-1);
 				}
-				s1.insert(places[i-1]+1,result);
+				if (type==0)
+				{
+					s1.insert(places[i-1]+1,result);
+				}
+				else if (type==1)
+				{
+					s1.insert(places[i-1]+1,c);
+				}
 				arrayModification(i,j,Values);
+				arrayModification(i,j,values);
 				arrayModification(i,j,elements);
 				arrayModification(i,j,places);
 			}
 		}
+		
 	}
+	
 	for (int i = 0; i < j; i++)
 	{
 		if (elements[i]=='*')
 		{
+			type=stringop(values[i],values[i+1]);
+			cout<<type<<endl;
 			if (FirstOperation==0)
 			{
 				FirstOperation=1;
@@ -192,6 +381,7 @@ string Get_Result(string s1)
 					s1.erase(places[i+1]+4,1);
 				}
 				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,values);				
 				arrayModification(i+1,j,elements);
 				arrayModification(i+1,j,places);
 				j-=1;
@@ -207,39 +397,100 @@ string Get_Result(string s1)
 			}
 			if (i==0)
 			{
+				if (type==0)
+				{
 				Values[i+1]=Values[i]*Values[i+1];
 				result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('*',Values[i+1],values[i]);
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('*',values[i],values[i+1]);
+				}
 			    if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					if(places[i+1]==0)
+					{
+						s1.erase(0,s1.length()-places[i]-1);
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i+1].length()+2);
+					}
+					//s1.erase(0,places[i]+values[i+1].length()+2);
 					negelement=0;
 				}
 				else
 				{
 					s1.erase(0,places[i]+values[i+1].length()+1);
 				}
-				s1.insert(0,result);
-			}
-			else
-			{
-				Values[i+1]=Values[i]*Values[i+1];
-				result=to_string(Values[i+1]);
-				if (i+1==j)
+				if (type==0)
 				{
-					s1.erase(places[i-1]+1,places[i+1]+places[i]);
+					s1.insert(0,result);
 				}
 				else
 				{
-					s1.erase(places[i-1]+1,places[i+1]+places[i]+4);
+					s1=c[0]+s1;cout<<s1<<endl;
 				}
-				s1.insert(places[i-1]+1,result);
 				arrayModification(i,j,Values);
+				arrayModification(i,j,values);				
 				arrayModification(i,j,elements);
 				arrayModification(i,j,places);
 			}
-		}
+			else
+			{
+				if (type==0)
+				{
+					Values[i+1]=Values[i]*Values[i+1];
+					result=to_string(Values[i+1]);					
+				}
+				else if (type==1 )
+				{
+					c[0]=eleresult('*',Values[i+1],values[i]);
+				}
+				else if (type==2 )
+				{
+					c[0]=matrixresult('*',values[i],values[i+1]);
+				}
+		
+				if (i+1==j)
+				{
+					s1.erase(places[i-1]+1,places[i]+values[i+1].length()+2);
+				}
+				else
+				{
+					if (i==0)
+					{
+						s1.erase(places[i-1]+1,places[i+1]-places[i-1]-1);
+					}
+					else
+					{
+						s1.erase(places[i-1]+1,places[i+1]-places[i-1]);
+					}
+				}
+				if (type==0)
+				{
+					s1.insert(places[i-1]+1,result);
+				}
+				else 
+				{
+					s1.insert(places[i-1]+1,c);
+					//cout<<s1<<endl;	
+				}
+				arrayModification(i,j,Values);
+				arrayModification(i,j,values);				
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
+			}
+		
+		}cout<<s1<<endl;
+
 		if (elements[i]=='/')
 		{
+			type=stringop(values[i],values[i+1]);
 			if (FirstOperation==0)
 			{
 				FirstOperation=1;
@@ -255,6 +506,7 @@ string Get_Result(string s1)
 					s1.erase(places[i+1]+4,1);
 				}
 				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,values);				
 				arrayModification(i+1,j,elements);
 				arrayModification(i+1,j,places);
 				j-=1;
@@ -270,42 +522,95 @@ string Get_Result(string s1)
 			}
 			if (i==0)
 			{
+				if (type==0)
+				{
 				Values[i+1]=Values[i]/Values[i+1];
 				result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('/',Values[i+1],values[i]);
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('/',values[i],values[i+1]);
+				}
 				if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					if(places[i+1]==0)
+					{
+						s1.erase(0,s1.length()-places[i]-1);///////////////////////////////////////////////////
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i+1].length()+2);
+					}
 					negelement=0;
 				}
 				else
 				{
 					s1.erase(0,places[i]+values[i+1].length()+1);
 				}            
+				if (type==0)
+				{
 				s1.insert(0,result);
-			}
+				}
+				else
+				{
+					s1.insert(0,c);
+				}	
+			}		
 			else
 			{
+				if (type==0)
+				{
 				Values[i+1]=Values[i]/Values[i+1];
 				result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('/',Values[i+1],values[i]);
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('/',values[i],values[i+1]);
+				}
 				if (i+1==j)
 				{
-					s1.erase(places[i-1]+1,places[i+1]);
+					if (places[i+1]!=0)
+					{
+						s1.erase(places[i-1]+1,places[i+1]-places[i]-1);
+					}
+					else
+					{
+						s1.erase(places[i-1]+1,s1.length()-places[i-1]-1);
+					}
 				}
 				else
 				{
 					s1.erase(places[i-1]+1,places[i+1]+4);
 				}
-				s1.insert(places[i-1]+1,result);
+				if (type==0)
+				{
+					s1.insert(places[i-1]+1,result);
+				}
+				else 
+				{
+					s1.insert(places[i-1]+1,c);	
+				}	
 				arrayModification(i,j,Values);
+				arrayModification(i,j,values);
 				arrayModification(i,j,elements);
 				arrayModification(i,j,places);
 			}
 		}
+		
 	}
 	for (int i = 0; i < j; i++)
 	{
 		if (elements[i]=='+')
 		{
+			type=stringop(values[i],values[i+1]);cout<<type<<endl;
 			if (FirstOperation==0)
 			{
 				FirstOperation=1;
@@ -336,8 +641,22 @@ string Get_Result(string s1)
 			}
 			if (i==0)
 			{
+				if (type==0)
+				{
 				Values[i+1]=Values[i]+Values[i+1];
 				result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('+',Values[i+1],values[i]);
+					//values[i+1]=c[0];
+					
+					cout<<s1<<endl<<Values[i-1]<<endl<<values[i+1];
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('+',values[i],values[i+1]);
+				}
 				if (negelement==1)
 				{
 					s1.erase(0,places[i]+values[i+1].length()+2);
@@ -347,12 +666,34 @@ string Get_Result(string s1)
 				{
 					s1.erase(0,places[i]+values[i+1].length()+1);
 				}
+				if (type==0)
+				{
 				s1.insert(0,result);
+				}
+				else
+				{
+				s1.insert(0,c);
+				}
+				arrayModification(i,j,Values);
+				arrayModification(i,j,values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
 			}
 			else
 			{
+				if (type==0)
+				{
 				Values[i+1]=Values[i]+Values[i+1];
 				result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('+',Values[i+1],values[i]);
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('+',values[i],values[i+1]);
+				}
 				if (i+1==j)
 				{
 					s1.erase(0,places[i+1]-places[i]);
@@ -361,11 +702,24 @@ string Get_Result(string s1)
 				{
 					s1.erase(0,places[i+1]-places[i]+4);
 				}
+				if (type==0)
+				{
 				s1.insert(0,result);
+				}
+				else
+				{
+				s1.insert(0,c);
+				}
+				arrayModification(i,j,Values);
+				arrayModification(i,j,values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
 			}
+			
 		}
 		if (elements[i]=='-')
 		{
+			type=stringop(values[i],values[i+1]);
 			if (FirstOperation==0)
 			{
 				FirstOperation=1;
@@ -381,6 +735,7 @@ string Get_Result(string s1)
 					s1.erase(places[i+1]+4,1);
 				}
 				arrayModification(i+1,j,Values);
+				arrayModification(i+1,j,values);
 				arrayModification(i+1,j,elements);
 				arrayModification(i+1,j,places);
 				j-=1;
@@ -396,23 +751,64 @@ string Get_Result(string s1)
 			}
 			if (i==0)
 			{
+				if (type==0)
+				{
 				Values[i+1]=Values[i]-Values[i+1];
 				result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('-',Values[i+1],values[i]);
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('-',values[i],values[i+1]);
+				}
 				if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					if(places[i+1]==0)
+					{
+						s1.erase(0,s1.length()-places[i]-1);///////////////////////////////////////////////////
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i+1].length()+2);
+					}
+					//////////////////////////////////////////////s1.erase(0,places[i]+values[i+1].length()+2);
 					negelement=0;
 				}
 				else
 				{
-					s1.erase(0,places[i]+values[i+1].length()+1);
+					s1.erase(0,places[i]+values[i+1].length()+1);	
 				}
-				s1.insert(0,result);
+				if (type==0)
+				{
+					s1.insert(0,result);
+				}
+				else
+				{
+					s1.insert(0,c);
+				}
+				arrayModification(i,j,Values);
+				arrayModification(i,j,values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
 			}
 			else
 			{
-				Values[i+1]=Values[i]-Values[i+1];
-				result=to_string(Values[i+1]);
+				if (type==0)
+				{
+					Values[i+1]=Values[i]-Values[i+1];
+					result=to_string(Values[i+1]);
+				}				
+				else if (type==1)
+				{
+					c[0]=eleresult('-',Values[i+1],values[i]);
+				}
+				else if (type==2)
+				{
+					c[0]=matrixresult('-',values[i],values[i+1]);
+				}
 				if (i+1==j)
 				{
 					s1.erase(0,places[i+1]-places[i]);
@@ -421,9 +817,21 @@ string Get_Result(string s1)
 				{
 					s1.erase(0,places[i+1]-places[i]+4);
 				}
-				s1.insert(0,result);
+				if (type==0)
+				{
+					s1.insert(0,result);
+				}
+				else
+				{
+					s1.insert(0,c);
+				}
+				arrayModification(i,j,Values);
+				arrayModification(i,j,values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
 			}
 		}
+		
 	}
 	return s1;
 }
@@ -443,20 +851,20 @@ void BracketsHandling(string& x)
 				x.insert(i,"*");
 				i=1;
 			}
-			else if(x[b]=='(')
+			/*else if(x[b]=='(')
 			{
 				x.erase(x.begin()+b);i=1;
-			}
+			}*/
 			else if (x[b]==')')
 			{
 				x.insert(i,"*");
 				i=1;
 			}
 		}
-		else if (x[i]==')' && x[b]==')')
+	/*	else if (x[i]==')' && x[b]==')')
 			{
 				x.erase(x.begin()+b);i=1;
-			}
+			}*/
 		if (x[i]==')' )
 		{
 			if ( (int)x[i+1]>=48 && (int)x[i+1]<=57)
@@ -474,10 +882,10 @@ void SinSearch(string& x)
 	char z=x.find("sin(");//*p=x.find("sin(");
 	if ((int)z != (-1))
 	{
-		/*if (x.find(')',x.find("sin("))==-1)
+		if (x.find(')',x.find("sin("))==-1)
 		{
 			ErrorFlag=1;
-		}*/
+		}
 		 sub=x.substr(x.find("sin(")+4,x.find(")",x.find("sin("))-x.find("sin(")-4);
 		 //CMatrix Mresult=Get_Result(sub);
 		 //temp=atof(result.c_str());
@@ -501,10 +909,10 @@ void CosSearch(string& x)
 	char z=x.find("cos(");//*p=x.find("sin(");
 	if ((int)z != (-1))
 	{
-		/*if (x.find(')',x.find("cos("))==-1)
+		if (x.find(')',x.find("cos("))==-1)
 		{
 			ErrorFlag=1;
-		}*/
+		}
 		 sub=x.substr(x.find("cos(")+4,x.find(")",x.find("cos("))-x.find("cos(")-4);
 		 //CMatrix Mresult=Get_Result(sub);
 		 //temp=atof(result.c_str());
@@ -530,10 +938,10 @@ void TanSearch(string& x)
 	char z=x.find("tan(");//*p=x.find("sin(");
 	if ((int)z != (-1))
 	{
-		/*if (x.find(')',x.find("tan("))==-1)
+		if (x.find(')',x.find("tan("))==-1)
 		{
 			ErrorFlag=1;
-		}*/
+		}
 		 sub=x.substr(x.find("tan(")+4,x.find(")",x.find("tan("))-x.find("tan(")-4);
 		 //CMatrix Mresult=Get_Result(sub);
 		 //temp=atof(result.c_str());
@@ -922,7 +1330,7 @@ void trigsearch(string& x)
 		TanSearch(x);
 	}
 	int i=0;
-	while ((x.find("sin",i)==1 || x.find("cos",i)==1 || x.find("tan",i)==1 ||x.find("log",i))&& i<x.length())
+	while ((x.find("sin",i)!=-1 || x.find("cos",i)!=-1 || x.find("tan",i)!=-1 ||x.find("log",i)!=-1) && i<x.length())
 	{
 		i++;
 		logtrighandle(x);
@@ -941,10 +1349,49 @@ void trigsearch(string& x)
 
 
 
-
-
 int main(int argv,char* argc[])			// argv : number of parameter in the command .....argc : the parameters as strings
 {
+	string t="L = 12.1*M + (A).^(4/(3.2+5.6))";
+	brackets_no(t);
+	t=spacetrim(t);
+	BracketsHandling(t);
+	trigsearch(t);
+	BracketsHandling(t);
+	if (ErrorFlag==1)
+	{
+		 std:: cout<<"parse error:"<<endl<<"syntax error"<<endl;
+		 ErrorFlag=0;
+	}
+	else
+	{
+	string s1=t.substr(t.find('=',0)+1,t.length()-t.find('=',0));      //gets the string that should be calculated
+	string op;
+	string R;
+	string operand=t.substr(0,t.find('=',0)+1);   //the name of the variable that we will store the result in
+	for(int i=0;i<s1.length();i++)
+	{
+		if(s1[i]==')')
+		{int k=i;
+			do
+			{
+				k--;
+			}
+			while(s1[k] !='(');        
+		 	op=s1.substr(k+1,(i)-(k+1));     //gets the string that between the brackets () 
+			//cout<<op<<endl;
+			R=Get_Result(op);      //gets the result of the string that between the brackets and stores it in R
+		//	cout<<R<<endl;
+			s1.erase(k,i-k+1);    //removes the brackets and the string that has been calculated
+			s1.insert(k,R);       //inserts R at the old opening of the bracket (
+			i=0;
+		}
+	}
+	cout<<t<<endl;  
+	R=Get_Result(s1);
+	cout<<operand<<R<<endl;
+	}
+	
+	
 	string s1,s2, Matrix_String;		 
 	
 	
@@ -1317,67 +1764,16 @@ if(argv>1)			// ensure that the file path added
 else			// if the file path not added as a parameter close the program
 
 	{cout<<"The file path not added . The program closed "<<endl;}
-
-	string t="L=(-4^3)+(2-2)sin(1.34))";
-	t=spacetrim(t);
-	BracketsHandling(t);
-	trigsearch(t);
-	BracketsHandling(t);
-	string ss1=t.substr(t.find('=',0)+1,t.length()-t.find('=',0));      //gets the string that should be calculated
-	string op;
-	string R;
-	string operand=t.substr(0,t.find('=',0)+1);   //the name of the variable that we will store the result in
-	for(int i=0;i<ss1.length();i++)
-	{
-		if(ss1[i]==')')
-		{int k=i;
-			do
-			{
-				k--;
-			}
-			while(ss1[k] !='(');        
-		 	op=ss1.substr(k+1,(i)-(k+1));     //gets the string that between the brackets () 
-			//cout<<op<<endl;
-			R=Get_Result(op);      //gets the result of the string that between the brackets and stores it in R
-		//	cout<<R<<endl;
-			ss1.erase(k,i-k+1);    //removes the brackets and the string that has been calculated
-			ss1.insert(k,R);       //inserts R at the old opening of the bracket (
-			i=0;
-		}
-	}
-	cout<<t<<endl;  
-	R=Get_Result(ss1);
-	cout<<operand<<R<<endl;
+char hh='*';
+double o=2;
+string hg="M*2+5";
+//char g=eleresult(hh,o,hg);
+string h=Get_Result(hg);
+h=Get_Result(h);
+cout<<h<<endl;
+string gh="N";
+//char v=matrixresult(hh,hg,gh);
 
 return 0;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
