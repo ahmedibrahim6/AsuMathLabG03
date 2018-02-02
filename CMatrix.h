@@ -22,10 +22,12 @@ class CMatrix
 public:
 	CMatrix();
 	~CMatrix();
+	//CMatrix init(int r , int c);
 	int GetnR(){return nR;};
 	int GetnC(){return nC;};
 	CMatrix(const CMatrix& d);
 	void reset();
+	double getvalue();
 
 	  	
 		   enum MI { MI_ZEROS, MI_ONES, MI_EYE, MI_RAND, MI_VALUE };
