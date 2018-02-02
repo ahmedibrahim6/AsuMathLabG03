@@ -29,6 +29,8 @@ void trigsearch(string& x);
 string hesab (string t);
 string cleanexp(string b);
 
+void equal_brackets(string s);
+
 
 bool is_char(char s);
 bool is_one_line(string s);
@@ -56,9 +58,9 @@ string InnerMatrixDetection(string s);
 	
 int main(int argv,char* argc[])			// argv : number of parameter in the command .....argc : the parameters as strings
 {
-	string  Matrix_String;		 
-	string s1,s2;
-	int flag=0;
+	//string  Matrix_String;		 
+	string s1;
+	//int flag=0;
 	
 	 	
 if(argv>1)			// ensure that the file path added
@@ -93,7 +95,7 @@ if(argv>1)			// ensure that the file path added
 						
 					//||s[i]=='\n'||s[i]=='\r')    
 				
-					//cout<<s1<<endl;
+					//cout<<"aaaa"<<endl;
 
 					if(s1[s1.length()-1]==';')
 						Semicolon_Detect=true;
@@ -159,6 +161,7 @@ if(argv>1)			// ensure that the file path added
 				else                     //  if the declaration in more than one line 
 				{
 					//cout<<s1<<endl;
+					string s2;
 
 					
 		 			do{
@@ -250,307 +253,319 @@ if(argv>1)			// ensure that the file path added
 
 
 
-else if(s1.find('=')!=-1)                      // if this line contains an operation
+			else if(s1.find('=')!=-1)                      // if this line contains an operation
 			{
 
-			
-				vector<char> operations;       // this variable will hold the chars in one operation  like : C=A+B
-				//char operations[6];
-				map<char,CMatrix>::iterator it1;           // iterator that iterates over the map to find the desired value(CMatrix) of a certain key(char)
-				map<char,CMatrix>::iterator it2;           // iterator to find the CMatrix of the second operand
+					bool Semicolon_Detect;
+					
+					if(s1.find("zeros")!=-1)
+					{	
+						if(s1[s1.length()-1]==';')
+						Semicolon_Detect=true;
+					else
+						Semicolon_Detect=false;
+
+
+						int x=s1.find("zeros");
+
+
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+
+						CMatrix M(first,last);
+
+						for(int i=0;i<s1.length(); i++)                   
+		    			{
+						if(s1[i]==' ')                  // we skip spaces and newlines
+
+							continue;
+
+						else
+						{
+							map<char,CMatrix>::iterator it;
+							it =mymap.find(s1[i]);
+							
+							if(it!=mymap.end())
+								{it->second= M;}
+							else
+							{mymap.insert( pair < char , CMatrix > (s1[i],M));}           // insert new matrix 
+							
+							if(Semicolon_Detect==false) 
+							{cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;}                   // print this matrix with its data
+							
+							break;          
+						}
 
 				
-				for(int i=0; i<s1.length(); i++)
-				{ 
-					if(s1[i]==' '||s1[i]=='\n'||s1[i]=='\r')              //removing spaces and newlines
+						}
+					}
 
-						continue;
+
+					else if(s1.find("eye")!=-1)
+					{	
+						if(s1[s1.length()-1]==';')
+						Semicolon_Detect=true;
+					else
+						Semicolon_Detect=false;
+
+					int x=s1.find("eye");
+
+
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+						CMatrix n (first,last);
+						CMatrix M=n.eye(first,last);
+
+						for(int i=0;i<s1.length(); i++)                   
+		    			{
+						if(s1[i]==' ')                  // we skip spaces and newlines
+
+							continue;
+
+						else
+						{
+							map<char,CMatrix>::iterator it;
+							it =mymap.find(s1[i]);
+							
+							if(it!=mymap.end())
+								{it->second= M;}
+							else
+							{mymap.insert( pair < char , CMatrix > (s1[i],M));}           // insert new matrix 
+							
+							if(Semicolon_Detect==false) 
+							{cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;}                   // print this matrix with its data
+							
+							break;          
+						}
+
+				
+						}
+					}
+
+
+
+
+
+					else if(s1.find("ones")!=-1)
+					{	
+
+						if(s1[s1.length()-1]==';')
+						Semicolon_Detect=true;
+					else
+						Semicolon_Detect=false;
+
+					int x=s1.find("ones");
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+						CMatrix n (first,last);
+						CMatrix M=n.ones(first,last);
+
+						for(int i=0;i<s1.length(); i++)                   
+		    			{
+						if(s1[i]==' ')                  // we skip spaces and newlines
+
+							continue;
+
+						else
+						{
+							map<char,CMatrix>::iterator it;
+							it =mymap.find(s1[i]);
+							
+							if(it!=mymap.end())
+								{it->second= M;}
+							else
+							{mymap.insert( pair < char , CMatrix > (s1[i],M));}           // insert new matrix 
+							
+							if(Semicolon_Detect==false) 
+							{cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;}                   // print this matrix with its data
+							
+							break;          
+						}
+
+				
+						}
+					}
+
+
+
+
+					else if(s1.find("rand")!=-1)
+					{	
+						
+						if(s1[s1.length()-1]==';')
+						Semicolon_Detect=true;
+						else
+						Semicolon_Detect=false;
+
+					int x=s1.find("random");
+
+						int first=s1.find("(",x+1);
+						int mid=s1.find(",",first+1);
+						int last=s1.find(")",mid+1);
+						string First=s1.substr(first+1,mid-first-1);
+						string Second=s1.substr(mid+1,last-mid-1);
+						first=atoi(First.c_str());
+						last=atoi(Second.c_str());
+
+						CMatrix n (first,last);
+						CMatrix M=n.random(first,last);
+
+						for(int i=0;i<s1.length(); i++)                   
+		    			{
+						if(s1[i]==' ')                  // we skip spaces and newlines
+
+							continue;
+
+						else
+						{
+							map<char,CMatrix>::iterator it;
+							it =mymap.find(s1[i]);
+							
+							if(it!=mymap.end())
+								{it->second= M;}
+							else
+							{mymap.insert( pair < char , CMatrix > (s1[i],M));}           // insert new matrix 
+							
+							if(Semicolon_Detect==false) 
+							{cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;}                   // print this matrix with its data
+							
+							break;          
+						}
+
+				
+						}
+					}
+
+
+///////////////////////////////////////////// Math Operations   ////////////////////////////////////////////
+
 					else
 					{
-						operations.push_back(s1[i]);               //storing chars in the vector operations
-					}
+						
+						try{
+						string s2,s5;
+						double s3;
+						equal_brackets(s1);
+						if(s1.find(';')!=-1)
+							Semicolon_Detect=true;
+						else
+							Semicolon_Detect=false;
+
+
+
+
+						for (int i=0;i<s1.length();i++)
+						{
+							if (s1[i]=='=')
+							{
+
+								s2=s1.substr(i+1,s1.length()-i-1);
+								break;
+							
+							}	
+						}
+						//cout<<s2<<endl;
+
+						for (int i=0;i<s2.length();i++)
+						{
+							if(is_char(s2[i]))
+							{
+								map<char,CMatrix>::iterator it;
+								it =mymap.find(s2[i]);
+							
+								if(it!=mymap.end()&& (it->second).GetnR()==1 && (it->second).GetnC()==1)
+								{	
+									s3=(it->second).getvalue();
+									s2.replace(i,2,to_string(s3));
+									//cout<<s2<<endl;
+								}
+							}
+						}
+						
+
+
+							for (int i=0;i<s2.length();i++)
+						{
+							if(s2[i]=='.')
+							{
+								if(s2[i+1]=='+'||s2[i+1]=='-'||s2[i+1]=='*'||s2[i+1]=='/'||s2[i+1]=='^')
+								{
+									s2.erase(i,1);
+								}
+							}
+						}
+						//cout<<s2<<endl;
+
+
+
+
+
+						
+
+								
+						
+
+
+
+						//cout<<s2<<endl;
+						s5=hesab(s2);
+						//cout<<s5<<endl;
+
+
+							for(int i=0;i<s1.length(); i++)                   
+		    			{
+							if(s1[i]==' ')                  // we skip spaces and newlines
+
+								continue;
+
+							else
+							{
+								map<char,CMatrix>::iterator it;
+								it =mymap.find(s1[i]);
+							
+								if(it!=mymap.end())
+									it->second=CMatrix(s5);
+								else
+								mymap.insert( pair < char , CMatrix > (s1[i],CMatrix(s5)));           // insert new matrix 
+							
+								if(Semicolon_Detect==false) 
+								cout<<s1[i]<<" ="<<endl<<mymap[s1[i]].getString()<<endl<<endl;                   // print this matrix with its data
+							
+								break;          
+							}
+
+				
+						}
+
+
+
+
+
+
 				}
 
 
-				for(int i=0;i<operations.size();i++)        // loop over the chars in one operation to find the operator (+or-..)
-				{
-					if(int x=s1.find("zeros")!=-1)
-					{	
-						int first=s1.find("(",x+1);
-						int mid=s1.find(",",first+1);
-						int last=s1.find(")",mid+1);
-						string First=s1.substr(first+1,mid-first-1);
-						string Second=s1.substr(mid+1,last-mid-1);
-						first=atoi(First.c_str());
-						last=atoi(Second.c_str());
-						if (first==0 || last ==0)
-						{
-							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
-							break;
-						}
-						else
-						{
-							mymap[operations[0]]=mymap[operations[0]].zeros(first,last);
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							break;
-						}
-					}
-
-					if(int x=s1.find("rand")!=-1)
-					{
-						int first=s1.find("(",x+1);
-						int mid=s1.find(",",first+1);
-						int last=s1.find(")",mid+1);
-						string First=s1.substr(first+1,mid-first-1);
-						string Second=s1.substr(mid+1,last-mid-1);
-						first=atoi(First.c_str());
-						last=atoi(Second.c_str());
-						if (first==0 || last ==0)
-						{
-							cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<first<<"*"<<last<<")"<<endl;
-							break;
-						}
-						else
-						{
-							mymap[operations[0]]=mymap[operations[0]].random(first,last);
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							break;
-						}
-					}	
-
-					if(int x=s1.find("ones")!=-1)
-					{	
-						int first=s1.find("(",x+1);
-                                                int mid =s1.find(",",first+1) ;
-						if(mid!=-1 )
-                                                {
-						   int last=s1.find(")",mid+1);
-						   string First=s1.substr(first+1,mid-first-1);
-						   string Second=s1.substr(mid+1,last-mid-1);
-						   int N1=atoi(First.c_str());
-						   int N2=atoi(Second.c_str());
-						   if (N1==0 || N2==0)
-						   {
-						 	   cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<N1<<"*"<<N2<<")"<<endl;
-							   break;
-						   }
-						   else
-						   {
-							   mymap[operations[0]]=mymap[operations[0]].ones(N1,N2);
-							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							   break;
-						   }
-                                                }
-                                                else 
-                                                {
-                                                   int last=s1.find(")",first+1);
-                                                   string Number=s1.substr(first+1,last-first-1);
-						   int number=atoi(Number.c_str());
-						   if (number==0 || (first+1 == last))
-						   {
-							   cout<<operations[0]<<" ="<<endl<<"[] "<<"(0*0)"<<endl;
-							   break;
-						   }
-						   else
-						   {
-						       	   mymap[operations[0]]=mymap[operations[0]].ones(number);
-							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							   break;
-						   }
-                                                }
-					}
-
-
-                    if(int x=s1.find("eye")!=-1)
-					{	
-						int first=s1.find("(",x+1);
-                                                int mid=s1.find(",",first+1);
-						if(mid !=-1 )
-                                                {
-						   int last=s1.find(")",mid+1);
-						   string First=s1.substr(first+1,mid-first-1);
-						   string Second=s1.substr(mid+1,last-mid-1);
-						   int N1=atoi(First.c_str());
-						   int N2=atoi(Second.c_str());
-						   if (N1==0 || N2 ==0)
-						   {
-						 	   cout<<operations[0]<<" ="<<endl<<"[] "<<"("<<N1<<"*"<<N2<<")"<<endl;
-							   break;
-						   }
-						   else
-						   {
-							   mymap[operations[0]]=mymap[operations[0]].eye(N1,N2);
-							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							   break;
-						   }
-                                                }
-                                                else 
-                                                {
-                                                   int last=s1.find(")",first+1);
-                                                   string Number=s1.substr(first+1,last-first-1);
-						   int number=atoi(Number.c_str());
-						   if (number==0 || (first+1 == last))
-						   {
-							   cout<<operations[0]<<" ="<<endl<<"[] "<<"(0*0)"<<endl;
-							   break;
-						   }
-						   else
-						   {
-						       	   mymap[operations[0]]=mymap[operations[0]].eye(number);
-							   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-							   break;
-						   }
-                                                }
-					}
-
-					//switch(operations[i])
-					if (operations[i]=='+')
-					{
-						//case '+' :
-						try                   
-						{
-							it1 =mymap.find(operations[i-1]);      //find the CMatrix of the first operand 
-			 				it2 =mymap.find(operations[i+1]);      //find the CMatrix of the second operand
-							mymap[operations[0]]= (it1->second) + (it2->second) ;       // store the result in new matrix or override on existed matrix
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;    // print the name of matrix and result 
-						}
-						catch(const char* error) {cout<<" Error : "<<error<<endl;}
 				
-					}
-
-					else if(operations[i]=='-')
-						//case '-' :
-					{
-						try
-						{
-			 				it1 =mymap.find(operations[i-1]);
-			 				it2 =mymap.find(operations[i+1]);
-							mymap[operations[0]]= (it1->second) - (it2->second) ;
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-						}
-						catch(const char* error) {cout<<" Error : "<<error<<endl;}
-				
-
-					}
-
-					else if(operations[i]=='*')
-						//case '*' :
-					{
-						try
-						{
-			 				it1 =mymap.find(operations[i-1]);
-			 				it2 =mymap.find(operations[i+1]);
-							mymap[operations[0]]= (it1->second) * (it2->second) ;
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-						}
-
-						catch(const char* error) {cout<<" Error : "<<error<<endl;}
-						
-					}
-			
-			
-					else if(operations[i]=='/')
-						//case '/' :
-					{
-						try
-						{
-			 				it1 =mymap.find(operations[i-1]);
-			 				it2 =mymap.find(operations[i+1]);
-							mymap[operations[0]]= (it1->second) / (it2->second) ;
-							cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-						}
-
-						catch(const char* error) {cout<<" Error : "<<error<<endl;}
-
-					}
-		
-
-						else if(operations[i]=='.')
-					{
-						//case '.' :
-						//try{
-						
-						char o=operations[i+1];
-						int first=s1.find(operations[i+1],0);
-						int start=s1.find("(",first+1);
-						string number;
-						if (start==-1)
-						{
-							number=s1.substr(first+1,s1.size()-first-1);
-						}			
-						else 
-						{
-							int end=s1.find(")",first+1);
-							number=s1.substr(start+1,end-start-1);
-						}
-						double Num=atof(number.c_str());
-						int find= number.find("0");
-						int y =((Num==0) &&(find==-1))? 1 :0;
-						
-						switch (o)
-						{
-							case '-': it1 =mymap.find(operations[i-1]);
-						   		  mymap[operations[0]]= (it1->second).elesub(Num) ;
-						     		  cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-								  break;
-
-							case '^': it1 =mymap.find(operations[i-1]);
-								  mymap[operations[0]]= (it1->second).elepow(Num) ;
-								  cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-								  break;
-
-							case '/':  
-								   if (y==1)
-								   	{
-								   	it1 =mymap.find(operations[i+2]);
-								   	mymap[operations[0]]= (it1->second).elediv() ;
-								   	cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-								   	}
-								   else 
-									{
-									it1 =mymap.find(operations[i-1]);
-									mymap[operations[0]]= (it1->second).elediv(Num) ;
-								   	cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-									}
-								   
-								   break;
-
-							case '+':  it1 =mymap.find(operations[i-1]);
-								   mymap[operations[0]]= (it1->second).eleadd(Num) ;
-								   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-								   break;
-
-							case '*':  it1 =mymap.find(operations[i-1]);
-								   mymap[operations[0]]= (it1->second).elemul(Num) ;
-								   cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-								   break;
-						}
-						
-						//}
-						//catch(const char* error)
-						//{cout<<" Error : "<<error<<endl;}
-						break;
-					}
-			
-
-					
-			
-					else if(operations[i]=='\'')
-					{
-						//case '\'' :
-						//try{
-			 			it1 =mymap.find(operations[i-1]);
-						mymap[operations[0]]= (it1->second).transpose() ;
-						cout<<operations[0]<<" ="<<endl<<mymap[operations[0]].getString()<<endl;
-		    			//}
-						//catch(const char* error)
-						//{cout<<" Error : "<<error<<endl;}
-						break;
-					}
-				}
-			
-
+				catch(const char* error){cout<<"Error : "<<error<<endl;}
 			}
+		}
+
+				
 
 
 
@@ -587,20 +602,14 @@ else if(s1.find('=')!=-1)                      // if this line contains an opera
 				}
 				
 			}
-		
 	}
+		
+	
 	
 
 	 infile.close();             // close the file 
 
-    }
-
-	else			// if the file path not added as a parameter close the program
-
-	{
-	
-		
-	}
+   }
 	//cout<<flag<<endl;
 
 	return 0;
@@ -688,7 +697,10 @@ CMatrix x("[3.5 -1.570796325;0.0 pi]") ;
 
 
 
-
+/** @brief this fn removes trailing spaces and commas in string
+ *
+ *
+ */
 
 
 string space(string s)
@@ -723,18 +735,25 @@ string remove_extra_space(string s)
 
 
 
-
-
+/** @brief this fn counts the numer of brackets in string
+ *
+ *
+ */
 void  brackets_no ( string operations)
 {
 	int bracket1 = count( operations.begin(), operations.end(), '(') ; 					
-	int bracket2 = count( operations.begin(),  operations.end(), ')') ;                                 					
+	int bracket2 = count ( operations.begin(),  operations.end(), ')') ;                                 					
 	//int bracket = bracket1 + bracket2; 					
 	if (bracket1!=bracket2) 
 	{
 		ErrorFlag=1;
 	}
 }
+
+/** @brief this fn modifies string array used in calculations
+ *
+ *
+ */
 void arrayModification(int y,int x,double*p)
 {
 	for(int i=y;i<=x+1;i++)
@@ -742,6 +761,11 @@ void arrayModification(int y,int x,double*p)
 		*(p+(i))=*(p+i+1);
 	}
 }
+
+/** @brief this fn modifies string array used in calculations
+ *
+ *
+ */
 void arrayModification(int y,int x,char *p)
 {
 	for(int i=y;i<=x+1;i++)
@@ -749,6 +773,11 @@ void arrayModification(int y,int x,char *p)
 		*(p+(i))=*(p+i+1);
 	}
 }
+
+/** @brief this fn modifies string array used in calculations
+ *
+ *
+ */
 void arrayModification(int y,int x,int *p)
 {
 	for(int i=y;i<=x+1;i++)
@@ -756,6 +785,12 @@ void arrayModification(int y,int x,int *p)
 		*(p+(i))=*(p+i+1);
 	}
 }
+
+/** @brief this fn removes any trailing spaces from input string
+ *
+ * @param x is the string to remove spaces from 
+ * @sreturn x is the string after removing extra spaces
+ */
 
 string spacetrim(string x)            //remove any unused spaces from the input string
 {
@@ -766,6 +801,14 @@ string spacetrim(string x)            //remove any unused spaces from the input 
 	}
 	return x;
 }
+
+/** @brief this fn that calculates all math exp in a string and
+ * returns the result
+ * @param s1 is the string to calculate its math exp
+ * @return s1 is the string containing the result
+ * @see hesab
+ */
+
 string Get_Result(string s1)
 {
 	int flag=0,FirstOperation=0;                                //to count the number of the operations between two brackets ()
@@ -848,12 +891,30 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 				if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					////////////////////////////////////////////s1.erase(0,places[i]+values[i].length()+2);
+					if (places[i+1]==0)
+					{
+						s1.erase(0,s1.length());
+
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i].length()+2);
+					}
 					negelement=0;
 				}
 				else
 				{
-					s1.erase(0,places[i]+values[i+1].length()+1);
+				/////////////////////////////////	//s1.erase(0,places[i]+values[i+1].length()+1);
+					if (places[i+1]==0)
+					{
+						s1.erase(0,s1.length());
+
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i].length()+1);
+					}
 				}			
 				s1.insert(0,result);
 				FirstOperation=1;
@@ -864,11 +925,11 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 				if (i+1==j)
 				{
-					s1.erase(places[i-1]+1,places[i+1]-1);
+					s1.erase(places[i-1]+1,s1.length()-places[i-1]-1);
 				}
 				else
 				{
-					s1.erase(places[i-1]+1,places[i+1]+4);
+					s1.erase(places[i-1]+1,places[i+1]-places[i-1]-1);////////////////////////////////////////////////////////////////////////
 				}
 				s1.insert(places[i-1]+1,result);
 				arrayModification(i,j,Values);
@@ -915,7 +976,15 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 			    if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					if(places[i+1]==0)
+					{
+						s1.erase(0,s1.length()-places[i]-1);///////////////////////////////////////////////////
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i+1].length()+2);
+					}
+					//s1.erase(0,places[i]+values[i+1].length()+2);
 					negelement=0;
 				}
 				else
@@ -923,6 +992,9 @@ string Get_Result(string s1)
 					s1.erase(0,places[i]+values[i+1].length()+1);
 				}
 				s1.insert(0,result);
+				arrayModification(i,j,Values);
+				arrayModification(i,j,elements);
+				arrayModification(i,j,places);
 			}
 			else
 			{
@@ -930,11 +1002,18 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 				if (i+1==j)
 				{
-					s1.erase(places[i-1]+1,places[i+1]+places[i]);
+					s1.erase(places[i-1]+1,places[i]+values[i+1].length()+2);///////////////////////////////////////////////////	
 				}
 				else
 				{
-					s1.erase(places[i-1]+1,places[i+1]+places[i]+4);
+					if (i==0)
+					{
+						s1.erase(places[i-1]+1,places[i+1]-places[i-1]-1);
+					}
+					else
+					{
+						s1.erase(places[i-1]+1,places[i+1]-places[i-1]);
+					}
 				}
 				s1.insert(places[i-1]+1,result);
 				arrayModification(i,j,Values);
@@ -978,7 +1057,14 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 				if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					if(places[i+1]==0)
+					{
+						s1.erase(0,s1.length()-places[i]-1);///////////////////////////////////////////////////
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i+1].length()+2);
+					}
 					negelement=0;
 				}
 				else
@@ -993,7 +1079,14 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 				if (i+1==j)
 				{
-					s1.erase(places[i-1]+1,places[i+1]);
+					if (places[i+1]!=0)
+					{
+					s1.erase(places[i-1]+1,places[i+1]-places[i]-1);////////////////////////////////////////////////
+					}
+					else
+					{
+						s1.erase(places[i-1]+1,s1.length()-places[i-1]-1);
+					}
 				}
 				else
 				{
@@ -1104,12 +1197,22 @@ string Get_Result(string s1)
 				result=to_string(Values[i+1]);
 				if (negelement==1)
 				{
-					s1.erase(0,places[i]+values[i+1].length()+2);
+					if(places[i+1]==0)
+					{
+						s1.erase(0,s1.length()-places[i]-1);///////////////////////////////////////////////////
+					}
+					else
+					{
+						s1.erase(0,places[i]+values[i+1].length()+2);
+					}
+					//////////////////////////////////////////////s1.erase(0,places[i]+values[i+1].length()+2);
 					negelement=0;
 				}
 				else
 				{
-					s1.erase(0,places[i]+values[i+1].length()+1);
+
+					//s1.erase(0,places[i]+values[i+1].length()+1);///////////////////////////////////////////////////
+					
 				}
 				s1.insert(0,result);
 			}
@@ -1134,6 +1237,13 @@ string Get_Result(string s1)
 
 
 ////////////////////////////////////////handling the case: ex:5(10*20)//////////////////////////////////////
+
+/** @brief this fn that handles brackets in a math exp
+ *
+ * @param x is the string array handle bracket priority in 
+ * @see Get_Result()
+ */
+
 void BracketsHandling(string& x)                        
 {
 	int b;
@@ -1147,20 +1257,20 @@ void BracketsHandling(string& x)
 				x.insert(i,"*");
 				i=1;
 			}
-			else if(x[b]=='(')
+			/*else if(x[b]=='(')
 			{
 				x.erase(x.begin()+b);i=1;
-			}
+			}*/
 			else if (x[b]==')')
 			{
 				x.insert(i,"*");
 				i=1;
 			}
 		}
-		else if (x[i]==')' && x[b]==')')
+	/*	else if (x[i]==')' && x[b]==')')
 			{
 				x.erase(x.begin()+b);i=1;
-			}
+			}*/
 		if (x[i]==')' )
 		{
 			if ( (int)x[i+1]>=48 && (int)x[i+1]<=57)
@@ -1171,6 +1281,12 @@ void BracketsHandling(string& x)
 	}
 };
 ////////////////////////////////////////////////////////////replacing sin in the string//////////////////////////
+
+/** @brief this fn that searches for 'sin' in a string array
+ *
+ * @param x is the string array to search for sin 
+ * @see Get_Result()
+ */
 void SinSearch(string& x)
 {
 	string v,sub,result;
@@ -1197,6 +1313,12 @@ void SinSearch(string& x)
 };
 
 ////////////////////////////////////////////////////////// replacing cos////////////////////////////////////////////////////
+
+/** @brief this fn that searches for 'cos' in a string array
+ *
+ * @param x is the string array to search for cos 
+ * @see Get_Result()
+ */
 
 void CosSearch(string& x)
 {
@@ -1227,6 +1349,12 @@ void CosSearch(string& x)
 
 /////////////////////////////////////////////////tan replacement/////////////////////////////////////////////////
 
+/** @brief this fn that searches for 'tan' in a string array
+ *
+ * @param x is the string array to search for tan 
+ * @see Get_Result()
+ */
+
 void TanSearch(string& x)
 {
 	string v,sub,result;
@@ -1254,6 +1382,12 @@ void TanSearch(string& x)
 };
 
 ///////////////////////////////////////////////////trig with no brackets//////////////////////////////
+
+/** @brief this fn calculates log log10 sin cos tan
+ *
+ * @param t isxthe string array containing them 
+ * @see Get_Result()
+ */
 
 void logtrighandle(string &x)
 {
@@ -1354,6 +1488,13 @@ void logtrighandle(string &x)
 };
 
 ///////////////////////////////////////////////////////////invsearch/////////////////////////////////////////////////
+
+/** @brief this fn calculates asin acos atan
+ *
+ * @param x is the string array containing them 
+ * @see Get_Result()
+ */
+
 void invsearch(string &x,int y)
 {
 	string temp;
@@ -1454,6 +1595,13 @@ void invsearch(string &x,int y)
 
 ///////////////////////////////////////////////////hsearch////////////////////////////////////////////////////////////////
 
+/** @brief this fn calculates sinh cosh tanh
+ *
+ * @param t ix the string containing them
+ * 
+ * @see Get_Result()
+ */
+
 void hsearch(string& x,int y)
 {
 	if (y==0)
@@ -1506,6 +1654,12 @@ void hsearch(string& x,int y)
 	}
 };
 /////////////////////////////////////////////////////exponential & sqrt calculations/////////////////////////////////////////////
+
+/** @brief this fn calculates square roots of matrix
+ *
+ * @param x is the string  array conaining sqrt 
+ *
+ */
 
 void expsqrt(string &x)
 {
@@ -1574,6 +1728,20 @@ void expsqrt(string &x)
 			}}}
 };
 /////////////////////////////////////////////////////summing fn///////////////////////////////////////////////////////
+
+/** @brief this fn finds trig fns in a string
+ * and calls the correspnding fn to calculate
+ * @param x is the string array under test 
+ * @see invsearch()
+ * @see hsearch
+ * @see SinSearch
+ * @see CosSearch
+ * @see TanSearch
+ * @see logtrighandle
+ * @see expsqrt
+ *
+ */
+
 void trigsearch(string& x)
 {
 	char z=x.find("sin("),z1=x.find("cos("),z2=x.find("tan("),z3=x.find("acos"),z4=x.find("asin"),z5=x.find("atan");
@@ -1626,7 +1794,7 @@ void trigsearch(string& x)
 		TanSearch(x);
 	}
 	int i=0;
-	while ((x.find("sin",i)==1 || x.find("cos",i)==1 || x.find("tan",i)==1 ||x.find("log",i))&& i<x.length())
+	while ((x.find("sin",i)!=-1 || x.find("cos",i)!=-1 || x.find("tan",i)!=-1 ||x.find("log",i)!=-1) && i<x.length())
 	{
 		i++;
 		logtrighandle(x);
@@ -1639,18 +1807,24 @@ void trigsearch(string& x)
 	}
 	
 //return sub;
-};
+}
 
 
 
 
 
-
+/** @brief this fn calculates any math expressions in string
+ *
+ * @param t is the string to be calculated 
+ * @return R is the string containing result
+ * @see Get_Result()
+ */
 
 string hesab (string t)
 {
 	//string t="L= ( ( 2 . 3 +-5+-10 -2.3)+5)*2/0-(-5*-2)";
 	//string t="L=(-4^3)+(2-2)sin(1.34))";
+	//string t="A = 5.5 + 12 * sin(0.4) + 2.2^4;";
 	brackets_no(t);
 	t=spacetrim(t);
 	BracketsHandling(t);
@@ -1661,7 +1835,8 @@ string hesab (string t)
 		 std:: cout<<"parse error:"<<endl<<"syntax error"<<endl;
 		 ErrorFlag=0;
 	}
-	else{
+	else
+	{
 	string s1=t.substr(t.find('=',0)+1,t.length()-t.find('=',0));      //gets the string that should be calculated
 	string op;
 	string R;
@@ -1690,9 +1865,20 @@ string hesab (string t)
 	//cout<<operand<<R<<endl;
 	}
 	
+	//return 0;
 }
 
 
+
+
+
+/** @brief this fn replaces any math expression
+ *  with its value
+ * @param b is the string under test 
+ * @return s is the string after calculations
+ * @see hesab()
+ *
+ */
 
 string cleanexp(string b)
 {
@@ -1742,6 +1928,40 @@ string cleanexp(string b)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** @brief this fn counts the number of brackets and throws error
+ *	if there are missing brackets
+ * @param s is the s under test 
+ *
+ */
+
+void equal_brackets(string s)
+{
+	int open_bracket_count=0;
+	int close_bracket_count=0;
+	for(int i=0;i<s.length();i++)
+	{
+		if(s[i]=='(')
+			open_bracket_count++;
+
+	}	
+	for(int i=0;i<s.length();i++)
+	{
+		if(s[i]==')')
+			close_bracket_count++;
+
+	}	
+	//cout<<open_bracket_count<<close_bracket_count<<endl;
+	if(close_bracket_count!=open_bracket_count){
+		throw("parse error");}
+
+}
+
+/** @brief this fn fins if char between A-Z or a-z
+ *
+ * @param s is the char under test 
+ *
+ */
+
 bool is_char(char s)
 {
 	if(  ( (s>='A') && (s<='Z') )   ||  ((s>='a') && (s<='z') )  )
@@ -1775,7 +1995,12 @@ bool is_one_line(string s)
 
 }
 
-
+/** @brief this fn convert any char in the input string to matrix
+ *
+ * @param matstring the input string
+ * @return matstring in string form after converting chars 
+ *
+ */
 
 
 string chartomatrix(string matstring) // takes the very first string coming from file
@@ -1843,6 +2068,14 @@ for(int x1=1;x1<matstring.length();x1++)     //matstring is the main matrix stri
     return matstring;
 }
 
+/** @brief this fn makes concatenation of multiple matrices
+ *
+ * @param matstring the inputstring after modification
+ * @param rowcounter the max number of rows of the bigmatrix
+ * @param colcounter the max number of columns of the bigmatrix
+ * @return the concatenated matrix
+ *
+ */
 
 string concatenate(string matstring,int rowcounter,int colcounter) //takes converted string and row and column counter from the rowcolcounter function  
 {
@@ -1898,6 +2131,14 @@ for(int x11=1;x11<matstring.length();x11++)
 	return bigmatrix.getString1();
 }
 
+/** @brief this fn compute the max number of rows&columns for the bigmatrix
+ *
+ * @param matstring the inputstring after modofication
+ * @param rowcounter compute number of rows in matstring
+  * @param colcounter compute number of col in matstring
+  * @return max number of rows and columns by refrence
+ *
+ */
 
 void rowcolcounter(string matstring,int &rowcounter,int &colcounter) //takes string after convertion of char to matrix
 {
@@ -1972,7 +2213,12 @@ if(matstring[0]=='[')   //first bracket
 
 
 
-
+/** @brief this fn makes overall aggregation for the concatenation functions
+ *
+ * @param matstring the inputstring 
+ * @return newmat the string of concatenated matrix
+ *
+ */
 
 string ConcatenateMatrix(string matstring)
 {
