@@ -1,3 +1,13 @@
+/*! A matrix class to be used in c++
+ *         used to create a Matlab like program
+ *
+ *  This is a CMatrix class that is designed by students in the
+ *  ASU Faculty of Engineering. It is designed to read files from
+ *  the user and containing operations like those performed on
+ *  octave and matlab and desplay the answer on the terminal.
+ *
+ * Completed on: 28/1/2018
+ */
 
 #include "CMatrix.h"
 
@@ -6,7 +16,12 @@
 
 ////////////////////////////////////////////////        CONSTRUCTOR       //////////////////////////////////////////////////////
 
-
+/** A constructor.
+ *
+ *  Used to construct an empty matrix and set 
+ *  initial values to 0
+ *
+ */
 CMatrix::CMatrix()
 {
 	nR = nC = 0; 
@@ -16,6 +31,13 @@ CMatrix::CMatrix()
 
 //////////////////////////////////////////////        DESTRUCTOR         //////////////////////////////////////////////////////
 
+/** A destrucor.
+ *
+ *  Used to delete the values and set the pointers
+ *  to Null when program is terminated
+ *
+ *  @see reset()
+ */
 
 CMatrix::~CMatrix()
 {
@@ -23,11 +45,47 @@ CMatrix::~CMatrix()
 }
 
 
+double CMatrix::getvalue()
+{return values[0][0];
+}
+
+////////////////// Constructor takes number of rows and columns and initializes with zeros///////////////////
+/*
+CMatrix CMatrix::init(int r , int c)
+{
+	nR=r;
+	nC=c;
+
+	if ((nR*nC) == 0) 
+	{ 
+		values = NULL; return;
+	}
+
+	values = new double*[r];
+	for(int i=0;i<r;i++)
+	{
+		values[i] = new double[c]; 
+		for(int j=0;j<c;j++)
+		values[i][j]=0;
+
+	}
+
+
+}
+*/
+
+
 
 
 ////////////////////////////////////////////      COPY CONSTRUCTOR      /////////////////////////////////////////////////////
 
-
+/** A copy constructor.
+ *
+ *  Used to enable copying of matrices
+ *  
+ *  @param CMaatrix &d is a matrix
+ *
+ */
 
 CMatrix::CMatrix(const CMatrix &d)
 {
@@ -55,7 +113,14 @@ CMatrix::CMatrix(const CMatrix &d)
 //////////////////////////////////////////////              RESET             /////////////////////////////////////////////////
 
 
-
+/** A reset function.
+ *
+ *  Used to clear the values of matrix and set 
+ *  pointers to Null called by the destructor
+ *
+ *  @see ~CMatrix()
+ *
+ */
 
 
 void CMatrix::reset() 
@@ -76,6 +141,12 @@ values = NULL;
 
 /////////////////////////////////////////////       FOR DEFFERENT INPUTS        ///////////////////////////////////////////////////
 
+/** A constructor.
+ *
+ *  Used to construct an initialized matrix and set 
+ *  initial values to initializationValue
+ *
+ */
 
 CMatrix::CMatrix(int nR, int nC, int initialization, double initializationValue) 
 { 
@@ -105,7 +176,12 @@ for (int iR = 0; iR<nR; iR++)
 }
 
 
-
+/** A constructor.
+ *
+ *  @brief Used to construct matrix and set values
+ *  @param nR is number of rows nC is columns 
+ *  and first is the first of multiple values for matrix
+ */
 
 
 CMatrix::CMatrix(int nR, int nC, double first, ...)
@@ -145,7 +221,12 @@ CMatrix::CMatrix(int nR, int nC, double first, ...)
 
 
 
-
+/** A constructor.
+ *
+ *  @brief Used to construct matrix and set 
+ *  @param s is a string input from user
+ *  @see copy(s)
+ */
 
 CMatrix::CMatrix(string s)                    // constructor takes string 
 {
@@ -159,7 +240,10 @@ CMatrix::CMatrix(string s)                    // constructor takes string
 
 
 
-
+/** @brief this an operator overloading fn
+ *	@return this matrix
+ *  @see copy(string s)
+ */
 
 
 CMatrix CMatrix::operator=(string s)
@@ -202,7 +286,12 @@ Remainlines= strtok(NULL, "");
 delete[] buffer;
 }
 
-
+/** A function to get string of matrix. 
+ *
+ *  Used to get the values of a matrix in form of a
+ *  string between square brackets
+ *
+ */
 
 string CMatrix::getString1()
 {
@@ -251,7 +340,12 @@ string CMatrix::getString1()
 
 
 
-
+/** A function to get string of matrix. 
+ *
+ *  Used to get the values of a matrix same as 
+ *  matlab or octave
+ *
+ */
 
 string CMatrix::getString() 
 { 
@@ -296,7 +390,11 @@ string CMatrix::getString()
 
 
 
-
+/** @brief this fn sets a inner matrix within a larger one
+ *  @param r is the number of row of inner matrix
+ *  @param c is the number nof column of inner matrix
+ *  @param m is the inner matrix to be set
+ */
 
 
 void CMatrix::setSubMatrix(int r, int c, CMatrix& m) 
@@ -308,7 +406,12 @@ void CMatrix::setSubMatrix(int r, int c, CMatrix& m)
 }
 
 
-
+/** @brief this fn gets a innner matrix within a larger one
+ *  @param r is the number of row of inner matrix
+ *  @param c is the number of column of inner matrix
+ *  @param nr is the number of rows to get
+ *  @param nc is the number of columns to get
+ */
 
 
 CMatrix CMatrix::getSubMatrix(int r, int c, int nr, int nc) 
@@ -321,7 +424,10 @@ return m;
 }
 
 
-
+/** @brief this fn adds a column to a matrix
+ *  @param m is the matrix to add a column to
+ *
+ */
 
 void CMatrix::addColumn(CMatrix& m) 
 { 
@@ -332,7 +438,10 @@ void CMatrix::addColumn(CMatrix& m)
 }
 
 
-
+/** @brief this fn adds a row to a matrix
+ *  @param m is the matrix to add a row to
+ *
+ */
 
 
 void CMatrix::addRow(CMatrix& m) 
@@ -350,7 +459,11 @@ void CMatrix::addRow(CMatrix& m)
 //////////////////////////////////////////////    COPY MATRIX OPERATOR         ///////////////////////////////////////////////
 
 
-
+/** @brief this an operator overloading fn
+ *	that equalize this matrix to d matrix
+ *	@return this matrix
+ *  @see reset()
+ */
 
 
 CMatrix CMatrix::operator=(CMatrix d)
@@ -382,7 +495,12 @@ return *this;
 
 /////////////////////////////////////////////        DOUBLE  INPUT       //////////////////////////////////////////////////////
 
-
+/** A constructor.
+ *
+ *  @brief Used to construct a 1x1 matrix 
+ *  @param d is the value of 1x1 matrix
+ *  @see copy(double d)
+ */
 
 
 CMatrix::CMatrix(double d) 
@@ -393,7 +511,12 @@ copy(d);
 }
 
 
-
+/** A constructor.
+ *
+ *  @brief Used to construct a 1x1 matrix
+ *  @param d is the value of 1x1 matrix
+ *  
+ */
 
 
 void CMatrix::copy(double d) 
@@ -408,6 +531,15 @@ values[0][0] = d;
 
 
 
+/** @brief this an operator overloading fn
+ *	
+ *  @param d is the value of 1x1 matrix
+ *
+ *  @return this matrix
+ *  
+ *  @see copy(double d)
+ *
+ */
 
 
 CMatrix CMatrix::operator=(double d) 
@@ -421,7 +553,11 @@ return *this;
 
 //////////////////////////////////////////////////////       ADD FUNCTIONS     ////////////////////////////////////////////////
 
-
+/** @brief this fn add this matrix to m matrix
+ *
+ *  @param m is the matrix to be added to this 
+ *
+ */
 void CMatrix::add(CMatrix m) 
 { 
 	if (nR != m.nR || nC != m.nC)
@@ -432,18 +568,33 @@ for (int iR = 0; iR<nR; iR++)
 }
 
 
-
+/** @brief this an addition operator fn
+ *
+ *  @param m is the matrix to be added to this
+ * 
+ *  @see add(CMatrix m)
+ */
 
 void CMatrix::operator+=(CMatrix m) 
 { add(m);}
 
-
+/** @brief this an addition operator fn
+ *
+ *  @param d is the number to be added to this
+ *
+ *  @see add(CMatrix m)
+ */
 
 void CMatrix::operator+=(double d)
 { add(CMatrix(nR, nC, MI_VALUE, d)); }
 
 
-
+/** @brief this an addition operator fn
+ *
+ *  @param m is the matrix to be added to this
+ *  @return this matrix added with matrix m  
+ *  @see operator+=(CMatrix m)
+ */
 
 CMatrix CMatrix::operator+(CMatrix m) 
 { 
@@ -451,6 +602,13 @@ CMatrix CMatrix::operator+(CMatrix m)
 r += m; 
 return r; 
 }
+
+/** @brief this an addition operator fn
+ *
+ *  @param d is the number to be added to this
+ *  @return this matrix elements added with double d 
+ *  @see operator+=(double d)
+ */
 
 
 CMatrix CMatrix::operator+(double d) 
@@ -464,7 +622,11 @@ return r;
 
 //////////////////////////////////////////////////         SUBTRACT FUNCTIONS       ///////////////////////////////////////
 
-
+/** @brief this fn subtract this matrix and m matrix
+ *
+ *  @param m is the matrix to be subtracted from this
+ * 
+ */
 
 void CMatrix::sub(CMatrix m)
 {
@@ -475,7 +637,13 @@ void CMatrix::sub(CMatrix m)
 			values[iR][iC] -= m.values[iR][iC];
 }
 
-
+/** @brief this an subtraction operator fn
+ *  
+ *  @param m is the matrix to be subtracted from this
+ *
+ *  @see sub(CMatrix m)
+ * 
+ */
 
 
 void CMatrix::operator-=(CMatrix m)
@@ -483,7 +651,11 @@ void CMatrix::operator-=(CMatrix m)
 	sub(m);
 }
 
-
+/** @brief this an subtraction operator fn
+ *
+ *  @param d is the number to be subtracted from this 
+ *  @see sub(CMatrix m)
+ */
 
 
 void CMatrix::operator-=(double d)
@@ -491,7 +663,11 @@ void CMatrix::operator-=(double d)
 	sub(CMatrix(nR, nC, MI_VALUE, d));
 }
 
-
+/** @brief this an subtraction operator fn
+ *
+ *  @return r is this matrix subtracted with matrix m  
+ *  @see operator-=(CMatrix m)
+ */
 
 CMatrix CMatrix::operator-(CMatrix m)
 {
@@ -500,7 +676,11 @@ CMatrix CMatrix::operator-(CMatrix m)
 	return r;
 }
 
-
+/** @brief this an subtraction operator fn
+ *
+ *  @return r is this matrix elements subtracted with double d 
+ *  @see operator-=(double d)
+ */
 
 CMatrix CMatrix::operator-(double d)
 {
@@ -515,6 +695,11 @@ CMatrix CMatrix::operator-(double d)
 
 
 ///////////////////////////////////////////        MULTIPLICATION          ///////////////////////////////////////////////////
+
+/** @brief this fn multiply this matrix by m matrix
+ *
+ * 
+ */
 
 void CMatrix::mul(CMatrix m)
 { 
@@ -548,8 +733,20 @@ void CMatrix::mul(CMatrix m)
 	
 }
 
+/** @brief this an multiplication operator overloading fn
+ *
+ *  @param m is the matrix to be multiplied to this
+ *  @see mul(CMatrix m)
+ */
+
 void CMatrix::operator*=(CMatrix m)
 { mul(m); } 
+
+/** @brief this an multiplication operator overloading fn
+ *
+ *  @param d is the element to be multiplied to this
+ *  
+ */
 
 void CMatrix::operator*=(double d)
 { 
@@ -557,7 +754,13 @@ void CMatrix::operator*=(double d)
 		for(int iC=0;iC<nC;iC++) 
 			values[iR][iC] *= d;
 }
-
+/** @brief this an multiplication operator fn
+ *
+ *  @param m is the matrix to be multiplied to this
+ *  @return r is this matrix multiplied by matrix m 
+ *  @see operator*=(CMaatrix m)
+ *
+ */
 
 CMatrix CMatrix::operator*(CMatrix m)
 {
@@ -565,6 +768,15 @@ CMatrix CMatrix::operator*(CMatrix m)
 	r*=m;
 	return r;
 }
+
+/** @brief this an multiplication operator fn
+ *
+ *  @param d is the element to be multiplied to this
+ *  @return r is this matrix multiplied by double d 
+ *  @see operator*=(double d)
+ *
+ */
+
 CMatrix CMatrix::operator*(double d)
 {
 	CMatrix r = *this; 
@@ -575,24 +787,65 @@ CMatrix CMatrix::operator*(double d)
 
 ///////////////////////////////////////////        INCREMENTAL OPERATORS          ///////////////////////////////////////////////////
 
+/** @brief this an pre_add operator fn
+ *
+ *  @return this matrix with elements increased by one 
+ *  @see add(CMatrix m)
+ */
+
 CMatrix CMatrix::operator++()
 { add(CMatrix(nR, nC, MI_VALUE, 1.0)); return *this;
 }
+
+/** @brief this an pos_tadd operator fn
+ *
+ *  @return this matrix then increase it's elements by one 
+ *  @see add(CMatrix m)
+ */
+
 CMatrix CMatrix::operator++(int)
 {
 CMatrix C = *this; add(CMatrix(nR, nC, MI_VALUE, 1.0)); return C;
 }
+
+/** @brief this an pre_sub. operator fn
+ *
+ *  @return this matrix with elements decreased by one 
+ *  @see add(CMatrix m)
+ */
+
 CMatrix CMatrix::operator--()
 { add(CMatrix(nR, nC, MI_VALUE, -1.0)); return *this;
 }
+
+/** @brief this an post_sub. operator fn
+ *
+ *  @return this matrix then decreased it's elements by one 
+ *  @see add(CMatrix m)
+ */
+
 CMatrix CMatrix::operator--(int)
 {
 CMatrix r = *this; add(CMatrix(nR, nC, MI_VALUE, -1.0)); return r;
 }
+
+/** @brief this an operator overloading fn
+ *
+ *  @return this matrix with inverted elements 
+ *  
+ */
+
 CMatrix CMatrix::operator-()
 { for(int iR=0;iR<nR;iR++) for(int iC=0;iC<nC;iC++) values[iR][iC] = -values[iR][iC];
 return *this;
 }
+
+/** @brief this an operator overloading fn
+ *
+ *  @return this matrix 
+ *  
+ */
+
 CMatrix CMatrix::operator+()
 { return *this;
 }
@@ -600,7 +853,11 @@ CMatrix CMatrix::operator+()
 ///////////////////////////////////////////        INVERSE       ///////////////////////////////////////////////////
 
 
-
+/** @brief this fn makes inverse of the given matrix
+ *
+ *  @return a matrix that is the inverse of this
+ *
+ */
 
 
 CMatrix CMatrix::inverse()
@@ -807,6 +1064,12 @@ return value;
 */
 ///////////////////////////////////////////        DIVISION          ///////////////////////////////////////////////////
 
+
+/** @brief this fn takes a matrix and divide it by matrix m
+ *
+ * 
+ */
+
 void CMatrix::div(CMatrix m)
 {  
 	CMatrix INV(nR, nC);
@@ -839,9 +1102,19 @@ void CMatrix::div(CMatrix m)
 	
 }
 
+/** @brief this an operator overloading fn
+ *
+ *  @see div(m)
+ */
+
 void CMatrix::operator/=(CMatrix m)
 { div(m); } 
 
+/** @brief this an operator overloading fn
+ *
+ *  @return this matrix divided by m matrix 
+ *  @see operator/=(CMatrix m)
+ */
 
 CMatrix CMatrix::operator/(CMatrix m)
 {
@@ -864,6 +1137,11 @@ CMatrix CMatrix::operator/(CMatrix m)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/** @brief this fn makes transpose of the given matrix
+ *
+ *  @return result is a matrix that is the transpose of this
+ *
+ */
 
 CMatrix CMatrix::transpose ()
 {	//CMatrix that =*this					// there's no need for this line we already have this matrix that the function calls
@@ -878,7 +1156,11 @@ CMatrix CMatrix::transpose ()
 return result;
 }
 
-
+/** @brief this fn that inverse the elements of the given matrix
+ *
+ *  @return a matrix that has inversed elements of this elements
+ *
+ */
 
 CMatrix CMatrix::elediv ()
 {
@@ -895,6 +1177,14 @@ CMatrix CMatrix::elediv ()
 }
 
 /////////////////////////////////////    dividing the elements of a matrix with a certain value    //////////////////////////////////////
+
+/** @brief this fn divides the elements of a matrix with a certain value
+ *
+ *  @param element is the number to be divided by the elements of the matrix
+ *
+ *  @return a matrix all its elements divided by element
+ *
+ */
 
 CMatrix CMatrix::elediv (double element)
 {
@@ -913,6 +1203,14 @@ CMatrix CMatrix::elediv (double element)
 
 /////////////////////////////////////    powering the elements of a matrix with a certain value    //////////////////////////////////////
 
+/** @brief this fn raises the elements of a matrix to the power of a certain value
+ *
+ *  @param element is the number to be raised as a power to the elements of the matrix
+ *
+ *  @return a matrix all its elements are raised to the power of element
+ *
+ */
+
 CMatrix CMatrix::elepow (double element)
 {
 	CMatrix result(nR,nC);
@@ -928,6 +1226,14 @@ CMatrix CMatrix::elepow (double element)
 }
 
 /////////////////////////////////////    subtracting the elements of a matrix with a certain value    //////////////////////////////////////
+
+/** @brief this fn subtracts the elements of a matrix with a certain value
+ *
+ *  @param element is the number to be subracted to the elements of the matrix
+ *
+ *  @return a matrix all its elements subtracted by element
+ *
+ */
 
 CMatrix CMatrix::elesub (double element)
 {
@@ -945,6 +1251,14 @@ CMatrix CMatrix::elesub (double element)
 
 /////////////////////////////////////    adding the elements of a matrix with a certain value    //////////////////////////////////////
 
+/** @brief this fn adds the elements of a matrix with a certain value
+ *
+ *  @param t is the number to be added to the elements of the matrix
+ *
+ *  @return a matrix all its elements added to t
+ *
+ */
+
 CMatrix CMatrix::eleadd (double t)
 {
 	CMatrix result(nR,nC);
@@ -961,6 +1275,13 @@ CMatrix CMatrix::eleadd (double t)
 
 /////////////////////////////////////    multiplying the elements of a matrix with a certain value    //////////////////////////////////////
 
+/** @brief this fn multiplies the elements of a matrix with a certain value
+ *
+ *  @param t is the number to be multiplied to the elements of the matrix
+ *
+ *  @return a matrix all its elements multilied by t
+ *
+ */
 
 CMatrix CMatrix::elemul (double t)
 {
@@ -982,6 +1303,14 @@ CMatrix CMatrix::elemul (double t)
 
 /////////////////////////////////////    declaring a matrix with random numbers    //////////////////////////////////////
 
+/** @brief this fn makes the rand matrix
+ *
+ *  @param nR is the number of rows and nC is columns
+ *
+ *  @return a matrix all its elements are random numbers
+ *
+ */
+
 CMatrix CMatrix::random(int nR, int nC)
 {
 	CMatrix result(nR,nC);
@@ -997,6 +1326,13 @@ CMatrix CMatrix::random(int nR, int nC)
 
 /////////////////////////////////////    declaring a matrix with zeros    //////////////////////////////////////
 
+/** @brief this fn makes the zeroes matrix
+ *
+ *  @param nR is the number of rows and nC is columns
+ *
+ *  @return a matrix all its elements are 0s
+ *
+ */
 
 CMatrix CMatrix::zeros(int nR, int nC)
 {
@@ -1014,6 +1350,14 @@ CMatrix CMatrix::zeros(int nR, int nC)
 
 ///////////////////////////////////////////////////// ONES Matrix ////////////////////////////////////////////////////////////////
 
+/** @brief this fn makes the ones matrix
+ *
+ *  @param Number1 is the number of rows and Number2 is columns
+ *
+ *  @return a matrix all its elements are 1s
+ *
+ */
+
 CMatrix CMatrix::ones (int Number1 , int Number2)
 {
 	CMatrix result(Number1,Number2);
@@ -1027,6 +1371,14 @@ CMatrix CMatrix::ones (int Number1 , int Number2)
 	return result;
 
 }
+
+/** @brief this fn makes the ones matrix
+ *
+ *  @param Number1 is the number of rows and columns
+ *
+ *  @return a matrix all its elements are 1s
+ *
+ */
 
 CMatrix CMatrix::ones (int Number1)
 {
@@ -1044,6 +1396,14 @@ CMatrix CMatrix::ones (int Number1)
 
 ///////////////////////////////////////////////////// I Matrix ////////////////////////////////////////////////////////////////
 
+/** @brief this fn makes the identity matrix
+ *
+ *  @param Number1 is the number of rows and Number2 is columns
+ *
+ *  @return an identity matrix its diagonals are 1s
+ *
+ */
+
 CMatrix CMatrix::eye (int Number1 , int Number2)
 {
 
@@ -1057,6 +1417,14 @@ CMatrix CMatrix::eye (int Number1 , int Number2)
 	}
 	return result;
 }
+
+/** @brief this fn makes the identity matrix
+ *
+ *  @param Number1 is the number of rows and columns
+ *
+ *  @return an identity matrix its diagonals are 1s
+ *
+ */
 
 CMatrix CMatrix::eye (int Number1)
 {
@@ -1077,12 +1445,11 @@ CMatrix CMatrix::eye (int Number1)
 
 ///////////////////////////////////////////////////// Log   Log10   sqrt   exp ////////////////////////////////////////////
 
-
-
-
-
-
-
+/** @brief this fn makes the log for each element in the matrix
+ *
+ *  @return n is a matrix where each element with log of this matrix
+ *
+ */
 
 
 CMatrix   CMatrix :: logg()
@@ -1111,10 +1478,11 @@ double t = values[i][j];
  return n;
  }
 
-
-
-
-
+/** @brief this fn makes the log10 for each element in the matrix
+ *
+ *  @return n is a matrix where each element with log10 of this matrix
+ *
+ */
 
   CMatrix   CMatrix :: logg10()
 {
@@ -1142,10 +1510,11 @@ else
  return n;
  }
   
-
-
-
-
+/** @brief this fn makes the exp for each element in the matrix
+ *
+ *  @return a matrix where each element with exp of this matrix
+ *
+ */
 
   CMatrix   CMatrix :: expp()
 {
@@ -1168,10 +1537,11 @@ else if (t==-std::numeric_limits<double>::infinity())
 }}
  return n;
  }
-
-
-
-
+/** @brief this fn makes the square root for each element in the matrix
+ *
+ *  @return a matrix where each element with sqrt of this matrix
+ *
+ */
 
    CMatrix   CMatrix :: sqrtt()
 {
@@ -1199,6 +1569,12 @@ else  n.values[i][j]=sqrt(t);
 
 
  ///////////////////////////////////////////////////trig fn //////////////////////////
+
+ /** @brief this fn makes the sin dot for each element in the matrix
+ *
+ *  @return a matrix where each element with sin made for it
+ *
+ */
 
 CMatrix CMatrix::sinn()
 {
@@ -1230,8 +1606,11 @@ CMatrix n(nR,nC);
 	return n;
 }
 
-
-
+/** @brief this fn makes the cos dot for each element in the matrix
+ *
+ *  @return a matrix where each element with cos made for it
+ *
+ */
 
 CMatrix CMatrix::coss()
 {
@@ -1262,6 +1641,12 @@ CMatrix n(nR,nC);
 	return n;
 }
 
+/** @brief this fn makes the tan dot for each element in the matrix
+ *
+ *  @return a matrix where each element with tan made for it
+ *
+ */
+
 CMatrix CMatrix::tann()
 {
 CMatrix n(nR,nC);
@@ -1290,7 +1675,11 @@ CMatrix n(nR,nC);
 
 	return n;
 }
-
+/** @brief this fn makes the sin-1 dot for each element in the matrix
+ *
+ *  @return a matrix where each element with sin-1 made for it 
+ *
+ */
 
 CMatrix CMatrix::asinn()
 {
@@ -1317,6 +1706,12 @@ if(values[i][z]>=-1.0 && values[i][z]<=1.0)
 }
 return n;
 }
+
+/** @brief this fn makes the cos-1 dot for each element in the matrix
+ *
+ *  @return a matrix where each element with cos-1 made for it 
+ *
+ */
 
 CMatrix CMatrix::acoss()
 {
@@ -1351,6 +1746,12 @@ for (int i=0 ; i<nR; i++)
 return n;
 }
 
+/** @brief this fn makes the tan-1 dot for each element in the matrix
+ *
+ *  @return a matrix where each element with tan-1 made for it 
+ *
+ */
+
 CMatrix CMatrix::atann()
 {
 CMatrix n(nR,nC);
@@ -1382,6 +1783,11 @@ for (int i=0 ; i<nR; i++)
 return n;
 }
 
+/** @brief this fn makes the sinh dot for each element in the matrix 
+ *
+ *  @return a matrix where each element with sinh made for it 
+ *
+ */
 
 CMatrix CMatrix::sinnh()                 
 {
@@ -1412,6 +1818,11 @@ CMatrix n(nR,nC);
 	return n;
 }
 
+/** @brief this fn makes the cosh dot for each element in the matrix 
+ *
+ *  @return a matrix where each element with cosh made for it 
+ *
+ */
 
 CMatrix CMatrix::cossh()
 {
@@ -1441,6 +1852,12 @@ CMatrix n(nR,nC);
 
 	return n;
 }
+
+/** @brief this fn makes the tanh dot for each element in the matrix
+ *
+ *  @return a matrix where each element with tanh made for it 
+ *
+ */
 
 CMatrix CMatrix::tannh()
 {
@@ -1485,7 +1902,11 @@ CMatrix CMatrix::tannh()
 
 ///////////////////////////////////////////        PRINT MATRIX          ///////////////////////////////////////////////////
 
-
+/** Fn to print matrix.
+ *		This function takes a matrix and prints out its contents 
+ * in an organized way similar to octave
+ *
+ */
 
 
 void CMatrix::PrintMatrix()
@@ -1500,7 +1921,11 @@ void CMatrix::PrintMatrix()
 
 
 
-
+/** Fn to support ostream.
+ *		This function enables the matrix
+ *  to print its contents as a string using cout<<
+ *
+ */
 
 ostream& operator <<(ostream &os,CMatrix m)
 {
@@ -1513,7 +1938,11 @@ ostream& operator <<(ostream &os,CMatrix m)
 
 ////////////////////////////////////////power///////////////////////////////////////////////////////
 
-
+/** @brief this an operator overloading fn
+ *
+ *  @return a matrix raised to the power of d 
+ *  @see power(d)
+ */
 
 
 CMatrix CMatrix::operator^(int d)
@@ -1521,6 +1950,12 @@ CMatrix CMatrix::operator^(int d)
 
 	return power(d);
 }
+
+/** @brief this an operator overloading fn
+ *
+ *  @return double which represent the single element in 1x1 matrix raised to the power of d 
+ *  
+ */
 
 double CMatrix::operator^(double d)
 {
@@ -1540,6 +1975,13 @@ double CMatrix::operator^(double d)
 	}
 	return result.values[0][0];	
 }
+
+/** @brief this fn takes a matrix and raises it to an int power
+ *
+ *  @param N is the integer power
+ *  @return a matrix raised to the power of d
+ * 
+ */
 
 CMatrix CMatrix::power(int N)
 { 
@@ -1583,6 +2025,12 @@ CMatrix CMatrix::power(int N)
 	
 	return result;
 }
+
+/** @brief this fn makes inverse of the given matrix
+ *  using Gauss method 
+ *  @return a matrix that is the inverse of this
+ *
+ */
 
 CMatrix CMatrix :: InverseforPower()
 {	
