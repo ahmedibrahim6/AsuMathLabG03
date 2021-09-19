@@ -9,8 +9,6 @@
             "command": "/usr/bin/g++",
             "args": [
                 "-g",
-                // "-Wall",
-                // "-Wextra",
                 "-Wno-return-type",
                 "-std=gnu++17",
                 "${file}",
