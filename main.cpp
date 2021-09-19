@@ -1587,10 +1587,14 @@ string chartomatrix(
   int OBC = 1;
   int CBC = 0;
   int spaceflag;
-
+  int end_processing_flag = 0;
   for (int x1 = 1; x1 < matstring.length();
        x1++)  // matstring is the main matrix string
   {
+    if(end_processing_flag == 1)
+    {
+      break;
+    }
     map<char, CMatrix>::iterator it3;
     it3 = mymap.find(matstring[x1]);
 
@@ -1609,6 +1613,10 @@ string chartomatrix(
           if (matstring[i] == ' ' || matstring[i] == ';' ||
               matstring[i] == '[' || i == matstring.length() - 1) {
             spacesemibrac = i;
+            if(i == matstring.length() - 1)
+            {
+              end_processing_flag = 1;
+            }
             break;
           }
         }
