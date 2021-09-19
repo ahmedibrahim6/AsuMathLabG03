@@ -461,7 +461,6 @@ string remove_extra_space(string s) {
 void brackets_no(string operations) {
   int bracket1 = count(operations.begin(), operations.end(), '(');
   int bracket2 = count(operations.begin(), operations.end(), ')');
-  // int bracket = bracket1 + bracket2;
   if (bracket1 != bracket2) {
     ErrorFlag = 1;
   }
@@ -592,7 +591,6 @@ string Get_Result(string s1) {
         Values[i + 1] = pow(Values[i], Values[i + 1]);
         result = to_string(Values[i + 1]);
         if (negelement == 1) {
-          ////////////////////////////////////////////s1.erase(0,places[i]+values[i].length()+2);
           if (places[i + 1] == 0) {
             s1.erase(0, s1.length());
 
@@ -601,8 +599,6 @@ string Get_Result(string s1) {
           }
           negelement = 0;
         } else {
-          /////////////////////////////////
-          /////s1.erase(0,places[i]+values[i+1].length()+1);
           if (places[i + 1] == 0) {
             s1.erase(0, s1.length());
 
@@ -618,10 +614,7 @@ string Get_Result(string s1) {
         if (i + 1 == j) {
           s1.erase(places[i - 1] + 1, s1.length() - places[i - 1] - 1);
         } else {
-          s1.erase(
-              places[i - 1] + 1,
-              places[i + 1] - places[i - 1] -
-                  1);  ////////////////////////////////////////////////////////////////////////
+          s1.erase(places[i - 1] + 1, places[i + 1] - places[i - 1] - 1);
         }
         s1.insert(places[i - 1] + 1, result);
         arrayModification(i, j, Values);
@@ -658,13 +651,10 @@ string Get_Result(string s1) {
         result = to_string(Values[i + 1]);
         if (negelement == 1) {
           if (places[i + 1] == 0) {
-            s1.erase(
-                0, s1.length() - places[i] -
-                       1);  ///////////////////////////////////////////////////
+            s1.erase(0, s1.length() - places[i] - 1);
           } else {
             s1.erase(0, places[i] + values[i + 1].length() + 2);
           }
-          // s1.erase(0,places[i]+values[i+1].length()+2);
           negelement = 0;
         } else {
           s1.erase(0, places[i] + values[i + 1].length() + 1);
@@ -677,9 +667,7 @@ string Get_Result(string s1) {
         Values[i + 1] = Values[i] * Values[i + 1];
         result = to_string(Values[i + 1]);
         if (i + 1 == j) {
-          s1.erase(places[i - 1] + 1,
-                   places[i] + values[i + 1].length() +
-                       2);  ///////////////////////////////////////////////////
+          s1.erase(places[i - 1] + 1, places[i] + values[i + 1].length() + 2);
         } else {
           if (i == 0) {
             s1.erase(places[i - 1] + 1, places[i + 1] - places[i - 1] - 1);
@@ -720,9 +708,7 @@ string Get_Result(string s1) {
         result = to_string(Values[i + 1]);
         if (negelement == 1) {
           if (places[i + 1] == 0) {
-            s1.erase(
-                0, s1.length() - places[i] -
-                       1);  ///////////////////////////////////////////////////
+            s1.erase(0, s1.length() - places[i] - 1);
           } else {
             s1.erase(0, places[i] + values[i + 1].length() + 2);
           }
@@ -736,9 +722,7 @@ string Get_Result(string s1) {
         result = to_string(Values[i + 1]);
         if (i + 1 == j) {
           if (places[i + 1] != 0) {
-            s1.erase(places[i - 1] + 1,
-                     places[i + 1] - places[i] -
-                         1);  ////////////////////////////////////////////////
+            s1.erase(places[i - 1] + 1, places[i + 1] - places[i] - 1);
           } else {
             s1.erase(places[i - 1] + 1, s1.length() - places[i - 1] - 1);
           }
@@ -764,9 +748,6 @@ string Get_Result(string s1) {
         } else {
           s1.erase(places[i] + 4, 1);
         }
-        //	arrayModification(i+1,j,Values);
-        //	arrayModification(i+1,j,elements);
-        //	arrayModification(i+1,j,places);
         j -= 1;
         for (int k = i + 1; k < j; k++) {
           places[k] -= 1;
@@ -824,16 +805,12 @@ string Get_Result(string s1) {
         result = to_string(Values[i + 1]);
         if (negelement == 1) {
           if (places[i + 1] == 0) {
-            s1.erase(
-                0, s1.length() - places[i] -
-                       1);  ///////////////////////////////////////////////////
+            s1.erase(0, s1.length() - places[i] - 1);
           } else {
             s1.erase(0, places[i] + values[i + 1].length() + 2);
           }
-          //////////////////////////////////////////////s1.erase(0,places[i]+values[i+1].length()+2);
           negelement = 0;
         } else {
-          // s1.erase(0,places[i]+values[i+1].length()+1);///////////////////////////////////////////////////
         }
         s1.insert(0, result);
       } else {
@@ -868,20 +845,11 @@ void BracketsHandling(string& x) {
       if ((int)x[b] >= 48 && (int)x[b] <= 57) {
         x.insert(i, "*");
         i = 1;
-      }
-      /*else if(x[b]=='(')
-      {
-              x.erase(x.begin()+b);i=1;
-      }*/
-      else if (x[b] == ')') {
+      } else if (x[b] == ')') {
         x.insert(i, "*");
         i = 1;
       }
     }
-    /*	else if (x[i]==')' && x[b]==')')
-                    {
-                            x.erase(x.begin()+b);i=1;
-                    }*/
     if (x[i] == ')') {
       if ((int)x[i + 1] >= 48 && (int)x[i + 1] <= 57) {
         x.insert(i + 1, "*");
@@ -901,18 +869,13 @@ void BracketsHandling(string& x) {
 void SinSearch(string& x) {
   string v, sub, result;
   double temp = 0;
-  char z = x.find("sin(");  //*p=x.find("sin(");
+  char z = x.find("sin(");
   if ((int)z != (-1)) {
     if (x.find(')', x.find("sin(")) == -1) {
       ErrorFlag = 1;
     }
     sub = x.substr(x.find("sin(") + 4,
                    x.find(")", x.find("sin(")) - x.find("sin(") - 4);
-    // CMatrix Mresult=Get_Result(sub);
-    // temp=atof(result.c_str());
-    // CMatrix c;
-    // Mresult.sinn();
-    // temp=sin(temp);
     string temp2 = Get_Result(sub);
     double temp3 = sin(atof(temp2.c_str()));
     v = std::to_string(temp3);
@@ -941,13 +904,6 @@ void CosSearch(string& x) {
     }
     sub = x.substr(x.find("cos(") + 4,
                    x.find(")", x.find("cos(")) - x.find("cos(") - 4);
-    // CMatrix Mresult=Get_Result(sub);
-    // temp=atof(result.c_str());
-    // CMatrix c;
-    // Mresult.coss();
-
-    // temp=cos(temp);
-    // v=std::to_string(temp);
     string temp2 = Get_Result(sub);
     double temp3 = cos(atof(temp2.c_str()));
     v = std::to_string(temp3);
@@ -969,19 +925,13 @@ void CosSearch(string& x) {
 void TanSearch(string& x) {
   string v, sub, result;
   double temp = 0;
-  char z = x.find("tan(");  //*p=x.find("sin(");
+  char z = x.find("tan(");
   if ((int)z != (-1)) {
     if (x.find(')', x.find("tan(")) == -1) {
       ErrorFlag = 1;
     }
     sub = x.substr(x.find("tan(") + 4,
                    x.find(")", x.find("tan(")) - x.find("tan(") - 4);
-    // CMatrix Mresult=Get_Result(sub);
-    // temp=atof(result.c_str());
-    // CMatrix c;
-    // Mresult.tann();
-    // temp=tan(temp);
-    // v=std::to_string(temp);
     string temp2 = Get_Result(sub);
     double temp3 = tan(atof(temp2.c_str()));
     v = std::to_string(temp3);
@@ -1038,13 +988,8 @@ void logtrighandle(string& x) {
                    x.find("log10(") + 6,
                    x.find(")", x.find("log10(")) - x.find("log10(") - 6),
                v;
-        // CMatrix Mresult=Get_Result(sub);
-        // temp=atof(result.c_str());
-        // CMatrix c;
-        // Mresult.logg10();
         double temp1 = 0;
         string temp2 = Get_Result(sub);
-        // temp1=atof(sub.c_str());
         temp1 = atof(temp2.c_str());
         temp1 = log10(temp1);
         v = std::to_string(temp1);
@@ -1067,14 +1012,6 @@ void logtrighandle(string& x) {
         string sub = x.substr(x.find("log(") + 4,
                               x.find(")", x.find("log(")) - x.find("log(") - 4),
                v;
-        // CMatrix Mresult=Get_Result(sub);
-        // temp=atof(result.c_str());
-        // CMatrix c;
-        // Mresult.logg();
-        // double temp1=0;
-        // temp1=atof(sub.c_str());
-        // temp1=log(temp1);
-        // v=std::to_string(temp1);
         string temp2 = Get_Result(sub);
         double temp3 = log(atof(temp2.c_str()));
         v = std::to_string(temp3);
@@ -1113,13 +1050,6 @@ void invsearch(string& x, int y) {
                    x.substr(x.find("asin(") + 5,
                             x.find(")", x.find("asin(")) - x.find("asin(") - 5),
                v;
-        // CMatrix Mresult=Get_Result(sub);
-        // temp=atof(result.c_str());
-        // CMatrix c;
-        // Mresult.asinn();
-        // double temp1=0;
-        // temp1=asin(temp1);
-        // v=std::to_string(temp1);
         string temp2 = Get_Result(sub);
         double temp3 = asin(atof(temp2.c_str()));
         v = std::to_string(temp3);
@@ -1147,13 +1077,6 @@ void invsearch(string& x, int y) {
         string sub =
             x.substr(x.find("atan(") + 5,
                      x.find(")", x.find("atan(")) - x.find("atan(") - 5);
-        // CMatrix Mresult=Get_Result(sub);
-        //	temp=atof(result.c_str());
-        //		CMatrix c;
-        //		Mresult.atann();
-        // double temp1=0;
-        // temp1=atan(temp1);
-        // string v=std::to_string(temp1);
         string temp2 = Get_Result(sub);
         double temp3 = sin(atof(temp2.c_str()));
         string v = std::to_string(temp3);
@@ -1181,13 +1104,6 @@ void invsearch(string& x, int y) {
         string sub =
             x.substr(x.find("acos(") + 5,
                      x.find(")", x.find("acos(")) - x.find("acos(") - 5);
-        // CMatrix Mresult=Get_Result(sub);
-        // temp=atof(result.c_str());
-        // CMatrix c;
-        // Mresult.acoss();
-        // double temp1=0;
-        // temp1=acos(temp1);
-        // string v=std::to_string(temp1);
         string temp2 = Get_Result(sub);
         double temp3 = acos(atof(temp2.c_str()));
         string v = std::to_string(temp3);
@@ -1224,13 +1140,6 @@ void hsearch(string& x, int y) {
     string sub = x.substr(x.find("sinh(") + 5,
                           x.find(")", x.find("sinh(")) - x.find("sinh(") - 5),
            v;
-    // CMatrix Mresult=Get_Result(sub);
-    // temp=atof(result.c_str());
-    // CMatrix c;
-    // Mresult.sinnh();
-    // double temp1=0;
-    // temp1=sinh(temp1);
-    // v=std::to_string(temp1);
     string temp2 = Get_Result(sub);
     double temp3 = sinh(atof(temp2.c_str()));
     v = std::to_string(temp3);
@@ -1242,13 +1151,6 @@ void hsearch(string& x, int y) {
     string sub = x.substr(x.find("cosh(") + 5,
                           x.find(")", x.find("cosh(")) - x.find("cosh(") - 5),
            v;
-    // CMatrix Mresult=Get_Result(sub);
-    // temp=atof(result.c_str());
-    // CMatrix c;
-    // Mresult.cossh();
-    // double temp1=0;
-    // temp1=cosh(temp1);
-    // v=std::to_string(temp1);
     string temp2 = Get_Result(sub);
     double temp3 = cosh(atof(temp2.c_str()));
     v = std::to_string(temp3);
@@ -1260,13 +1162,6 @@ void hsearch(string& x, int y) {
     string sub = x.substr(x.find("tanh(") + 5,
                           x.find(")", x.find("tanh(")) - x.find("tanh") - 5),
            v;
-    // CMatrix Mresult=Get_Result(sub);
-    // temp=atof(result.c_str());
-    // CMatrix c;
-    // Mresult.tannh();
-    /*double temp1=0;
-    temp1=tanh(temp1);
-    v=std::to_string(temp1);*/
     string temp2 = Get_Result(sub);
     double temp3 = tanh(atof(temp2.c_str()));
     v = std::to_string(temp3);
@@ -1295,12 +1190,6 @@ void expsqrt(string& x) {
                    x.substr(x.find("sqrt(") + 5,
                             x.find(")", x.find("sqrt(")) - x.find("sqrt(") - 5),
                v;
-        // CMatrix Mresult=Get_Result(sub);
-        // temp=atof(result.c_str());
-        // CMatrix c;
-        // Mresult.sqrtt();
-        // temp1=sqrt(temp1);
-        // v=std::to_string(temp1);
         string temp2 = Get_Result(sub);
         double temp3 = sqrt(atof(temp2.c_str()));
         v = std::to_string(temp3);
@@ -1328,13 +1217,7 @@ void expsqrt(string& x) {
       if (x[i + 3] == '(') {
         string sub = x.substr(x.find("exp(") + 4,
                               x.find(")", x.find("exp(")) - x.find("exp(") - 4);
-        // CMatrix Mresult=Get_Result(sub);
-        //	temp=atof(result.c_str());
         temp1 = atof(sub.c_str());
-        //		CMatrix c;
-        //		Mresult.expp();
-        // temp1=exp(temp1);
-        // string v=std::to_string(temp1);
         string temp2 = Get_Result(sub);
         double temp3 = exp(atof(temp2.c_str()));
         string v = std::to_string(temp3);
@@ -1427,8 +1310,6 @@ void trigsearch(string& x) {
     i++;
     expsqrt(x);
   }
-
-  // return sub;
 }
 
 /** @brief this fn calculates any math expressions in string
@@ -1436,12 +1317,13 @@ void trigsearch(string& x) {
  * @param t is the string to be calculated
  * @return R is the string containing result
  * @see Get_Result()
+ * @example
+    string t = "L= ( ( 2 . 3 +-5+-10 -2.3)+5)*2/0-(-5*-2)";
+    string t = "L=(-4^3)+(2-2)sin(1.34))";
+    string t = "A = 5.5 + 12 * sin(0.4) + 2.2^4;";
  */
 
 string hesab(string t) {
-  // string t="L= ( ( 2 . 3 +-5+-10 -2.3)+5)*2/0-(-5*-2)";
-  // string t="L=(-4^3)+(2-2)sin(1.34))";
-  // string t="A = 5.5 + 12 * sin(0.4) + 2.2^4;";
   brackets_no(t);
   t = spacetrim(t);
   BracketsHandling(t);
@@ -1591,8 +1473,7 @@ string chartomatrix(
   for (int x1 = 1; x1 < matstring.length();
        x1++)  // matstring is the main matrix string
   {
-    if(end_processing_flag == 1)
-    {
+    if (end_processing_flag == 1) {
       break;
     }
     map<char, CMatrix>::iterator it3;
@@ -1613,8 +1494,7 @@ string chartomatrix(
           if (matstring[i] == ' ' || matstring[i] == ';' ||
               matstring[i] == '[' || i == matstring.length() - 1) {
             spacesemibrac = i;
-            if(i == matstring.length() - 1)
-            {
+            if (i == matstring.length() - 1) {
               end_processing_flag = 1;
             }
             break;
